@@ -1,0 +1,33 @@
+.combo-box-base{
+     -fx-background-color: linear-gradient(white,grey);
+}
+.button {
+    -fx-text-fill: black;
+    -fx-background-color: linear-gradient(white,grey);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+   
+}
+.button:hover {
+    -fx-background-color: linear-gradient(grey,white);
+}
+.root{
+    -fx-font-fill:black;
+   
+    -fx-font-size: 10pt;
+    -fx-background-color: linear-gradient(darkslategrey,slategrey);
+   // -fx-background-image: url(carbon.jpg);
+}
+
+.label {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Arial";
+    -fx-font-weigiht: bold;
+    -fx-text-fill: white;
+}
+
+.text-field{
+   -fx-background-color: whitesmoke;
+    
+}
+
+
