@@ -6,6 +6,7 @@
 
 package Provincial_Miner.system;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -17,21 +18,14 @@ public interface Scraper {
     /**
      * member variable which maps speakers to the topics they have spoken on.
      */
-    HashMap<String, String> membersToTopics = new HashMap();
+    HashMap<String, ArrayList<String>> membersToTopics = new HashMap();
     
     /**
      * member variable which maps topics to speakers who have spoken on them.
      */
-    HashMap<String, String> topicsToMembers = new HashMap();
+    HashMap<String, ArrayList<String>> topicsToMembers = new HashMap();
     
     public void scrape();
     
-    public void scrape(char firstLetter);
-    
-    void parseMembers();
-    
-    void parseTopics();
-    
-    
-    
+    public void scrape(char firstLetter); 
 }
