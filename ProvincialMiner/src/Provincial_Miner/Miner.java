@@ -5,8 +5,10 @@
  */
 package Provincial_Miner;
 
-import Provincial_Miner.system.QuebecScraper;
+import java.time.LocalDate;
+import static java.time.LocalDate.now;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -18,13 +20,14 @@ import javafx.stage.Stage;
 public class Miner extends Application {
 
     Gui2 gui = Gui2.getInstance();
-    //Librarian librarian = Librarian.getInstance();
+    Librarian librarian = new Librarian();
     //Scrapper scrapper = Scrapper.getInstance();
     //FileWriter writer = FileWriter.getInstance();
-    String person;
-    String topic;
-    String startDate;
-    String endDate;
+    String person = "";
+    String topic = "";
+    LocalDate startDate;
+    LocalDate endDate;
+
     public String getPerson() {
         return person;
     }
@@ -41,59 +44,90 @@ public class Miner extends Application {
         this.topic = topic;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
-/**
- * This function calls the guis start method and builds the user interface
- * it also gets the search parameters and calls the librarian to search. uses
- * action event with a button to search
- * @param primaryStage
- * @throws InterruptedException 
- */
+
+    /**
+     * This function calls the guis start method and builds the user interface
+     * it also gets the search parameters and calls the librarian to search.
+     * uses action event with a button to search
+     *
+     * @param primaryStage
+     * @throws InterruptedException
+     */
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         gui.start(primaryStage);
+        /**
+         * Button even will search the parameters given. User must enter a
+         * person or topic or both. If dates start date is left blank it will
+         * get everything back to 1900 if end date left blank it will be set to
+         * current date.
+         */
         gui.getFind().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                gui.getProgress().setVisible(true);
+
                 person = gui.getPeople().getValue();
                 topic = gui.getTopical().getValue();
-                startDate = gui.getStartDate().getText();
-                endDate = gui.getEndDate().getText();
-                
-                if (person.equals("")  && !topic.equals("")){
-                    //librarian.searchTopic(topic,startDate,endDate);
+                // if nothing entered in for start date set it to 1900
+                if (gui.getStartDate().getValue() == null) {
+                    startDate = startDate.of(1900, 1, 1);
+                } else {
+                    startDate = gui.getStartDate().getValue();
                 }
-                else if (!person.equals("") && topic.equals("")){
-                    //librarian.searchPerson(person,startDate,endDate);
+                // if nothing entered for end date set it to current date
+                if (gui.getEndDate().getValue() == null) {
+                    endDate = now();
+                } else {
+                    endDate = gui.getEndDate().getValue();
                 }
-                else if (!person.equals("") && !topic.equals("")){
-                    //librarian.searchBoth(person,topic,startDate,endDate);
+                // if dates are reversed or both person and topic are null
+                // display error 
+                if (startDate.isAfter(endDate)
+                        || (person == null && topic == null)) {
+                    gui.error();
+                } else {
+                    System.out.println(startDate);
+                    System.out.println(endDate);
+                    //progress bar to know its in process
+                    gui.getProgress().setVisible(true);
+
+                    // topic search
+                    if (person == null && !topic.equals("")) {
+                        librarian.searchTopic(topic, startDate, endDate);
+                    } // person search
+                    else if (!person.equals("") && topic == null) {
+                        //librarian.searchPerson(person,startDate,endDate);
+                    } // both search
+                    else if (!person.equals("") && !topic.equals("")) {
+                        //librarian.searchBoth(person,topic,startDate,endDate);
+                    }
+                    gui.getProgress().setVisible(false);
                 }
-                gui.getProgress().setVisible(false);
             }
         });
     }
 
     /**
-     * Main method will check to see if the database is empty if it is empty
-     * it will crawl through the html of the website to populate the xml data 
-     * base so that it can be searchable. It will build the GUI and call the 
-     * file writer to write the file from xml to txt and a docx file. 
+     * Main method will check to see if the database is empty if it is empty it
+     * will crawl through the html of the website to populate the xml data base
+     * so that it can be searchable. It will build the GUI and call the file
+     * writer to write the file from xml to txt and a docx file.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {

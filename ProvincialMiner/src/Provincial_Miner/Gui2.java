@@ -10,10 +10,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -25,6 +27,8 @@ import javafx.stage.Stage;
  */
 public class Gui2 extends Application {
 
+    private static Gui2 instance = null;
+
     /**
      * This is a grid style layout that will be centered at the bottom
      */
@@ -34,54 +38,6 @@ public class Gui2 extends Application {
      * Label Identifying the start date with MM/DD/YYYY
      */
     Label startDateFinder;
-
-    public GridPane getGrid() {
-        return grid;
-    }
-
-    public Label getStartDateFinder() {
-        return startDateFinder;
-    }
-
-    public Label getEndDateFinder() {
-        return endDateFinder;
-    }
-
-    public ComboBox<String> getPeople() {
-        return people;
-    }
-
-    public ObservableList<String> getPeopleList() {
-        return peopleList;
-    }
-
-    public ComboBox<String> getTopical() {
-        return topical;
-    }
-
-    public ObservableList<String> getTopicalList() {
-        return topicalList;
-    }
-
-    public TextField getStartDate() {
-        return startDate;
-    }
-
-    public TextField getEndDate() {
-        return endDate;
-    }
-
-    public Button getFind() {
-        return find;
-    }
-
-    public ProgressBar getProgress() {
-        return progress;
-    }
-
-    public Scene getScene() {
-        return scene;
-    }
 
     /**
      * Label Identifying the end date with MM/DD/YYYY up to current date
@@ -111,12 +67,12 @@ public class Gui2 extends Application {
     /**
      * User enters the start date
      */
-    TextField startDate;
+    DatePicker startDate;
 
     /**
      * User enters the end date
      */
-    TextField endDate;
+    DatePicker endDate;
 
     /**
      * Button will start the search and open the file
@@ -124,7 +80,7 @@ public class Gui2 extends Application {
     Button find;
 
     /**
-     * Progressbar will show it is working.
+     * Progress bar will show it is working.
      */
     ProgressBar progress;
 
@@ -133,7 +89,68 @@ public class Gui2 extends Application {
      */
     Scene scene;
 
-    private static Gui2 instance = null;
+    /**
+     * Label identifying person
+     */
+    Label personLabel;
+
+    /**
+     * Label identifying topic
+     */
+    Label topicLabel;
+
+    /**
+     * title for the GUI
+     */
+    Label title;
+
+    public GridPane getGrid() {
+        return grid;
+    }
+
+    public Label getStartDateFinder() {
+        return startDateFinder;
+    }
+
+    public Label getEndDateFinder() {
+        return endDateFinder;
+    }
+
+    public ComboBox<String> getPeople() {
+        return people;
+    }
+
+    public ObservableList<String> getPeopleList() {
+        return peopleList;
+    }
+
+    public ComboBox<String> getTopical() {
+        return topical;
+    }
+
+    public ObservableList<String> getTopicalList() {
+        return topicalList;
+    }
+
+    public DatePicker getStartDate() {
+        return startDate;
+    }
+
+    public DatePicker getEndDate() {
+        return endDate;
+    }
+
+    public Button getFind() {
+        return find;
+    }
+
+    public ProgressBar getProgress() {
+        return progress;
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
 
     /**
      * empty constructor to make sure it doesn't get instantiation.
@@ -145,7 +162,7 @@ public class Gui2 extends Application {
     /**
      * Returns an instance of the Gui to keep it seperate from the controller
      *
-     * @return
+     * @return instance
      */
     public static Gui2 getInstance() {
         if (instance == null) {
@@ -164,55 +181,66 @@ public class Gui2 extends Application {
         grid = new GridPane();
         grid.setAlignment(Pos.BOTTOM_CENTER);
         grid.setHgap(10);
-        grid.setVgap(5);
+        grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
+        title = new Label("Quebec");
+        title.setId("title");
+        grid.add(title, 0, 0);
+
+        personLabel = new Label("Person");
+        grid.add(personLabel, 0, 2);
+        topicLabel = new Label("Topic");
+        grid.add(topicLabel, 1, 2);
+
         startDateFinder = new Label("Start Date");
-        grid.add(startDateFinder, 0, 3);
+        grid.add(startDateFinder, 0, 6);
 
         endDateFinder = new Label("End Date");
-        grid.add(endDateFinder, 1, 3);
+        grid.add(endDateFinder, 1, 6);
 
         people = new ComboBox();
         people.setPromptText("Person");
         people.setMinWidth(225);
         people.setEditable(true);
-        grid.add(people, 0, 0);
+        grid.add(people, 0, 3);
 
         peopleList = FXCollections.observableArrayList();
-       // for (int i = 0; i < 5; i++) {
-        //   peopleList.add("Alfred G");
-        // }
-        //  people.setItems(peopleList);
+
         topicalList = FXCollections.observableArrayList();
-       // for (int i = 0; i < 5; i++) {
-        //    topicalList.add("Fishing");
-        // }
+        topicalList.add("Fishing");
+        topicalList.add("Bowling");
+        topicalList.add("Javelin");
 
         topical = new ComboBox();
         topical.setPromptText("Topic");
         topical.setMinWidth(225);
         topical.setEditable(true);
-        grid.add(topical, 1, 0);
-        //topical.setItems(topicalList);
+        grid.add(topical, 1, 3);
+        topical.setItems(topicalList);
 
-        startDate = new TextField();
-        startDate.setPromptText("Start Date");
-        grid.add(startDate, 0, 4);
+        startDate = new DatePicker();
+        startDate.setPromptText("Start Date MM/DD/YYYY");
+        startDate.setTooltip(new Tooltip("Can be left blank" + "\n"
+                + "to get furthest back date"));
+        grid.add(startDate, 0, 7);
 
-        endDate = new TextField();
-        endDate.setPromptText("End Date");
-        grid.add(endDate, 1, 4);
+        endDate = new DatePicker();
+        endDate.setPromptText("End Date MM/DD/YYYY");
+        endDate.setTooltip(new Tooltip("Can be left blank" + "\n"
+                + "for current date"));
+        grid.add(endDate, 1, 7);
         Font font = new Font(14);
 
         find = new Button("Search");
+        find.setTooltip(new Tooltip("Must have a Person\nor topic\nor both"));
         find.setFont(font);
         find.setMinSize(60, 30);
-        grid.add(find, 2, 4);
+        grid.add(find, 2, 7);
 
         progress = new ProgressBar();
         progress.setMaxWidth(65);
-        grid.add(progress, 2, 5);
+        grid.add(progress, 2, 8);
         progress.setVisible(false);
 
         // set the scene and display it
@@ -222,5 +250,37 @@ public class Gui2 extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
 
+    }
+
+    /**
+     * Error message if the inputs are invalid
+     */
+    public void error() {
+        GridPane stack = new GridPane();
+        stack.setAlignment(Pos.CENTER);
+        stack.setHgap(10);
+        stack.setVgap(10);
+        stack.setPadding(new Insets(25, 25, 25, 25));
+        Label errorMessage = new Label("Invalid input");
+        stack.add(errorMessage, 1, 0);
+
+        Button ok = new Button("ok");
+        ok.setMinWidth(80);
+        stack.add(ok, 1, 1);
+
+        Stage message = new Stage();
+        message.setTitle("Error");
+        Scene check = new Scene(stack, 180, 100);
+        check.getStylesheets().add("fxml.css");
+        message.setScene(check);
+        message.show();
+        message.toFront();
+
+        ok.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                message.close();
+            }
+        });
     }
 }
