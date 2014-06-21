@@ -6,10 +6,32 @@
 
 package Provincial_Miner.system;
 
+import java.util.HashMap;
+
 /**
  *
- * @author user
+ * @author Weston Dransfield
  */
 public interface Scraper {
+    
+    /**
+     * member variable which maps speakers to the topics they have spoken on.
+     */
+    HashMap<String, String> membersToTopics = new HashMap();
+    
+    /**
+     * member variable which maps topics to speakers who have spoken on them.
+     */
+    HashMap<String, String> topicsToMembers = new HashMap();
+    
+    public void scrape();
+    
+    public void scrape(char firstLetter);
+    
+    void parseMembers();
+    
+    void parseTopics();
+    
+    
     
 }
