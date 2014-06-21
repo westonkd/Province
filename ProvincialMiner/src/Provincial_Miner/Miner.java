@@ -98,10 +98,6 @@ public class Miner extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-        
-        Provincial_Miner.system.QuebecScraper test = new Provincial_Miner.system.QuebecScraper();
-        
-        test.scrape('a');
     }
 
 }
