@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 public class QuebecScraper implements Scraper {
     
     final String memberURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/recherche.html?cat=v&Session=jd36l1se&Section=particip&Requete=";
+
     
     /**
      *
@@ -48,31 +49,17 @@ public class QuebecScraper implements Scraper {
                 membersOnPage = memberPage.select("dd");
                 
                 //add the members to the memers map with their various statements
-                for (Element ember : membersOnPage) {
+                for (Element member : membersOnPage) {
+                    //get each member's page of topics
                     
+                    Document memberTopicPage = Jsoup.connect("http://www.assnat.qc.ca/" + member.select("a").attr("href")).get();
+                    System.out.println(memberTopicPage.select("h1"));
                 }
-                
                 
             } catch (IOException ex) {
                 
             }
         }
-    }
-    
-    /**
-     *
-     */
-    @Override
-    public void parseMembers() {
-        
-    }
-    
-    /**
-     *
-     */
-    @Override
-     public void parseTopics() {
-        
     }
 
 }
