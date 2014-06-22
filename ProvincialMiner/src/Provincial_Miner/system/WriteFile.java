@@ -7,6 +7,8 @@
 package Provincial_Miner.system;
 
 import Provincial_Miner.application.Speaker;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 
 /**
@@ -15,7 +17,7 @@ import java.util.HashMap;
  * @author cameronthomas
  */
 public class WriteFile { 
-    
+  
     /**
      * This function writes an XML file organized by person that can be used to
      * search.
@@ -64,8 +66,14 @@ public class WriteFile {
     public void TxtWriter() {
         
     }
-         
     
-    
+    /**
+     * This function writes a Microsoft word file.
+     * @param 
+     * @return
+     */
+    public void DocxWriter() {
+            
+    }
 }
 
