@@ -244,10 +244,10 @@ public class Gui2 extends Application {
         progress.setVisible(false);
 
         // set the scene and display it
-        scene = new Scene(grid, 580, 280);
+        scene = new Scene(grid, 600, 300);
         scene.getStylesheets().add("fxml.css");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
+        
         primaryStage.show();
 
     }

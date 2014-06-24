@@ -101,8 +101,6 @@ public class Miner extends Application {
                         || (person == null && topic == null)) {
                     gui.error();
                 } else {
-                    System.out.println(startDate);
-                    System.out.println(endDate);
                     //progress bar to know its in process
                     gui.getProgress().setVisible(true);
 
@@ -111,7 +109,7 @@ public class Miner extends Application {
                         librarian.searchTopic(topic, startDate, endDate);
                     } // person search
                     else if (!person.equals("") && topic == null) {
-                        //librarian.searchPerson(person,startDate,endDate);
+                        librarian.searchPerson(person,startDate,endDate);
                     } // both search
                     else if (!person.equals("") && !topic.equals("")) {
                         //librarian.searchBoth(person,topic,startDate,endDate);
