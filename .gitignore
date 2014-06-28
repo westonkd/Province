@@ -12,3 +12,4 @@
 hs_err_pid*
 /ProvincialMiner/dist/
 /ProvincialMiner/build/
+/ProvincialMiner/nbproject/private/
