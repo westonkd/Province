@@ -6,6 +6,8 @@
 package Provincial_Miner.system;
 
 import Provincial_Miner.application.Speaker;
+import com.gtranslate.Language;
+import com.gtranslate.Translator;
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -85,9 +87,20 @@ public class QuebecScraper implements Scraper {
             //create the new speaker
             Speaker newSpeaker = new Speaker(name);
             
-            //fi
-            String memerURL = member.select("a").attr("href");
-            System.out.println(newspeaker.getName());
+            //set the speaker's url
+            newSpeaker.setURL("http://www.assnat.qc.ca/" + member.select("a").attr("href"));
+            
+            //get each topic the speaker has spoken on
+            Document memberPage = Jsoup.connect(newSpeaker.getURL()).get();
+            
+            Elements memberTopics = memberPage.select(".indexJD>dl>dd");
+            for (Element mTopic : memberTopics) {
+                System.out.println(newSpeaker.getURL());
+                
+                Translator translate = Translator.getInstance();
+                String text = translate.translate(mTopic.text(), Language.FRENCH, Language.ENGLISH);
+                System.out.println(text);
+            }
         }
         
     }
