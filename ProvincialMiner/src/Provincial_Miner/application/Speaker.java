@@ -19,6 +19,9 @@ public class Speaker {
     //full name of the speaker (i.e. John Smith)
     String name;
     
+    //url to speakers page
+    String url;
+    
     //Mapping of topics to a list of sessions
     HashMap<String, List<Session>> topics = new HashMap<>();
 
@@ -75,5 +78,21 @@ public class Speaker {
         
         //add the new session to the end of the topic list
         topics.get(topic).add(session);
+    }
+    
+    /**
+     * set the url of the speaker's web page
+     * @param url
+     */
+    public void setURL(final String url) {
+        this.url = url;
+    }
+    
+    /**
+     * get the URL to the speaker's web page.
+     * @return
+     */
+    public String getURL() {
+        return url;
     }
 }
