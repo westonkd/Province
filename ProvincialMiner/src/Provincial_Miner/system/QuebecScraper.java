@@ -42,13 +42,15 @@ public class QuebecScraper implements Scraper {
 
     private final String firstMemberURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/recherche.html?cat=v";
     private final String lastMemberURL = "&Section=particip&Requete=";
+    private final String domain = "http://www.assnat.qc.ca/";
 
     /**
      *
      */
     @Override
     public void scrape() {
-
+        //scrape from 'a' to 'z'
+        scrape('a');
     }
 
     /**
@@ -62,47 +64,77 @@ public class QuebecScraper implements Scraper {
             //loop through each member in the session
             for (int i = firstLetter; i <= 'z'; i++) {
                 try {
-                    scrapeMembers(firstMemberURL + session + lastMemberURL + (char) i);
+                    scrapeMembers(firstMemberURL + session + lastMemberURL + (char) i, session);
                 } catch (IOException ex) {
                     System.out.println("Error connecting to url: " + session);
                 }
             }
         }
-
     }
-    
-    private void scrapeMembers(String urlToScrape) throws IOException {
+
+    private void scrapeMembers(String urlToScrape, String query) throws IOException {
         //attempt to open the url
         Document doc = Jsoup.connect(urlToScrape).get();
-        
+
         //get all dd elements (each member is contained in one dd element)
         Elements members = doc.select("dd");
-        
+
         //loop through each members "topics" page
         for (Element member : members) {
             //get the new speakers name
             String name = member.text();
-            name = name.substring(0,name.indexOf("("));
-            
+            name = name.substring(0, name.indexOf("("));
+
             //create the new speaker
             Speaker newSpeaker = new Speaker(name);
-            
+
             //set the speaker's url
-            newSpeaker.setURL("http://www.assnat.qc.ca/" + member.select("a").attr("href"));
-            
+            newSpeaker.setURL(domain + member.select("a").attr("href"));
+
             //get each topic the speaker has spoken on
             Document memberPage = Jsoup.connect(newSpeaker.getURL()).get();
             
-            Elements memberTopics = memberPage.select(".indexJD>dl>dd");
-            for (Element mTopic : memberTopics) {
-                System.out.println(newSpeaker.getURL());
-                
-                Translator translate = Translator.getInstance();
-                String text = translate.translate(mTopic.text(), Language.FRENCH, Language.ENGLISH);
-                System.out.println(text);
+            //get all anchor tags with a topic in the url
+            Elements sessionLinks = memberPage.select("a");
+            for (Element link : sessionLinks) {
+                if (link.attr("href").contains(query)) {
+                    //get the topic name
+                    String topicName = getName(link.attr("href"));
+                    
+                    //get all content for the given topic
+                    Document sessionPage = Jsoup.connect(domain + link.attr("href")).get();
+                    Elements bolded = sessionPage.select("b");
+                    
+                    //loop through bolded names and find content from given speaker
+                    for (Element bold : bolded) {
+                        if (bold.text().contains(newSpeaker.getLastName())) {
+                            //then this bold's next sib is content we want!
+                            System.out.println(bold.text());
+                        }
+                    }
+                }
             }
+
         }
-        
     }
 
+    private String getName(String url) {
+        url = url.substring(url.indexOf("_") + 1);
+
+        //format topic name
+        url = url.replace('+', ' ').replace('_', ' ');
+
+        Translator translate = Translator.getInstance();
+        url = translate.translate(url, Language.FRENCH, Language.ENGLISH);
+
+        //remove all digits
+        for (int i = 0; i < 10; i++) {
+            url = url.replace(Integer.toString(i), "");
+        }
+
+        //remove question marks
+        url = url.replace("?", "");
+
+        return url;
+    }
 }

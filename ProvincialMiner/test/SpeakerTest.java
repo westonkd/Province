@@ -31,11 +31,8 @@ public class SpeakerTest {
 
     @Test
     public void nameTest() {
-        Assert.assertEquals(speaker.getName(), "");
-        speaker.setName("Weston Dransfield");
-        Assert.assertEquals(speaker.getName(), "Weston Dransfield");
-
-        Assert.assertEquals(speakerNamed.getName(), "John Smith");
+        System.out.println(speakerNamed.getFirstName());
+        System.out.println(speakerNamed.getLastName());
     }
 
     @Test
