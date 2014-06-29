@@ -6,92 +6,150 @@
 
 package Provincial_Miner.system;
 
+import Provincial_Miner.application.Session;
 import Provincial_Miner.application.Speaker;
+import Provincial_Miner.application.Topic;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
- * Class to write xml file used for searching, .PRO file for Brother Carter's
- * profiler program, html file, docx file, and txt file.
+ *
  * @author cameronthomas
  */
-public class WriteFile { 
-  
+public class WriteFile {     
     /**
-     * This function writes an XML file organized by person that can be used to
-     * search.
-     * @param HashMap - HashMap filled with objects for each speaker
-     * @return 
+     * 
+     * @param speakerList 
      */
-    public void PersonXmlWriter (HashMap<String, ArrayList<String>> personList) {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder;
-        
-        try {
-            dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.newDocument();
-            
-            //add elements to Document
-            Element rootElement = doc.createElement("Person");
-         
-            doc.appendChild(rootElement);
-            
-             //create date, name, and content elements
-            rootElement.appendChild(getPersonElements(doc, "date", "This is the date"));
-            rootElement.appendChild(getPersonElements(doc, "Name", "This is the name"));
-            rootElement.appendChild(getPersonElements(doc, "content", "This is the content"));
-           
-            //for output to file
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            
-            //File formating
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            DOMSource source = new DOMSource(doc);
-            
-            //Stream to write data to file
-            StreamResult file = new StreamResult(new File("/Users/cameronthomas/Desktop/test.xml"));
+    public void PersonXmlWriter(ArrayList<Speaker> speakerList) {
+        try { 
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                Element personToAdd;
+                Element topicToadd;
+                Element sessionToAdd;
  
-            //write data to file
-            transformer.transform(source, file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		// root elements
+		Document doc = docBuilder.newDocument();
+		Element rootElement = doc.createElement("SpeakersToTopics");
+		doc.appendChild(rootElement);
+                                          
+                // loop to add speakers to rootElement in xml
+                for (Speaker speaker: speakerList) {
+                    // staff elements
+                    personToAdd = doc.createElement("Person");
+                    personToAdd.setAttribute("name", speaker.getFirstName() + " " + speaker.getLastName());
+                    rootElement.appendChild(personToAdd);
+
+                    // Loop to add topics to xml
+                    for (Map.Entry<String, List<Session>> topic : speaker.getTopics().entrySet()) {
+                        topicToadd = doc.createElement("Topic");
+                        topicToadd.setAttribute("subject", topic.getKey());
+                        personToAdd.appendChild(topicToadd);
+    
+                        // loop to add session to topic in xml
+                        for (Session session: topic.getValue()) {
+                            sessionToAdd = doc.createElement("Session");
+                            sessionToAdd.setAttribute("date", session.getDate().toString());
+                            sessionToAdd.setTextContent(session.getContent());
+                            topicToadd.appendChild(sessionToAdd);      
+                        }                   
+                    }                         
+                }
+                
+		// write the content into xml file               
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(doc);
+		StreamResult result = new StreamResult(new File("/Users/cameronthomas/Desktop/speakerFile.xml"));
+ 
+                // Sets formating for xml file
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                
+		transformer.transform(source, result);
+
+ 
+	}
+        catch (ParserConfigurationException pce) {
+		pce.printStackTrace();
+	}
+        catch (TransformerException tfe) {
+		tfe.printStackTrace();
+	}          
     }
     
     /**
-     * utility method to create node
-     * @param doc
-     * @param name
-     * @param value
-     * @return Element Node
+     * 
+     * @param speakerList 
      */
-    private static Node getPersonElements(Document doc, String name, String value) {
-        Element node = doc.createElement(name);
-        node.appendChild(doc.createTextNode(value));
-        return node;
-    }
+    public void TopicXmlWriter(ArrayList<Topic> topicList) {
+        try { 
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                Element topicToAdd;
+                Element speakerToadd;
+                Element sessionToAdd;
+ 
+		// root elements
+		Document doc = docBuilder.newDocument();
+		Element rootElement = doc.createElement("TopicsToSpeakers");
+		doc.appendChild(rootElement);
+                                          
+                // loop to add topics to rootElement in xml
+                for (Topic topic: topicList) {
+                    // staff elements
+                    topicToAdd = doc.createElement("Topic");
+                    topicToAdd.setAttribute("subject", topic.getSubject());
+                    rootElement.appendChild(topicToAdd);
+
+                    // Loop to add speakers to xml
+                    for (Map.Entry<String, List<Session>> speaker : topic.getSpeakers().entrySet()) {
+                        speakerToadd = doc.createElement("Speaker");
+                        speakerToadd.setAttribute("name", speaker.getKey());
+                        topicToAdd.appendChild(speakerToadd);
     
-     /**
-     * This function writes an XML file organized by topic that can be used to
-     * search.
-     * @param HashMap - HashMap filled with objects for each topic
-     * @return Nothing
-     */
-    public void TopicXmlWriter (HashMap<String, ArrayList<String>> topicList) {
-        
+                        // loop to add session to speaker in xml
+                        for (Session session: speaker.getValue()) {
+                            sessionToAdd = doc.createElement("Session");
+                            sessionToAdd.setAttribute("date", session.getDate().toString());
+                            sessionToAdd.setTextContent(session.getContent());
+                            speakerToadd.appendChild(sessionToAdd);      
+                        }                   
+                    }                         
+                }
+                
+		// write the content into xml file               
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(doc);
+		StreamResult result = new StreamResult(new File("/Users/cameronthomas/Desktop/topicFile.xml"));
+ 
+                // Sets formating for xml file
+                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                
+		transformer.transform(source, result);
+
+ 
+	}
+        catch (ParserConfigurationException pce) {
+		pce.printStackTrace();
+	}
+        catch (TransformerException tfe) {
+		tfe.printStackTrace();
+	}          
     }
     
     /**
@@ -131,4 +189,6 @@ public class WriteFile {
             
     }
 }
+    
+   
 
