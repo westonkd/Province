@@ -5,6 +5,7 @@
  */
 package Provincial_Miner.application;
 
+import com.sun.deploy.util.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,12 +70,17 @@ public class Speaker {
      * @param name new name to set
      */
     public void setName(String name) {
-        lastName = name.substring(0, name.indexOf(" ")).toLowerCase();
-        firstName = name.substring(name.indexOf(" ") + 1).toLowerCase();
+        if (name.indexOf(" ") != name.length() - 1) {
+            lastName = name.substring(0, name.indexOf(" ")).toLowerCase();
+            firstName = name.substring(name.indexOf(" ") + 1).toLowerCase();
 
-        //capatalize the first letter of each name
-        lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
-        firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+            //capatalize the first letter of each name
+            lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
+            firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1);
+        } else {
+            lastName = name.toLowerCase();
+            lastName = name.substring(0,1).toUpperCase() + lastName.substring(1);
+        }
     }
 
     /**
