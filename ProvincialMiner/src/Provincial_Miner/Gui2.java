@@ -15,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -255,14 +254,14 @@ public class Gui2 extends Application {
     /**
      * Error message if the inputs are invalid
      */
-    public void error() {
+    public void error(String error_message) {
         GridPane stack = new GridPane();
         stack.setAlignment(Pos.CENTER);
         stack.setHgap(10);
         stack.setVgap(10);
         stack.setPadding(new Insets(25, 25, 25, 25));
-        Label errorMessage = new Label("Invalid input");
-        stack.add(errorMessage, 1, 0);
+        Label errorMessage = new Label(error_message);
+        stack.add(errorMessage, 0, 0);
 
         Button ok = new Button("ok");
         ok.setMinWidth(80);
@@ -270,8 +269,8 @@ public class Gui2 extends Application {
 
         Stage message = new Stage();
         message.setTitle("Error");
-        Scene check = new Scene(stack, 180, 100);
-        check.getStylesheets().add("fxml.css");
+        Scene check = new Scene(stack, 250, 100);
+       // check.getStylesheets().add("fxml.css");
         message.setScene(check);
         message.show();
         message.toFront();

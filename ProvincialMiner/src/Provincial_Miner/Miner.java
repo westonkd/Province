@@ -5,6 +5,7 @@
  */
 package Provincial_Miner;
 
+import Provincial_Miner.system.Librarian;
 import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import javafx.application.Application;
@@ -97,9 +98,11 @@ public class Miner extends Application {
                 }
                 // if dates are reversed or both person and topic are null
                 // display error 
-                if (startDate.isAfter(endDate)
-                        || (person == null && topic == null)) {
-                    gui.error();
+                if (startDate.isAfter(endDate)){
+                        gui.error("Invalid Dates");
+                }
+                 if (person == null && topic == null) {
+                    gui.error("Invalid Parameters");
                 } else {
                     //progress bar to know its in process
                     gui.getProgress().setVisible(true);
@@ -112,7 +115,7 @@ public class Miner extends Application {
                         librarian.searchPerson(person,startDate,endDate);
                     } // both search
                     else if (!person.equals("") && !topic.equals("")) {
-                        //librarian.searchBoth(person,topic,startDate,endDate);
+                        librarian.searchBoth(person,topic,startDate,endDate);
                     }
                     gui.getProgress().setVisible(false);
                 }
