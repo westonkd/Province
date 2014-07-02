@@ -21,7 +21,7 @@ import org.jsoup.select.Elements;
 public class QuebecScraper implements Scraper {
 
     //query strings for known available sessions
-    private String[] sessionQueries = {"&Session=rd11l4se"};/*, "&Session=rd12l1se",
+    private String[] sessionQueries = {"&Session=rd11l4se", "&Session=rd12l1se",
         "&Session=rd12l2se", "&Session=rd12l3se",
         "&Session=rd12l4se", "&Session=rd13l1se",
         "&Session=rd13l2se", "&Session=rd13l3se",
@@ -39,7 +39,7 @@ public class QuebecScraper implements Scraper {
         "&Session=rd37l1se", "&Session=rd37l2se",
         "&Session=rd38l1se", "&Session=rd39l1se",
         "&Session=rd40l1se"};
-    */
+    
 
     private final String firstMemberURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/recherche.html?cat=v";
     private final String lastMemberURL = "&Section=particip&Requete=";

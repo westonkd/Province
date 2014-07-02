@@ -41,7 +41,7 @@ public class PartialScraperTest {
     @Test
     //test for just one name
     public void singleName() {
-        System.out.println("Starting single query");
+        System.out.println("\n\n***Starting single query***");
         ArrayList<String> topics = scraper.getTopics(names.get(0), "&Session=rd11l4se");
         
         for (String topic : topics) {

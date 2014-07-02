@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import static jdk.nashorn.internal.objects.NativeArray.map;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -61,7 +60,6 @@ public class PartialQuebecScraper {
                     speakerList.add(name);
 
                     //create a new Person and add the list for later use
-                    System.out.println();
                     Speaker newSpeaker = new Speaker(name);
 
                     //set the speaker's url
