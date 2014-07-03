@@ -6,13 +6,17 @@
 
 package Provincial_Miner.system;
 
-import Provincial_Miner.application.Session;
+import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
-import Provincial_Miner.application.Topic;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,7 +38,14 @@ public class WriteFile {
      * 
      * @param speakerList 
      */
-    public void PersonXmlWriter(ArrayList<Speaker> speakerList) {
+    public void PersonXmlWriter(ArrayList<Speaker> speakerList) {    
+        //Creates a folder on the desktop named "XML Database"
+        /*
+      final File homeDir = new File(System.getProperty("user.home"),"Desktop");
+      File dir3 = new File(homeDir, "XML Database");
+      dir3.mkdir();
+        */
+        
         try { 
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -42,12 +53,12 @@ public class WriteFile {
                 Element topicToadd;
                 Element sessionToAdd;
  
-		// root elements
+		// Create root element
 		Document doc = docBuilder.newDocument();
 		Element rootElement = doc.createElement("SpeakersToTopics");
 		doc.appendChild(rootElement);
                                           
-                // loop to add speakers to rootElement in xml
+                // Loop to add speakers to rootElement in xml
                 for (Speaker speaker: speakerList) {
                     // staff elements
                     personToAdd = doc.createElement("Person");
@@ -55,13 +66,13 @@ public class WriteFile {
                     rootElement.appendChild(personToAdd);
 
                     // Loop to add topics to xml
-                    for (Map.Entry<String, List<Session>> topic : speaker.getTopics().entrySet()) {
+                    for (Map.Entry<String, List<Content>> topic : speaker.getTopics().entrySet()) {
                         topicToadd = doc.createElement("Topic");
                         topicToadd.setAttribute("subject", topic.getKey());
                         personToAdd.appendChild(topicToadd);
     
-                        // loop to add session to topic in xml
-                        for (Session session: topic.getValue()) {
+                        // loop to add session to topic to xml
+                        for (Content session: topic.getValue()) {
                             sessionToAdd = doc.createElement("Session");
                             sessionToAdd.setAttribute("date", session.getDate().toString());
                             sessionToAdd.setTextContent(session.getContent());
@@ -74,14 +85,13 @@ public class WriteFile {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File("/Users/cameronthomas/Desktop/speakerFile.xml"));
+		StreamResult result = new StreamResult(new File("/Users/cameronthomas/Desktop/"
+                                                                + "speakerFile.xml"));
  
                 // Sets formating for xml file
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 
 		transformer.transform(source, result);
-
- 
 	}
         catch (ParserConfigurationException pce) {
 		pce.printStackTrace();
@@ -95,6 +105,7 @@ public class WriteFile {
      * 
      * @param speakerList 
      */
+    /*
     public void TopicXmlWriter(ArrayList<Topic> topicList) {
         try { 
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -122,8 +133,8 @@ public class WriteFile {
                         topicToAdd.appendChild(speakerToadd);
     
                         // loop to add session to speaker in xml
-                        for (Session session: speaker.getValue()) {
-                            sessionToAdd = doc.createElement("Session");
+                        for (Content session: speaker.getValue()) {
+                            sessionToAdd = doc.createElement("Content");
                             sessionToAdd.setAttribute("date", session.getDate().toString());
                             sessionToAdd.setTextContent(session.getContent());
                             speakerToadd.appendChild(sessionToAdd);      
@@ -151,7 +162,50 @@ public class WriteFile {
 		tfe.printStackTrace();
 	}          
     }
+    */
     
+    /**
+     * 
+     */
+    public void writeFile(String content) {
+        String fileName = "";
+        String folderName = "";
+        String contentToWrite = "";
+        
+        // Create folder to store .PRO, .html, .txt, and .docx files in
+        final File homeDir = new File(System.getProperty("user.home"),"Desktop");
+        File dir2 = new File(homeDir, "XML Database");
+        dir2.mkdir();
+            
+        // Write .PRO file
+        writeToFile(folderName, fileName + ".PRO", contentToWrite);
+        
+        // Write .html file
+        writeToFile(folderName, fileName + ".html", contentToWrite);
+        
+        // Write .txt file
+        writeToFile(folderName, fileName + ".txt", contentToWrite);
+        
+        // Write .docx file - Microsoft word file
+        
+    }
+    
+    /**
+     * 
+     * @param folderName
+     * @param fileName
+     * @param content 
+     */
+    private void writeToFile(String folderName, String fileName, String content) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
+            bw.write("");
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+    }
+      
     /**
      * This function writes a file with a .PRO extention that Brother Carter 
      * can use for his profiler program.
@@ -159,36 +213,34 @@ public class WriteFile {
      * @return
      */
     public void ProWriter() {
+         //Creates a folder on the desktop named "Mining for Told"
+        /*
+      final File homeDir = new File(System.getProperty("user.home"),"Desktop");
+      File dir3 = new File(homeDir, "Mining for Told");
+      dir3.mkdir();
+
+      //creates a folder in "Mining for Told" named the topics and person's name
+      File dir2 = new File(dir3, pName);
+      dir2.mkdir();
+      */
+      final File homeDir = new File(System.getProperty("user.home"),"Desktop");
+      File dir2 = new File(homeDir, "XML Database");
+      dir2.mkdir();
+      
+      String pFileName = "/Users/cameronthomas/Desktop/XML Database/speakerFile.txt";
+      String pData = "This is the data";
         
-    }
+        BufferedWriter bw;
+        try {
+            bw = new BufferedWriter(new FileWriter(pFileName));
+            bw.write("<html><head><title>New Page</title></head><body><p>This is Body</p></body></html>");
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+        }     
+   }
+}        
     
-    /**
-     * This function writes a html file.
-     * @param xml file will can be parsed to get information to write to a file.
-     * @return
-     */
-    public void HtmlWriter() { 
-        
-    }
-    
-    /**
-     * This function writes a txt file.
-     * @param xml file will can be parsed to get information to write to a file.
-     * @return
-     */
-    public void TxtWriter() {
-        
-    }
-    
-    /**
-     * This function writes a Microsoft word file.
-     * @param 
-     * @return
-     */
-    public void DocxWriter() {
-            
-    }
-}
     
    
 
