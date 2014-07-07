@@ -21,6 +21,15 @@ import java.io.File;
 public class Librarian {
 
     String result;
+    String fileName = ("C:\\Users\\Stephen\\Desktop\\speakerFile.xml");
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public Librarian() {
 
@@ -37,19 +46,19 @@ public class Librarian {
      */
     public String searchTopic(String topic, LocalDate startDate, LocalDate endDate) {
         // the resulting string to be sent to the file writer for final formatting
-        String result = topic;
-
+        String result = "";
         try {
             // open the file
-            File xmlTopic = new File("C:\\Users\\Stephen\\Desktop\\topics.xml");
+            File xmlPerson = new File(fileName);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             // uses DOM to parse the xml
-            Document doc = dBuilder.parse(xmlTopic);
+            Document doc = dBuilder.parse(xmlPerson);
 
             doc.getDocumentElement().normalize();
+
 // searches for the topic tags
-            NodeList nList = doc.getElementsByTagName("Topic");
+            NodeList nList = doc.getElementsByTagName("Person");
 
             for (int i = 0; i < nList.getLength(); i++) {
                 // main element (topic)
@@ -59,34 +68,43 @@ public class Librarian {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     // if the elements attribute equals the search parameter
-                    if (eElement.getAttribute("subject").equals(topic)) {
-                        // display the topic subject
+                    //  if (eElement.getAttribute("name").equals(person)) {
+                    // display the topic subject
 // loop through the topics sessions for dates
-                        for (int j = 0; j < sublist.getLength(); j++) {
-                            Node cNode = (Node) sublist.item(j);
-                            if (cNode.getNodeType() == Node.ELEMENT_NODE) {
-
-                                Element cElement = (Element) cNode;
+                    for (int j = 0; j < sublist.getLength(); j++) {
+                        Node cNode = (Node) sublist.item(j);
+                        NodeList dateNode = cNode.getChildNodes();
+                        if (cNode.getNodeType() == Node.ELEMENT_NODE) {
+                            Element topicElement = (Element) cNode;
+                            if (topicElement.getAttribute("subject").equals(topic)) {
                                 // changes the string date into a localDate
-                                String date = cElement.getAttribute("date");
-                                String[] parts = date.split("-");
-                                int year = Integer.parseInt(parts[0]);
-                                int month = Integer.parseInt(parts[1]);
-                                int day = Integer.parseInt(parts[2]);
-                                LocalDate dateCheck = null;
-                                // sets local date 
-                                dateCheck = dateCheck.of(year, month, day);
-                                // make sure its within the search range
-                                if ((dateCheck.isAfter(startDate) || dateCheck.isEqual(startDate))
-                                        && (dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
-                                    result = result + cElement.getTextContent();
+                                for (int k = 0; k < dateNode.getLength(); k++) {
+                                    Node kNode = (Node) dateNode.item(k);
+                                    if (kNode.getNodeType() == Node.ELEMENT_NODE) {
+                                        Element kElement = (Element) kNode;
+                                        String date = kElement.getAttribute("date");
+                                        String[] parts = date.split("-");
+                                        int year = Integer.parseInt(parts[0]);
+                                        int month = Integer.parseInt(parts[1]);
+                                        int day = Integer.parseInt(parts[2]);
+                                        LocalDate dateCheck = null;
+                                        // sets local date 
+                                        dateCheck = dateCheck.of(year, month, day);
+                                        // make sure its within the search range
+                                        if ((dateCheck.isAfter(startDate) || dateCheck.isEqual(startDate))
+                                                && (dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
+                                            result = result + "-" + eElement.getAttribute("name") + ": "
+                                                    + kElement.getAttribute("date") + "\n"
+                                                    + kElement.getTextContent() + "\n";
 
-                                } else {
+                                        } else {
+                                        }
+
+                                    }
                                 }
-
                             }
+                        } else {
                         }
-                    } else {
 
                     }
 
@@ -97,8 +115,9 @@ public class Librarian {
         } catch (Exception e) {
             e.printStackTrace();
         }
-         System.out.print(topic + "\n" + startDate + " to "
-                 + endDate + "\n" + result);
+        System.out.print(topic + "\n" + startDate + " to "
+                + endDate + "\n" + result);
+
         return result;
     }
 
@@ -116,7 +135,7 @@ public class Librarian {
 
         try {
             // open the file
-            File xmlPerson = new File("C:\\Users\\Stephen\\Desktop\\Example.xml");
+            File xmlPerson = new File(fileName);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             // uses DOM to parse the xml
@@ -142,7 +161,7 @@ public class Librarian {
                             Node cNode = (Node) sublist.item(j);
                             NodeList dateNode = cNode.getChildNodes();
                             if (cNode.getNodeType() == Node.ELEMENT_NODE) {
-
+                                Element topicElement = (Element) cNode;
                                 // changes the string date into a localDate
                                 for (int k = 0; k < dateNode.getLength(); k++) {
                                     Node kNode = (Node) dateNode.item(k);
@@ -159,7 +178,9 @@ public class Librarian {
                                         // make sure its within the search range
                                         if ((dateCheck.isAfter(startDate) || dateCheck.isEqual(startDate))
                                                 && (dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
-                                            result = result + kElement.getTextContent();
+                                            result = result + "-" + topicElement.getAttribute("subject") + ": "
+                                                    + kElement.getAttribute("date") + "\n"
+                                                    + kElement.getTextContent() + "\n";
 
                                         } else {
                                         }
@@ -199,7 +220,7 @@ public class Librarian {
 
         try {
             // open the file
-            File xmlPerson = new File("C:\\Users\\Stephen\\Desktop\\Example.xml");
+            File xmlPerson = new File(fileName);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             // uses DOM to parse the xml
@@ -246,7 +267,8 @@ public class Librarian {
                                             // make sure its within the search range
                                             if ((dateCheck.isAfter(startDate) || dateCheck.isEqual(startDate))
                                                     && (dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
-                                                result = result + kElement.getTextContent();
+                                                result = result + "-" + kElement.getAttribute("date") + "\n"
+                                                        + kElement.getTextContent() + "\n";
 
                                             } else {
                                             }
@@ -266,8 +288,8 @@ public class Librarian {
         } catch (Exception e) {
             e.printStackTrace();
         }
-         System.out.print(person + "\n" + topic + "\n" +
-                 startDate + " to " + endDate + "\n" + result);
+        System.out.print(person + "\n" + topic + "\n"
+                + startDate + " to " + endDate + "\n" + result);
         return result;
 
     }

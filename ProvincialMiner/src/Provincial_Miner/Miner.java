@@ -108,10 +108,10 @@ public class Miner extends Application {
                     gui.getProgress().setVisible(true);
 
                     // topic search
-                    if (person == null && !topic.equals("")) {
+                    if ((person == null || person.equals("")) && !topic.equals("")) {
                         librarian.searchTopic(topic, startDate, endDate);
                     } // person search
-                    else if (!person.equals("") && topic == null) {
+                    else if (!person.equals("") && (topic == null || topic.equals(""))) {
                         librarian.searchPerson(person,startDate,endDate);
                     } // both search
                     else if (!person.equals("") && !topic.equals("")) {
