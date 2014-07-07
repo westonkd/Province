@@ -8,26 +8,15 @@
 
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
-import Provincial_Miner.application.Topic;
 import Provincial_Miner.system.WriteFile;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.testng.Assert;
-import static org.testng.Assert.*;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
  *
  * @author cameronthomas
  */
-public class WriteFileTest { 
-    
+public class WriteFileTest {   
     @Test
     public void SpeakerToTopicWriterTest() {
         String theSpeaker = "Cameron Thomas";
@@ -63,14 +52,8 @@ public class WriteFileTest {
          theSpeaker = "Cameron Thomas" + i;   
         }
         
-        //new WriteFile().PersonXmlWriter(listOfSpeakers);
-           new WriteFile().ProWriter();
-        
-         Content testSession = new Content();
-       
-       testSession.setContent("New Content!");
-       
-       Assert.assertEquals("New Content!", testSession.getContent());    
+        new WriteFile().PersonXmlWriter(listOfSpeakers);
+        new WriteFile().writeDataFile("This is the content");
     }
      
     @Test

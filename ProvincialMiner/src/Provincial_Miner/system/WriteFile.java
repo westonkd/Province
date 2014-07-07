@@ -10,8 +10,10 @@ import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,45 +37,45 @@ import org.w3c.dom.Element;
  */
 public class WriteFile {     
     /**
-     * 
+     * Uses ArrayList passed in to create a Document Object Model(DOM) with is 
+     * used to write XML file.
      * @param speakerList 
      */
     public void PersonXmlWriter(ArrayList<Speaker> speakerList) {    
         //Creates a folder on the desktop named "XML Database"
-        /*
-      final File homeDir = new File(System.getProperty("user.home"),"Desktop");
-      File dir3 = new File(homeDir, "XML Database");
-      dir3.mkdir();
-        */
-        
+        final File homeDir = new File(System.getProperty("user.home"),"Desktop");
+        File dir1 = new File(homeDir, "XML Database");
+        dir1.mkdir();
+              
         try { 
+               // Creates objects needed to create DOM structure
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
                 Element personToAdd;
                 Element topicToadd;
                 Element sessionToAdd;
  
-		// Create root element
+		// Creates root element in DOM structure
 		Document doc = docBuilder.newDocument();
 		Element rootElement = doc.createElement("SpeakersToTopics");
 		doc.appendChild(rootElement);
                                           
-                // Loop to add speakers to rootElement in xml
+                // Loop to add speakers to rootElement 
                 for (Speaker speaker: speakerList) {
                     // staff elements
                     personToAdd = doc.createElement("Person");
                     personToAdd.setAttribute("name", speaker.getFirstName() + " " + speaker.getLastName());
                     rootElement.appendChild(personToAdd);
 
-                    // Loop to add topics to xml
+                    // Loop to add topics to speaker
                     for (Map.Entry<String, List<Content>> topic : speaker.getTopics().entrySet()) {
                         topicToadd = doc.createElement("Topic");
                         topicToadd.setAttribute("subject", topic.getKey());
                         personToAdd.appendChild(topicToadd);
     
-                        // loop to add session to topic to xml
+                        // loop to add session to topic
                         for (Content session: topic.getValue()) {
-                            sessionToAdd = doc.createElement("Session");
+                            sessionToAdd = doc.createElement("Content");
                             sessionToAdd.setAttribute("date", session.getDate().toString());
                             sessionToAdd.setTextContent(session.getContent());
                             topicToadd.appendChild(sessionToAdd);      
@@ -81,16 +83,19 @@ public class WriteFile {
                     }                         
                 }
                 
-		// write the content into xml file               
+		// Creates objects need to write DOM to XML file               
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File("/Users/cameronthomas/Desktop/"
-                                                                + "speakerFile.xml"));
- 
-                // Sets formating for xml file
+                 
+                // Creates stream that specifies name of file and folder to save
+                // file in.
+		StreamResult result = new StreamResult(new File(dir1, "speakerFile.xml"));
+         
+                // Sets formating for XML file
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 
+                // Write XML file
 		transformer.transform(source, result);
 	}
         catch (ParserConfigurationException pce) {
@@ -152,7 +157,6 @@ public class WriteFile {
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 
 		transformer.transform(source, result);
-
  
 	}
         catch (ParserConfigurationException pce) {
@@ -165,43 +169,55 @@ public class WriteFile {
     */
     
     /**
-     * 
+     * This function creates a new directory on the desktop and then additional
+     * folders in this folder for each topic
+     * @param content 
      */
-    public void writeFile(String content) {
-        String fileName = "";
-        String folderName = "";
-        String contentToWrite = "";
+    public void writeDataFile(String content) {
+        String personName = "Person11";
+        String topic = "topic11";
+        String fileName = personName + "_" + topic;
+        String contentToWrite = "This is the content";
         
         // Create folder to store .PRO, .html, .txt, and .docx files in
         final File homeDir = new File(System.getProperty("user.home"),"Desktop");
-        File dir2 = new File(homeDir, "XML Database");
+        File dir1 = new File(homeDir, "Quebec");
+        dir1.mkdir();
+        
+        //creates a folder in "Quebec" named the person's name and topic
+        File dir2 = new File(dir1, fileName);
         dir2.mkdir();
-            
+         
         // Write .PRO file
-        writeToFile(folderName, fileName + ".PRO", contentToWrite);
+        writeToFile(dir2, fileName + ".PRO", contentToWrite);
         
         // Write .html file
-        writeToFile(folderName, fileName + ".html", contentToWrite);
+        writeToFile(dir2, fileName + ".html", contentToWrite);
         
         // Write .txt file
-        writeToFile(folderName, fileName + ".txt", contentToWrite);
+        writeToFile(dir2, fileName + ".txt", contentToWrite);
         
-        // Write .docx file - Microsoft word file
-        
+        // Write .docx file - Microsoft word file       
     }
     
     /**
-     * 
-     * @param folderName
+     * Writes .PRO, .html, and .txt files.
+     * @param FolderToWrite
      * @param fileName
      * @param content 
      */
-    private void writeToFile(String folderName, String fileName, String content) {
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));
-            bw.write("");
-            bw.close();
-        } catch (IOException ex) {
+    private void writeToFile(File folderToWrite, String fileName, String content) {
+        
+        // Write file to topic folder
+        try {   
+            File file = new File(folderToWrite, fileName);
+            FileOutputStream output = new FileOutputStream(file);
+            OutputStreamWriter osw = new OutputStreamWriter(output);    
+            Writer writer = new BufferedWriter(osw);
+            writer.write(content);
+            writer.close();         
+        } 
+        catch (IOException ex) {
             Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
         }      
     }
@@ -212,17 +228,8 @@ public class WriteFile {
      * @param xml file will can be parsed to get information to write to a file.
      * @return
      */
-    public void ProWriter() {
-         //Creates a folder on the desktop named "Mining for Told"
-        /*
-      final File homeDir = new File(System.getProperty("user.home"),"Desktop");
-      File dir3 = new File(homeDir, "Mining for Told");
-      dir3.mkdir();
-
-      //creates a folder in "Mining for Told" named the topics and person's name
-      File dir2 = new File(dir3, pName);
-      dir2.mkdir();
-      */
+    /*
+    public void ProWriter() { 
       final File homeDir = new File(System.getProperty("user.home"),"Desktop");
       File dir2 = new File(homeDir, "XML Database");
       dir2.mkdir();
@@ -239,6 +246,7 @@ public class WriteFile {
             Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
         }     
    }
+    */
 }        
     
     
