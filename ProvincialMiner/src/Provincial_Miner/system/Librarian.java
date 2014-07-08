@@ -28,7 +28,7 @@ public class Librarian {
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName;
+        this.fileName = "C:\\Users\\Stephen\\Desktop\\SpeakerFile_files\\" + fileName ;
     }
 
     public Librarian() {
@@ -115,9 +115,6 @@ public class Librarian {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.print(topic + "\n" + startDate + " to "
-                + endDate + "\n" + result);
-
         return result;
     }
 
@@ -199,8 +196,6 @@ public class Librarian {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.print(person + "\n" + startDate + " to "
-                + endDate + "\n" + result);
         return result;
 
     }
@@ -288,8 +283,6 @@ public class Librarian {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.print(person + "\n" + topic + "\n"
-                + startDate + " to " + endDate + "\n" + result);
         return result;
 
     }

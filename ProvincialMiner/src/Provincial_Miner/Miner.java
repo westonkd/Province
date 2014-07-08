@@ -5,10 +5,14 @@
  */
 package Provincial_Miner;
 
+import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Librarian;
 import java.time.LocalDate;
 import static java.time.LocalDate.now;
+import java.util.ArrayList;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +26,7 @@ public class Miner extends Application {
 
     Gui2 gui = Gui2.getInstance();
     Librarian librarian = new Librarian();
+    FileFinder files = new FileFinder();
     //Scrapper scrapper = Scrapper.getInstance();
     //FileWriter writer = FileWriter.getInstance();
     String person = "";
@@ -98,25 +103,31 @@ public class Miner extends Application {
                 }
                 // if dates are reversed or both person and topic are null
                 // display error 
-                if (startDate.isAfter(endDate)){
-                        gui.error("Invalid Dates");
+                if (startDate.isAfter(endDate)) {
+                    gui.error("Invalid Dates");
                 }
-                 if (person == null && topic == null) {
+                if (person == null && topic == null) {
                     gui.error("Invalid Parameters");
                 } else {
                     //progress bar to know its in process
                     gui.getProgress().setVisible(true);
-
+                    ArrayList<String> validFiles = files.findFiles(startDate, endDate);
+                    String total = "";
                     // topic search
+                    for (String s: validFiles){
+                        librarian.setFileName(s);
                     if ((person == null || person.equals("")) && !topic.equals("")) {
-                        librarian.searchTopic(topic, startDate, endDate);
+                        total = total + librarian.searchTopic(topic, startDate, endDate);
                     } // person search
                     else if (!person.equals("") && (topic == null || topic.equals(""))) {
-                        librarian.searchPerson(person,startDate,endDate);
+                        total = total + librarian.searchPerson(person, startDate, endDate);
                     } // both search
                     else if (!person.equals("") && !topic.equals("")) {
-                        librarian.searchBoth(person,topic,startDate,endDate);
+                        total = total + librarian.searchBoth(person, topic, startDate, endDate);
                     }
+                   
+                    }
+                     System.out.println(total);
                     gui.getProgress().setVisible(false);
                 }
             }
