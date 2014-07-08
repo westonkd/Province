@@ -4,11 +4,11 @@
  * and open the template in the editor.
  */
 
+import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Session;
 import Provincial_Miner.application.Speaker;
 import java.util.HashMap;
 import java.util.List;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -17,7 +17,7 @@ import org.testng.annotations.Test;
 
 /**
  *
- * @author user
+ * @author Weston Dransfield
  */
 public class SpeakerTest {
 
@@ -37,31 +37,31 @@ public class SpeakerTest {
 
     @Test
     public void topicsTest() {
-        Session banana = new Session();
+        Content banana = new Content();
         banana.setContent("banana");
         
-        Session apple = new Session();
+        Content apple = new Content();
         apple.setContent("apple");
         
-        Session orange = new Session();
+        Content orange = new Content();
         orange.setContent("orange");
         
-        speaker.addSession("Fruit", orange);
-        speaker.addSession("Fruit", apple);
-        speaker.addSession("Fruit", banana);
+        speaker.addContent("Fruit", orange);
+        speaker.addContent("Fruit", apple);
+        speaker.addContent("Fruit", banana);
         
-        Session goat = new Session();
+        Content goat = new Content();
         goat.setContent("goat");
         
-        Session dog = new Session();
+        Content dog = new Content();
         dog.setContent("dog");
         
-        speaker.addSession("Animals", goat);
-        speaker.addSession("Animals", dog);
+        speaker.addContent("Animals", goat);
+        speaker.addContent("Animals", dog);
         
-        HashMap<String, List<Session>> map = speaker.getTopics();
-        for (List<Session> topic : map.values()) {
-            for (Session content : topic) {
+        HashMap<String, List<Content>> map = speaker.getTopics();
+        for (List<Content> topic : map.values()) {
+            for (Content content : topic) {
                 System.out.println(content.getContent());
             }
         }
