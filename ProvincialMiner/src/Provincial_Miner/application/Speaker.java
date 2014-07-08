@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Weston Dransfield
  */
-public class Speaker {
+public final class Speaker {
 
     //first name of the speaker
     private String firstName;
@@ -26,7 +26,7 @@ public class Speaker {
     private String url;
 
     //Mapping of topics to a list of sessions
-    private HashMap<String, List<Session>> topics = new HashMap<>();
+    private HashMap<String, List<Content>> topics = new HashMap<>();
 
     /**
      * Initializes Speaker with an empty name.
@@ -88,7 +88,7 @@ public class Speaker {
      *
      * @return
      */
-    public HashMap<String, List<Session>> getTopics() {
+    public HashMap<String, List<Content>> getTopics() {
         return topics;
     }
 
@@ -96,9 +96,9 @@ public class Speaker {
      * Adds a session to the list under the given topic.
      *
      * @param topic topic to insert session to
-     * @param session session to insert
+     * @param content the Content class to add
      */
-    public void addSession(String topic, Session session) {
+    public void addContent(String topic, Content content) {
         //if the topics map does not contain the topic
         if (!topics.containsKey(topic)) {
             //create the new topic list
@@ -106,7 +106,7 @@ public class Speaker {
         }
 
         //add the new session to the end of the topic list
-        topics.get(topic).add(session);
+        topics.get(topic).add(content);
     }
 
     /**
