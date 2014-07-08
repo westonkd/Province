@@ -18,7 +18,12 @@ import java.util.ArrayList;
 public class FileFinder {
     //ArrayList<String> allFiles;
     //ArrayList<String> validFiles;
-
+/**
+ * 
+ * @param startDate
+ * @param endDate
+ * @return 
+ */
     public ArrayList<String> findFiles(LocalDate startDate,LocalDate endDate) {
         ArrayList<String> validFiles = new ArrayList<String>();
         File dir = new File("C:\\Users\\Stephen\\Desktop\\SpeakerFile_files");
