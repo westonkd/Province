@@ -26,32 +26,36 @@ public class FileFinder {
  */
     public ArrayList<String> findFiles(LocalDate startDate,LocalDate endDate) {
         ArrayList<String> validFiles = new ArrayList<String>();
-        File dir = new File((System.getProperty("user.home") +("/Desktop/SpeakerFile_files")));
+        File dir = new File((System.getProperty("user.home") +("/Desktop/SpeakerFile_files/")));
         
         System.out.println(dir);
 
         String[] children = dir.list();
+        
+        
         if (children == null) {
             System.out.println("Either dir does not exist or is not a directory");
         } else {
             for (int i = 0; i < children.length; i++) {
                 String filename = children[i];
-                
+
                 String[] parts = filename.split("\\.");
-              
-                String[] date = parts[1].split("-");
-                int year = Integer.parseInt(date[0]);
-                int month = Integer.parseInt(date[1]);
-                int day = Integer.parseInt(date[2]);
-            
-                LocalDate dateCheck = null;
-                // sets local date 
-                dateCheck = dateCheck.of(year, month, day);
-                if ((dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))){
-                    validFiles.add(filename);
-             
+                
+                if (parts[0].equals("Session")) {
+                    System.out.println(parts[0]);
+                    String[] date = parts[1].split("-");
+                    int year = Integer.parseInt(date[0]);
+                    int month = Integer.parseInt(date[1]);
+                    int day = Integer.parseInt(date[2]);
+
+                    LocalDate dateCheck = null;
+                    // sets local date 
+                    dateCheck = dateCheck.of(year, month, day);
+                    if ((dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))){
+                        validFiles.add(filename);
+                    }
+                }
             }
-        }
     }
         return validFiles;
     }
