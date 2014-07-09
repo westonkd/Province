@@ -12,6 +12,7 @@ import com.gtranslate.Translator;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +30,8 @@ public class PartialQuebecScraper {
     private final String domain = "http://www.assnat.qc.ca/";
 
     private HashMap<String, Speaker> searchedSpeakers = new HashMap<>();
+    
+    ArrayList<String> months = new ArrayList(Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
 
     /**
      * This method gets all the names from the specifies session starting at the
@@ -132,7 +135,7 @@ public class PartialQuebecScraper {
                     //set the content date
                     newContent.setDate(getDate(contentPage.select("h4").text()));
                     
-                    System.out.println();
+                    //TODO: add the content to content and then add the Content to the person we are on
                 }
             }
         } catch (IOException ex) {
@@ -167,15 +170,28 @@ public class PartialQuebecScraper {
         toParse = toParse.substring(toParse.indexOf(",") + 2);
         
         //get the day
-        String day = toParse.substring(0,toParse.indexOf(" "));
-        toParse = toParse.substring(toParse.indexOf(" " + 1));
+        int day = Integer.parseInt(toParse.substring(0,toParse.indexOf(" ")));
+        toParse = toParse.substring(toParse.indexOf(" ") + 1);
         
         //get the month
-        //String month = toParse.substring(indexOf(" "), )
+        //int month = Integer.parseInt(toParse.substring(0, toParse.indexOf(" ")));
+        String month = toParse.substring(0, toParse.indexOf(" "));
         
-        System.out.println(toParse);
-        System.out.println(day + '\n');
+        //translate the month to English
+        Translator translate = Translator.getInstance();
+        month = translate.translate(month, Language.FRENCH, Language.ENGLISH);
         
+        //convert string to int month
+        int monthInt = months.indexOf(month) + 1;
+        toParse = toParse.substring(toParse.indexOf(" ") + 1);
+        
+        //get the year
+        int year = Integer.parseInt(toParse.substring(0, toParse.indexOf(",")));
+        
+        //set the date
+        newDate = LocalDate.of(year, monthInt, day);
+
+        System.out.println(newDate.getMonth());
         return newDate;
     }
 
