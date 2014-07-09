@@ -113,21 +113,25 @@ public class Miner extends Application {
                     gui.getProgress().setVisible(true);
                     ArrayList<String> validFiles = files.findFiles(startDate, endDate);
                     String total = "";
+                    String head = "";
                     // topic search
                     for (String s: validFiles){
                         librarian.setFileName(s);
                     if ((person == null || person.equals("")) && !topic.equals("")) {
                         total = total + librarian.searchTopic(topic, startDate, endDate);
+                          head = topic + "\n" + startDate + " to " + endDate;
                     } // person search
                     else if (!person.equals("") && (topic == null || topic.equals(""))) {
                         total = total + librarian.searchPerson(person, startDate, endDate);
+                        head = person + "\n" + startDate + " to " + endDate;
                     } // both search
                     else if (!person.equals("") && !topic.equals("")) {
                         total = total + librarian.searchBoth(person, topic, startDate, endDate);
+                        head = person + " " + topic + "\n" + startDate + " to " + endDate;
                     }
                    
                     }
-                     System.out.println(total);
+                     System.out.println(head + total);
                     gui.getProgress().setVisible(false);
                 }
             }
