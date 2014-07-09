@@ -5,13 +5,14 @@
  */
 package Provincial_Miner.system;
 
+import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
 import com.gtranslate.Language;
 import com.gtranslate.Translator;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,9 +31,15 @@ public class PartialQuebecScraper {
     private HashMap<String, Speaker> searchedSpeakers = new HashMap<>();
 
     /**
-     * @param firstLetter
-     * @param session
-     * @return
+     * This method gets all the names from the specifies session starting at the
+     * given letter. Note this method takes the session number in the form of
+     * the query string (i.e. &Session=rd39l1se). Note that this method creates
+     * a speaker object for each name pulled for later use.
+     *
+     * @param firstLetter the letter to begin the scrape at.
+     * @param session the session formated as a query string (i.e.
+     * &Session=rd39l1se).
+     * @return a list of all names from the specified session
      */
     public ArrayList<String> getNames(char firstLetter, String session) {
         //create list to store the names
@@ -73,15 +80,17 @@ public class PartialQuebecScraper {
                 System.out.println("Error on letter index");
             }
         }
-
         return speakerList;
     }
 
     /**
+     * Gets all the topics spoken on by the provided person in the specified
+     * session.
      *
-     * @param name
-     * @param session
-     * @return
+     * @param name name of person to get topics for
+     * @param session session to search formated as query string(i.e.
+     * &Session=rd39l1se).
+     * @return List of all topics from the given speaker.
      */
     public ArrayList<String> getTopics(String name, String session) {
         //string for the url
@@ -113,6 +122,17 @@ public class PartialQuebecScraper {
                     if (!topics.contains(topicName)) {
                         topics.add(topicName);
                     }
+
+                    //visit each topic page and scrape the content
+                    Document contentPage = Jsoup.connect(domain + anchor.attr("href")).get();
+                    
+                    //create a new Content for the Speaker
+                    Content newContent = new Content();
+                    
+                    //set the content date
+                    newContent.setDate(getDate(contentPage.select("h4").text()));
+                    
+                    System.out.println();
                 }
             }
         } catch (IOException ex) {
@@ -137,6 +157,26 @@ public class PartialQuebecScraper {
         }
 
         return url;
+    }
+    
+    private LocalDate getDate(String toParse) {
+        //create a new date
+        LocalDate newDate = LocalDate.now();
+        
+        //get the line with the date
+        toParse = toParse.substring(toParse.indexOf(",") + 2);
+        
+        //get the day
+        String day = toParse.substring(0,toParse.indexOf(" "));
+        toParse = toParse.substring(toParse.indexOf(" " + 1));
+        
+        //get the month
+        //String month = toParse.substring(indexOf(" "), )
+        
+        System.out.println(toParse);
+        System.out.println(day + '\n');
+        
+        return newDate;
     }
 
 }

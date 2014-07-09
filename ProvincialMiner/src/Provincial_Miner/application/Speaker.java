@@ -25,7 +25,7 @@ public final class Speaker {
     //url to speakers page
     private String url;
 
-    //Mapping of topics to a list of sessions
+    //Mapping of topics to a list of content
     private HashMap<String, List<Content>> topics = new HashMap<>();
 
     /**
