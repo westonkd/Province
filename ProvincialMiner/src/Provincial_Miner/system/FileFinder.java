@@ -26,7 +26,9 @@ public class FileFinder {
  */
     public ArrayList<String> findFiles(LocalDate startDate,LocalDate endDate) {
         ArrayList<String> validFiles = new ArrayList<String>();
-        File dir = new File((System.getProperty("user.home") +("\\Desktop\\SpeakerFile_files")));
+        File dir = new File((System.getProperty("user.home") +("/Desktop/SpeakerFile_files")));
+        
+        System.out.println(dir);
 
         String[] children = dir.list();
         if (children == null) {
