@@ -15,20 +15,20 @@ import org.w3c.dom.Element;
 import java.io.File;
 
 /**
- *
+ * Librarian Class
  * @author Stephen
  */
 public class Librarian {
 
     String result;
-    String fileName = ("C:\\Users\\Stephen\\Desktop\\speakerFile.xml");
+    String fileName = System.getProperty("user.home") + ("\\Desktop\\speakerFile.xml");
 
     public String getFileName() {
         return fileName;
     }
 
     public void setFileName(String fileName) {
-        this.fileName = "C:\\Users\\Stephen\\Desktop\\SpeakerFile_files\\" + fileName ;
+        this.fileName = System.getProperty("user.home") + "\\Desktop\\SpeakerFile_files\\" + fileName ;
     }
 
     public Librarian() {
