@@ -41,12 +41,11 @@ public class FileFinder {
                 int year = Integer.parseInt(date[0]);
                 int month = Integer.parseInt(date[1]);
                 int day = Integer.parseInt(date[2]);
-                System.out.println(filename);
+            
                 LocalDate dateCheck = null;
                 // sets local date 
                 dateCheck = dateCheck.of(year, month, day);
-                if ((dateCheck.isAfter(startDate) || dateCheck.isEqual(startDate))
-                        && (dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))){
+                if ((dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))){
                     validFiles.add(filename);
              
             }
