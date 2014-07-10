@@ -16,6 +16,7 @@ import java.io.File;
 
 /**
  * Librarian Class
+ *
  * @author Stephen
  */
 public class Librarian {
@@ -28,7 +29,7 @@ public class Librarian {
     }
 
     public void setFileName(String fileName) {
-        this.fileName = System.getProperty("user.home") + "\\Desktop\\SpeakerFile_files\\" + fileName ;
+        this.fileName = System.getProperty("user.home") + "\\Desktop\\SpeakerFile_files\\" + fileName;
     }
 
     public Librarian() {
@@ -67,8 +68,6 @@ public class Librarian {
                 NodeList sublist = nNode.getChildNodes();
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    // if the elements attribute equals the search parameter
-                    //  if (eElement.getAttribute("name").equals(person)) {
                     // display the topic subject
 // loop through the topics sessions for dates
                     for (int j = 0; j < sublist.getLength(); j++) {

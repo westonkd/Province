@@ -18,21 +18,19 @@ import java.util.ArrayList;
 public class FileFinder {
     //ArrayList<String> allFiles;
     //ArrayList<String> validFiles;
-/**
- * 
- * @param startDate
- * @param endDate
- * @return 
- */
-    public ArrayList<String> findFiles(LocalDate startDate,LocalDate endDate) {
+
+    /**
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public ArrayList<String> findFiles(LocalDate startDate, LocalDate endDate) {
         ArrayList<String> validFiles = new ArrayList<String>();
-        File dir = new File((System.getProperty("user.home") +("/Desktop/SpeakerFile_files/")));
-        
-        System.out.println(dir);
+        File dir = new File((System.getProperty("user.home") + ("/Desktop/SpeakerFile_files/")));
 
         String[] children = dir.list();
-        
-        
+
         if (children == null) {
             System.out.println("Either dir does not exist or is not a directory");
         } else {
@@ -40,7 +38,7 @@ public class FileFinder {
                 String filename = children[i];
 
                 String[] parts = filename.split("\\.");
-                
+
                 if (parts[0].equals("Session")) {
                     System.out.println(parts[0]);
                     String[] date = parts[1].split("-");
@@ -51,15 +49,12 @@ public class FileFinder {
                     LocalDate dateCheck = null;
                     // sets local date 
                     dateCheck = dateCheck.of(year, month, day);
-                    if ((dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))){
+                    if ((dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
                         validFiles.add(filename);
                     }
                 }
             }
-    }
+        }
         return validFiles;
     }
 }
-
-
-
