@@ -44,12 +44,12 @@ public class WriteFileTest {
               // Loop to set content and date in each session
               for (Content testSession: listOfSpeakers.get(i).getTopics().get(topic)) {
                   testSession.setContent(content);
-                  testSession.setDate(2012, 12, 1);                
+                  testSession.setDate(2012, 12, 4);                
               }           
               
               topic = "topic" + j;
           }   
-        
+          
          theSpeaker = "Cameron Thomas" + i;   
         }
         

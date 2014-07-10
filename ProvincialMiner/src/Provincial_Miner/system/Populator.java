@@ -23,7 +23,7 @@ public class Populator {
     String fileName;
 
     public void setFileName(String fileName) {
-        this.fileName = System.getProperty("user.home") + "\\Desktop\\SpeakerFile_files\\" + fileName;
+        this.fileName = System.getProperty("user.home") + "/Desktop/SpeakerFile_files/" + fileName;
     }
 
     ArrayList<String> people = new ArrayList();
