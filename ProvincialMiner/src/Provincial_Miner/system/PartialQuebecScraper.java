@@ -30,7 +30,7 @@ public class PartialQuebecScraper {
     private final String domain = "http://www.assnat.qc.ca/";
 
     private HashMap<String, Speaker> searchedSpeakers = new HashMap<>();
-    
+
     ArrayList<String> months = new ArrayList(Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
 
     /**
@@ -93,9 +93,12 @@ public class PartialQuebecScraper {
      * @param name name of person to get topics for
      * @param session session to search formated as query string(i.e.
      * &Session=rd39l1se).
+     * @param indexContent
      * @return List of all topics from the given speaker.
      */
-    public ArrayList<String> getTopics(String name, String session) {
+    public ArrayList<String> getTopics(String name, String session, boolean indexContent) {
+        System.out.println("working on " + name);
+        
         //string for the url
         String url = new String();
 
@@ -126,16 +129,37 @@ public class PartialQuebecScraper {
                         topics.add(topicName);
                     }
 
-                    //visit each topic page and scrape the content
-                    Document contentPage = Jsoup.connect(domain + anchor.attr("href")).get();
-                    
-                    //create a new Content for the Speaker
-                    Content newContent = new Content();
-                    
-                    //set the content date
-                    newContent.setDate(getDate(contentPage.select("h4").text()));
-                    
-                    //TODO: add the content to content and then add the Content to the person we are on
+                    if (indexContent) {
+                        //visit each topic page and scrape the content
+                        Document contentPage = Jsoup.connect(domain + anchor.attr("href")).get();
+
+                        //create a new Content for the Speaker
+                        Content newContent = new Content();
+
+                        //set the content date
+                        newContent.setDate(getDate(contentPage.select("h4").text()));
+
+                        //TODO: add the content to content and then add the Content to the person we are on
+                        Elements bolded = contentPage.select("b");
+
+                        //loop through bolded names and find content from given speaker
+                        for (Element bold : bolded) {
+                            if (bold.text().contains(searchedSpeakers.get(name).getLastName())) {
+                                //then this bold's parent's own text is content we want!
+                                String content = bold.parent().ownText();
+
+                                //translate the content to English
+                                Translator translate = Translator.getInstance();
+                                content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+
+                                //add it to the new Content object
+                                newContent.setContent(content);
+
+                                //add the content to the current person
+                                searchedSpeakers.get(name).addContent(topicName, newContent);
+                            }
+                        }
+                    }
                 }
             }
         } catch (IOException ex) {
@@ -143,6 +167,34 @@ public class PartialQuebecScraper {
         }
 
         return topics;
+    }
+    
+    /**
+     *
+     * @param session
+     * @return
+     */
+    public ArrayList<Speaker> getSession(String session) {
+        //creat a new list for speakers
+        ArrayList<Speaker> speakers = new ArrayList<>();
+        
+        //clear out any old speakers
+        searchedSpeakers = new HashMap<>();
+        
+        //get all the names in the session
+        ArrayList<String> names = getNames('a', session);
+        
+        //fill in the content of each person
+        for(String name : names) {
+            getTopics(name, session, true);
+        }
+        
+        //get all the speakers
+        for(Speaker speaker : searchedSpeakers.values()) {
+            speakers.add(speaker);
+        }
+        
+        return speakers;
     }
 
     private String getName(String url) {
@@ -161,37 +213,36 @@ public class PartialQuebecScraper {
 
         return url;
     }
-    
+
     private LocalDate getDate(String toParse) {
         //create a new date
         LocalDate newDate = LocalDate.now();
-        
+
         //get the line with the date
         toParse = toParse.substring(toParse.indexOf(",") + 2);
-        
+
         //get the day
-        int day = Integer.parseInt(toParse.substring(0,toParse.indexOf(" ")));
+        int day = Integer.parseInt(toParse.substring(0, toParse.indexOf(" ")));
         toParse = toParse.substring(toParse.indexOf(" ") + 1);
-        
+
         //get the month
         //int month = Integer.parseInt(toParse.substring(0, toParse.indexOf(" ")));
         String month = toParse.substring(0, toParse.indexOf(" "));
-        
+
         //translate the month to English
         Translator translate = Translator.getInstance();
         month = translate.translate(month, Language.FRENCH, Language.ENGLISH);
-        
+
         //convert string to int month
         int monthInt = months.indexOf(month) + 1;
         toParse = toParse.substring(toParse.indexOf(" ") + 1);
-        
+
         //get the year
         int year = Integer.parseInt(toParse.substring(0, toParse.indexOf(",")));
-        
+
         //set the date
         newDate = LocalDate.of(year, monthInt, day);
 
-        System.out.println(newDate.getMonth());
         return newDate;
     }
 

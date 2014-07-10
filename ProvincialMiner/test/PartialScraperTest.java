@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
+import Provincial_Miner.application.Speaker;
 import Provincial_Miner.system.PartialQuebecScraper;
 import java.util.ArrayList;
-import java.util.Map;
 import org.testng.annotations.Test;
 
 /**
@@ -22,31 +22,14 @@ public class PartialScraperTest {
     }
 
     @Test
-    //This is a test to get all name and topics in a given session
-    public void showNames() {
-        ArrayList<String> topics = new ArrayList<>();
-
-        for (String name : names) {
-            System.out.println("===================================");
-            topics = scraper.getTopics(name, "&Session=rd11l4se");
-
-            for (String topic : topics) {
-                System.out.println(topic);
-            }
-
-            System.out.println(name);
-        }
-    }
-
-    @Test
-    //test for just one name
-    public void singleName() {
-        System.out.println("\n\n***Starting single query***");
-        ArrayList<String> topics = scraper.getTopics(names.get(0), "&Session=rd11l4se");
+    public void getSession() {
+        ArrayList<Speaker> speakers = scraper.getSession("&Session=rd11l4se");
         
-        for (String topic : topics) {
-            System.out.println(topic);
+        for(Speaker speaker : speakers) {
+            System.out.println(speaker.getLastName());
         }
     }
+    
+ 
 
 }
