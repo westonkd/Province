@@ -30,7 +30,7 @@ public class WriteFileTest {
         PartialQuebecScraper scraper = new PartialQuebecScraper();
         
         
-        ArrayList<Speaker> listOfSpeakers = scraper.getSession("&Session=rd1114se");
+        ArrayList<Speaker> listOfSpeakers = scraper.getSession("&Session=rd11l4se");
         
     /*
         // Loop to add new speakers to hasmap
