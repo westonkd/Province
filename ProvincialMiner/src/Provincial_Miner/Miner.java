@@ -122,15 +122,19 @@ public class Miner extends Application {
                         librarian.setFileName(s);
                         if ((person == null || person.equals("")) && !topic.equals("")) {
                             total = total + librarian.searchTopic(topic, startDate, endDate);
-                            head = topic + "\n" + startDate + " to " + endDate + "\n";
+                            head = "<topic>" + topic + "</topic>" + "\n" 
+                            + "<date>" + startDate + " to " + endDate + "</date>" + "\n";
                         } // person search
                         else if (!person.equals("") && (topic == null || topic.equals(""))) {
                             total = total + librarian.searchPerson(person, startDate, endDate);
-                            head = person + "\n" + startDate + " to " + endDate + "\n";
+                            head = "<name>" + person + "</name>" + "\n"
+                                + "<date>" + startDate + " to " + endDate + "</date>" + "\n";
                         } // both search
                         else if (!person.equals("") && !topic.equals("")) {
                             total = total + librarian.searchBoth(person, topic, startDate, endDate);
-                            head = person + " " + topic + "\n" + startDate + " to " + endDate +"\n";
+                            head =  "<name>" + person + " </name> " + "\n" +
+                                    "<topic>" +topic + "</topic>" + "\n" + 
+                                    "<date>" +startDate + " to " + endDate + "</date>"+ "\n";
                         }
 
                     }
