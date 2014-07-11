@@ -125,19 +125,21 @@ public class Miner extends Application {
                         librarian.setFileName(s);
                         if ((person == null || person.equals("")) && !topic.equals("")) {
                             total = total + librarian.searchTopic(topic, startDate, endDate);
-                            head = topic + "\n" + startDate + " to " + endDate;
+                            head = topic + "\n" + startDate + " to " + endDate + "\n";
                         } // person search
                         else if (!person.equals("") && (topic == null || topic.equals(""))) {
                             total = total + librarian.searchPerson(person, startDate, endDate);
-                            head = person + "\n" + startDate + " to " + endDate;
+                            head = person + "\n" + startDate + " to " + endDate + "\n";
                         } // both search
                         else if (!person.equals("") && !topic.equals("")) {
                             total = total + librarian.searchBoth(person, topic, startDate, endDate);
-                            head = person + " " + topic + "\n" + startDate + " to " + endDate;
+                            head = person + " " + topic + "\n" + startDate + " to " + endDate +"\n";
                         }
 
                     }
-                    System.out.println(head + total);
+                    total = (head+total);
+                    //FileWriter.writeDataFile(total,person,topic);
+                    System.out.println(total);
                     gui.getProgress().setVisible(false);
                 }
             }
