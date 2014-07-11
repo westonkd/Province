@@ -15,6 +15,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
+ * Will go through all the data and gather information to populate the
+ * combo boxes
  *
  * @author Stephen
  */
@@ -25,8 +27,10 @@ public class Populator {
     public void setFileName(String fileName) {
         this.fileName = System.getProperty("user.home") + "/Desktop/SpeakerFile_files/" + fileName;
     }
-
+// list of people
     ArrayList<String> people = new ArrayList();
+    //list of topics
+    ArrayList<String> topics = new ArrayList();
 
     public ArrayList<String> getPeople() {
         return people;
@@ -35,8 +39,10 @@ public class Populator {
     public ArrayList<String> getTopics() {
         return topics;
     }
-    ArrayList<String> topics = new ArrayList();
 
+    /**
+     * Gathers the data from the directory
+     */
     public void populate() {
 
         try {
@@ -55,11 +61,13 @@ public class Populator {
                 Node nNode = nList.item(i);
                 NodeList sublist = nNode.getChildNodes();
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    // the person element
                     Element eElement = (Element) nNode;
                     people.add(eElement.getAttribute("name"));
                     for (int j = 0; j < sublist.getLength(); j++) {
                         Node cNode = (Node) sublist.item(j);
                         if (cNode.getNodeType() == Node.ELEMENT_NODE) {
+                            // the topic element
                             Element cElement = (Element) cNode;
                             topics.add(cElement.getAttribute("subject"));
                         }
@@ -71,5 +79,5 @@ public class Populator {
         }
 
     }
-    
+
 }
