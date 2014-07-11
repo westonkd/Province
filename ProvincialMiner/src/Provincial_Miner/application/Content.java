@@ -23,6 +23,10 @@ public class Content {
         return content;
     }
     
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+    
     public void setDate(int year, int month, int day) {
         //verify the year is in bounds
         if (year < 1867 || year > Calendar.getInstance().get(Calendar.YEAR)){
