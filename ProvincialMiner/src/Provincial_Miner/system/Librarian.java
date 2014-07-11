@@ -22,14 +22,14 @@ import java.io.File;
 public class Librarian {
 
     String result;
-    String fileName = System.getProperty("user.home") + ("\\Desktop\\speakerFile.xml");
+    String fileName = System.getProperty("user.home") + ("/Desktop/speakerFile.xml");
 
     public String getFileName() {
         return fileName;
     }
 
     public void setFileName(String fileName) {
-        this.fileName = System.getProperty("user.home") + "\\Desktop\\SpeakerFile_files\\" + fileName;
+        this.fileName = System.getProperty("user.home") + "/Desktop/SpeakerFile_files/" + fileName;
     }
 
     public Librarian() {

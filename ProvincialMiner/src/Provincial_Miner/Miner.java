@@ -8,10 +8,13 @@ package Provincial_Miner;
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Librarian;
 import Provincial_Miner.system.Populator;
+import Provincial_Miner.system.WriteFile;
 import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import java.util.ArrayList;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -134,7 +137,7 @@ public class Miner extends Application {
                             total = total + librarian.searchBoth(person, topic, startDate, endDate);
                             head =  "<name>" + person + " </name> " + "\n" +
                                     "<topic>" +topic + "</topic>" + "\n" + 
-                                    "<date>" +startDate + " to " + endDate + "</date>"+ "\n";
+                                    "<date>" + "startDate" + " to " + endDate + "</date>"+ "\n";
                         }
 
                     }
@@ -143,10 +146,11 @@ public class Miner extends Application {
                         gui.error("No content for search parameters");
                     }
                     else{
-                    total = (head+total);
-                    //write to the file
-                    //FileWriter.writeDataFile(total,person,topic);
-                    System.out.println(total);
+                        total = (head+total);
+                        
+                        //write to the file
+                        new WriteFile().writeDataFile(total, person, topic);
+                        System.out.println(total);
                     }
                     gui.getProgress().setVisible(false);
                 }
