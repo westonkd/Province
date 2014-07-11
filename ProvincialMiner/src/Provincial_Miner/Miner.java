@@ -137,7 +137,7 @@ public class Miner extends Application {
                             total = total + librarian.searchBoth(person, topic, startDate, endDate);
                             head =  "<name>" + person + " </name> " + "\n" +
                                     "<topic>" +topic + "</topic>" + "\n" + 
-                                    "<date>" + "startDate" + " to " + endDate + "</date>"+ "\n";
+                                    "<date>" + startDate + " to " + endDate + "</date>"+ "\n";
                         }
 
                     }
