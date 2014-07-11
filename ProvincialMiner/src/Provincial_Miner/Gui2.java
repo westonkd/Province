@@ -291,11 +291,12 @@ public class Gui2 extends Application {
     public void error(String error_message) {
         GridPane stack = new GridPane();
         stack.setAlignment(Pos.CENTER);
-        stack.setHgap(10);
-        stack.setVgap(10);
-        stack.setPadding(new Insets(25, 25, 25, 25));
+        stack.setHgap(0);
+        stack.setVgap(30);
+        stack.setPadding(new Insets(50, 50, 50, 50));
         Label errorMessage = new Label(error_message);
-        stack.add(errorMessage, 0, 0);
+        //errorMessage.setMinWidth(200);
+        stack.add(errorMessage, 0, 0,2,1);
 
         Button ok = new Button("ok");
         ok.setMinWidth(80);
@@ -303,7 +304,7 @@ public class Gui2 extends Application {
 
         Stage message = new Stage();
         message.setTitle("Error");
-        Scene check = new Scene(stack, 250, 100);
+        Scene check = new Scene(stack, 280, 120);
         // check.getStylesheets().add("fxml.css");
         message.setScene(check);
         message.show();

@@ -134,10 +134,16 @@ public class Miner extends Application {
                         }
 
                     }
+                    if (total.equals(""))
+                    {
+                        gui.error("No content for search parameters");
+                    }
+                    else{
                     total = (head+total);
                     //write to the file
                     //FileWriter.writeDataFile(total,person,topic);
                     System.out.println(total);
+                    }
                     gui.getProgress().setVisible(false);
                 }
             }
