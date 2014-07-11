@@ -9,6 +9,7 @@
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
 import Provincial_Miner.system.WriteFile;
+import java.io.File;
 import java.util.ArrayList;
 import org.testng.annotations.Test;
 
@@ -43,17 +44,17 @@ public class WriteFileTest {
               // Loop to set content and date in each session
               for (Content testSession: listOfSpeakers.get(i).getTopics().get(topic)) {
                   testSession.setContent(content);
-                  testSession.setDate(2014, 12, 1);                
+                  testSession.setDate(2012, 12, 4);                
               }           
               
               topic = "topic" + j;
           }   
-        
+          
          theSpeaker = "Cameron Thomas" + i;   
         }
         
         new WriteFile().PersonXmlWriter(listOfSpeakers);
-        new WriteFile().writeDataFile("This is the content");
+        new WriteFile().writeDataFile("This is the content", "Cameron Thomas", "War");
     }
      
     @Test

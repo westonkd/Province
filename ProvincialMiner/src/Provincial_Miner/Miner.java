@@ -7,10 +7,12 @@ package Provincial_Miner;
 
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Librarian;
+import Provincial_Miner.system.Populator;
 import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import java.util.ArrayList;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
@@ -33,6 +35,10 @@ public class Miner extends Application {
     String topic = "";
     LocalDate startDate;
     LocalDate endDate;
+    Populator pop = new Populator();
+    public Miner(){
+        
+    }
 
     public String getPerson() {
         return person;
@@ -113,21 +119,25 @@ public class Miner extends Application {
                     gui.getProgress().setVisible(true);
                     ArrayList<String> validFiles = files.findFiles(startDate, endDate);
                     String total = "";
+                    String head = "";
                     // topic search
-                    for (String s: validFiles){
+                    for (String s : validFiles) {
                         librarian.setFileName(s);
-                    if ((person == null || person.equals("")) && !topic.equals("")) {
-                        total = total + librarian.searchTopic(topic, startDate, endDate);
-                    } // person search
-                    else if (!person.equals("") && (topic == null || topic.equals(""))) {
-                        total = total + librarian.searchPerson(person, startDate, endDate);
-                    } // both search
-                    else if (!person.equals("") && !topic.equals("")) {
-                        total = total + librarian.searchBoth(person, topic, startDate, endDate);
+                        if ((person == null || person.equals("")) && !topic.equals("")) {
+                            total = total + librarian.searchTopic(topic, startDate, endDate);
+                            head = topic + "\n" + startDate + " to " + endDate;
+                        } // person search
+                        else if (!person.equals("") && (topic == null || topic.equals(""))) {
+                            total = total + librarian.searchPerson(person, startDate, endDate);
+                            head = person + "\n" + startDate + " to " + endDate;
+                        } // both search
+                        else if (!person.equals("") && !topic.equals("")) {
+                            total = total + librarian.searchBoth(person, topic, startDate, endDate);
+                            head = person + " " + topic + "\n" + startDate + " to " + endDate;
+                        }
+
                     }
-                   
-                    }
-                     System.out.println(total);
+                    System.out.println(head + total);
                     gui.getProgress().setVisible(false);
                 }
             }
@@ -144,6 +154,9 @@ public class Miner extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+        
     }
+    
+   
 
 }

@@ -1,5 +1,12 @@
 package Provincial_Miner;
 
+import Provincial_Miner.system.FileFinder;
+import Provincial_Miner.system.Populator;
+import java.time.LocalDate;
+import static java.time.LocalDate.now;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -102,6 +109,9 @@ public class Gui2 extends Application {
      * title for the GUI
      */
     Label title;
+    
+    ArrayList<String> peeps = new ArrayList<String>();
+    ArrayList<String> subs = new ArrayList<String>();
 
     public GridPane getGrid() {
         return grid;
@@ -170,13 +180,44 @@ public class Gui2 extends Application {
         return instance;
     }
 
+    public void getData() {
+        Populator pop = new Populator();
+        FileFinder files = new FileFinder();
+        LocalDate begin = null;
+        begin = begin.of(1800, 1, 1);
+        LocalDate end = now();
+        ArrayList<String> allFiles = files.findFiles(begin, end);
+        for (String s : allFiles) {
+            pop.setFileName(s);
+            pop.populate();
+            for (String r : pop.getPeople()) {
+            }
+        }
+            peeps = pop.getPeople();
+            subs = pop.getTopics();
+        }
+
+      
+
+    
+
     /**
      * Start method is where it builds the GUI
      */
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         primaryStage.setTitle("Provincial Mining");
+        peopleList = FXCollections.observableArrayList();
+        topicalList = FXCollections.observableArrayList();
 
+        this.getData();
+        Collections.sort(peeps);
+        Collections.sort(subs);
+        
+        LinkedHashSet noDuplicates = new LinkedHashSet(peeps);
+        LinkedHashSet noDuplicates2 = new LinkedHashSet(subs);
+        peopleList.addAll(noDuplicates);
+        topicalList.addAll(noDuplicates2);
         grid = new GridPane();
         grid.setAlignment(Pos.BOTTOM_CENTER);
         grid.setHgap(10);
@@ -197,19 +238,12 @@ public class Gui2 extends Application {
 
         endDateFinder = new Label("End Date");
         grid.add(endDateFinder, 1, 6);
-
         people = new ComboBox();
         people.setPromptText("Person");
         people.setMinWidth(225);
         people.setEditable(true);
         grid.add(people, 0, 3);
-
-        peopleList = FXCollections.observableArrayList();
-
-        topicalList = FXCollections.observableArrayList();
-        topicalList.add("Fishing");
-        topicalList.add("Bowling");
-        topicalList.add("Javelin");
+        people.setItems(peopleList);
 
         topical = new ComboBox();
         topical.setPromptText("Topic");
@@ -246,7 +280,7 @@ public class Gui2 extends Application {
         scene = new Scene(grid, 600, 300);
         scene.getStylesheets().add("fxml.css");
         primaryStage.setScene(scene);
-        
+
         primaryStage.show();
 
     }
@@ -270,7 +304,7 @@ public class Gui2 extends Application {
         Stage message = new Stage();
         message.setTitle("Error");
         Scene check = new Scene(stack, 250, 100);
-       // check.getStylesheets().add("fxml.css");
+        // check.getStylesheets().add("fxml.css");
         message.setScene(check);
         message.show();
         message.toFront();

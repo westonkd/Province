@@ -41,10 +41,14 @@ public class WriteFile {
      * used to write XML file.
      * @param speakerList 
      */
-    public void PersonXmlWriter(ArrayList<Speaker> speakerList) {    
+    public void PersonXmlWriter(ArrayList<Speaker> speakerList) {
+        
+        // String to hold date
+        String tempDate = "";
+        
         //Creates a folder on the desktop named "XML Database"
         final File homeDir = new File(System.getProperty("user.home"),"Desktop");
-        File dir1 = new File(homeDir, "XML Database");
+        File dir1 = new File(homeDir, "SpeakerFile_files");
         dir1.mkdir();
               
         try { 
@@ -78,7 +82,8 @@ public class WriteFile {
                             sessionToAdd = doc.createElement("Content");
                             sessionToAdd.setAttribute("date", session.getDate().toString());
                             sessionToAdd.setTextContent(session.getContent());
-                            topicToadd.appendChild(sessionToAdd);      
+                            topicToadd.appendChild(sessionToAdd);  
+                            tempDate = session.getDate().toString();
                         }                   
                     }                         
                 }
@@ -90,7 +95,7 @@ public class WriteFile {
                  
                 // Creates stream that specifies name of file and folder to save
                 // file in.
-		StreamResult result = new StreamResult(new File(dir1, "speakerFile.xml"));
+		StreamResult result = new StreamResult(new File(dir1, "Session." + tempDate + ".xml"));
          
                 // Sets formating for XML file
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -173,12 +178,10 @@ public class WriteFile {
      * folders in this folder for each topic
      * @param content 
      */
-    public void writeDataFile(String content) {
-        String personName = "Person11";
-        String topic = "topic11";
+    public void writeDataFile(String contentToWrite, String personName, String topic) {
         String fileName = personName + "_" + topic;
-        String contentToWrite = "This is the content";
-        
+        String tempContentToWrite = "";
+            
         // Create folder to store .PRO, .html, .txt, and .docx files in
         final File homeDir = new File(System.getProperty("user.home"),"Desktop");
         File dir1 = new File(homeDir, "Quebec");
@@ -187,17 +190,27 @@ public class WriteFile {
         //creates a folder in "Quebec" named the person's name and topic
         File dir2 = new File(dir1, fileName);
         dir2.mkdir();
-         
-        // Write .PRO file
-        writeToFile(dir2, fileName + ".PRO", contentToWrite);
-        
-        // Write .html file
-        writeToFile(dir2, fileName + ".html", contentToWrite);
+              
+        // Replace generic tags with tags needed for .PRO and .txt files.
+        // Add \n to start new line in file
+        tempContentToWrite = contentToWrite.replace("<name>", "<ignore>");
+        tempContentToWrite = tempContentToWrite.replace("</name>", "</ignore> \n");
+        tempContentToWrite = tempContentToWrite.replace("<date>", "<ignore>");
+        tempContentToWrite = tempContentToWrite.replace("</date>", "</ignore> \n");
+        // Write .PRO file  
+        writeToFile(dir2, fileName + ".PRO", tempContentToWrite );
         
         // Write .txt file
-        writeToFile(dir2, fileName + ".txt", contentToWrite);
+        writeToFile(dir2, fileName + ".txt", tempContentToWrite);
         
-        // Write .docx file - Microsoft word file       
+        // Replace generic tags with html tags
+        // Add \n to start new line in file
+        tempContentToWrite = contentToWrite.replace("<name>", "<p>");
+        tempContentToWrite = tempContentToWrite.replace("</name>", "</p>\n");
+        tempContentToWrite = tempContentToWrite.replace("<date>", "<p>");
+        tempContentToWrite = tempContentToWrite.replace("</date>", "</p>\n");      
+        // Write .html file
+        writeToFile(dir2, fileName + ".html", tempContentToWrite);     
     }
     
     /**
