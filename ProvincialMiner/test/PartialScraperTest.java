@@ -25,9 +25,25 @@ public class PartialScraperTest {
     public void getSession() {
         ArrayList<Speaker> speakers = scraper.getSession("&Session=rd11l4se");
         
+        //display the names
+        System.out.println("=====SPEAKERS & TOPICS=====");
         for(Speaker speaker : speakers) {
             System.out.println(speaker.getLastName());
+            for(String topic : speaker.getTopics().keySet()) {
+                System.out.println("\t + > " + topic);
+            }
         }
+        
+        //disply stats
+        System.out.println("=====Stats=====");
+        System.out.println("Number of Speakers: " + speakers.size());
+        
+        //print the names only
+        for(Speaker speaker : speakers) {
+            System.out.println(speaker.getLastName() + " " + speaker.getFirstName());
+        }
+        
+        
     }
     
  
