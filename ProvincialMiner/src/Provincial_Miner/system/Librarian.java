@@ -92,8 +92,8 @@ public class Librarian {
                                         // make sure its within the search range
                                         if ((dateCheck.isAfter(startDate) || dateCheck.isEqual(startDate))
                                                 && (dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
-                                            result = result + "<name>" + eElement.getAttribute("name") + "</name>"
-                                                    + "<date>"+ kElement.getAttribute("date") + "</date>" + "\n"
+                                            result = result +  "<name>" + eElement.getAttribute("name") + "</name>"
+                                                    + "\n" + "<date>"+ kElement.getAttribute("date") + "</date>" + "\n"
                                                     + kElement.getTextContent() + "\n";
 
                                         } else {
@@ -174,8 +174,8 @@ public class Librarian {
                                         // make sure its within the search range
                                         if ((dateCheck.isAfter(startDate) || dateCheck.isEqual(startDate))
                                                 && (dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
-                                            result = result + "<topic>" + topicElement.getAttribute("subject") + "</topic> "
-                                                    + "<date>" + kElement.getAttribute("date") + "</date>" + "\n"
+                                            result = result  + "<topic>" + topicElement.getAttribute("subject") + "</topic> "
+                                                    + "\n" + "<date>" + kElement.getAttribute("date") + "</date>" + "\n"
                                                     + kElement.getTextContent() + "\n";
 
                                         } else {
@@ -261,7 +261,7 @@ public class Librarian {
                                             // make sure its within the search range
                                             if ((dateCheck.isAfter(startDate) || dateCheck.isEqual(startDate))
                                                     && (dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
-                                                result = result + "<date>" + kElement.getAttribute("date") + "</date>" + "\n"
+                                                result = result  + "<date>" + kElement.getAttribute("date") + "</date>" + "\n"
                                                         + kElement.getTextContent() + "\n";
 
                                             } else {
