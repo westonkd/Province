@@ -138,6 +138,7 @@ public class Miner extends Application {
 
                     }
                     total = (head+total);
+                    //write to the file
                     //FileWriter.writeDataFile(total,person,topic);
                     System.out.println(total);
                     gui.getProgress().setVisible(false);
