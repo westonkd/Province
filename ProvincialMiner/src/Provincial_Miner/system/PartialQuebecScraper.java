@@ -80,6 +80,7 @@ public class PartialQuebecScraper {
                 }
 
             } catch (IOException ex) {
+                System.out.println(firstMemberURL + session + lastMemberURL + (char) i);
                 System.out.println("Error on letter index");
             }
         }
@@ -170,9 +171,10 @@ public class PartialQuebecScraper {
     }
     
     /**
-     *
-     * @param session
-     * @return
+     * This method generates a list of Speakers for a given session
+     * 
+     * @param session 
+     * @return speakers - a list of speakers
      */
     public ArrayList<Speaker> getSession(String session) {
         //creat a new list for speakers
