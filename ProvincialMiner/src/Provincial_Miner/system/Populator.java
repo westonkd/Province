@@ -15,7 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- *
+ * Will go through all the data and gather information to populate the comboboxes
  * @author Stephen
  */
 public class Populator {
@@ -37,6 +37,9 @@ public class Populator {
     }
     ArrayList<String> topics = new ArrayList();
 
+    /**
+     * 
+     */
     public void populate() {
 
         try {
