@@ -7,15 +7,16 @@ package Provincial_Miner.system;
 
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
-import com.gtranslate.Audio;
 import com.gtranslate.Language;
 import com.gtranslate.Translator;
+import com.memetix.mst.translate.Translate;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -181,15 +182,20 @@ public class PartialQuebecScraper {
                                 content += " " + paragraphs.get(i).ownText();
                             }
                         }
-                        
-//                        //remove punctuation
-//                        content = content.replace(".", "").replace(",","");
-//                        
-//                        //translate
-//                        Translator translate = Translator.getInstance();
-//                        content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
 
-                        //add it to the new Content object
+                        //translate the content to French
+                        Translate.setClientId("xid7777");
+                        Translate.setClientSecret("kzbpT0A+Ogrd2exnN0aJh3wiGF4eJNRTcKPjg264EJA=");
+
+                        // From French -> English 
+                        try {
+                            content = Translate.execute(content, com.memetix.mst.language.Language.FRENCH, com.memetix.mst.language.Language.ENGLISH);
+                        } catch (Exception ex) {
+                            System.out.println("Error translating content");
+                        }
+                        
+                        System.out.println(content);
+                        
                         newContent.setContent(content);
 
                         //add the content to the current person
