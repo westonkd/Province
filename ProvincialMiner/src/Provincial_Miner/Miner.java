@@ -16,11 +16,6 @@ import java.util.LinkedHashSet;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -97,35 +92,36 @@ public class Miner extends Application {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
                 String name = gui.getPeople().getValue();
-                //  if (listName.equals(name))
-                //{
-                try {
-                    Populator pop = new Populator();
-                    FileFinder files = new FileFinder();
-                    LocalDate begin = null;
-                    begin = begin.of(1800, 1, 1);
-                    LocalDate end = now();
-                    ArrayList<String> allFiles = files.findFiles(begin, end);
-                    ArrayList<String> allTopics = new ArrayList();
-                    for (String s : allFiles) {
-                        pop.setFileName(s);
-                        allTopics.addAll(pop.personToTopicPopulate(name));
-                    }
-                    gui.getTopicalList().clear();
-                    LinkedHashSet noDupes = new LinkedHashSet();
-                    noDupes.addAll(allTopics);
-                    gui.getTopicalList().addAll(noDupes);
-                    if (gui.getTopicalList().isEmpty()) {
-                        noDupes.addAll(gui.getSubs());
+               
+                    try {
+                        Populator pop = new Populator();
+                        FileFinder files = new FileFinder();
+                        LocalDate begin = null;
+                        begin = begin.of(1800, 1, 1);
+                        LocalDate end = now();
+                        ArrayList<String> allFiles = files.findFiles(begin, end);
+                        ArrayList<String> allTopics = new ArrayList();
+                        for (String s : allFiles) {
+                            pop.setFileName(s);
+                            allTopics.addAll(pop.personToTopicPopulate(name));
+                        }
+                        gui.getTopicalList().clear();
+                        LinkedHashSet noDupes = new LinkedHashSet();
+                        noDupes.addAll(allTopics);
                         gui.getTopicalList().addAll(noDupes);
+                        if (gui.getTopicalList().isEmpty()) {
+                            noDupes.addAll(gui.getSubs());
+                            gui.getTopicalList().addAll(noDupes);
+                        }
+                        gui.getTopical().setItems(gui.getTopicalList());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
-                    gui.getTopical().setItems(gui.getTopicalList());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
-                //}
-            }
+            
         });
+
+        
         /**
          * Button even will search the parameters given. User must enter a
          * person or topic or both. If dates start date is left blank it will

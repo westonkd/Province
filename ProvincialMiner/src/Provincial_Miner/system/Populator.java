@@ -15,8 +15,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Will go through all the data and gather information to populate the
- * combo boxes
+ * Will go through all the data and gather information to populate the combo
+ * boxes
  *
  * @author Stephen
  */
@@ -78,11 +78,11 @@ public class Populator {
         }
 
     }
-    
+
     /**
-     * 
+     *
      * @param name
-     * @return 
+     * @return
      */
     public ArrayList<String> personToTopicPopulate(String name) {
         ArrayList<String> personToTopic = new ArrayList();
@@ -104,19 +104,18 @@ public class Populator {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     // the person element
                     Element eElement = (Element) nNode;
-                  //  System.out.println(eElement);
-                    if (name.equals(eElement.getAttribute("name"))){
-                        
-                    
+                    //  System.out.println(eElement);
+                    if (name.equals(eElement.getAttribute("name"))) {
+
                         // people.add(eElement.getAttribute("name"));
                         for (int j = 0; j < sublist.getLength(); j++) {
-                             Node cNode = (Node) sublist.item(j);
-                             if (cNode.getNodeType() == Node.ELEMENT_NODE) {
-                                 // the topic element
-                                 Element cElement = (Element) cNode;
-                                 personToTopic.add(cElement.getAttribute("subject"));
-                             }
-                         }
+                            Node cNode = (Node) sublist.item(j);
+                            if (cNode.getNodeType() == Node.ELEMENT_NODE) {
+                                // the topic element
+                                Element cElement = (Element) cNode;
+                                personToTopic.add(cElement.getAttribute("subject"));
+                            }
+                        }
                     }
                 }
             }
@@ -127,4 +126,45 @@ public class Populator {
         return personToTopic;
     }
 
+    public ArrayList<String> topicToPersonPopulate(String subject) {
+        ArrayList<String> topicToPerson = new ArrayList();
+        try {
+            // open the file
+            File xmlPerson = new File(fileName);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            // uses DOM to parse the xml
+            Document doc = dBuilder.parse(xmlPerson);
+
+            doc.getDocumentElement().normalize();
+
+            NodeList nList = doc.getElementsByTagName("Person");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                NodeList sublist = nNode.getChildNodes();
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    // the person element
+                    Element eElement = (Element) nNode;
+
+                    // people.add(eElement.getAttribute("name"));
+                    for (int j = 0; j < sublist.getLength(); j++) {
+                        Node cNode = (Node) sublist.item(j);
+                        if (cNode.getNodeType() == Node.ELEMENT_NODE) {
+                            // the topic element
+                            Element cElement = (Element) cNode;
+                            if (cElement.getAttribute("subject").equals(subject)) {
+                                topicToPerson.add(eElement.getAttribute("name"));
+                            }
+                        }
+
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return topicToPerson;
+    }
 }
