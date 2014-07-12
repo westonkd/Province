@@ -104,7 +104,8 @@ public class Populator {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     // the person element
                     Element eElement = (Element) nNode;
-                    if (name.equals(eElement.getAttribute(name))){
+                  //  System.out.println(eElement);
+                    if (name.equals(eElement.getAttribute("name"))){
                         
                     
                         // people.add(eElement.getAttribute("name"));

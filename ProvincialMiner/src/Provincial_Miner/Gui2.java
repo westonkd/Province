@@ -113,6 +113,14 @@ public class Gui2 extends Application {
     ArrayList<String> peeps = new ArrayList<String>();
     ArrayList<String> subs = new ArrayList<String>();
 
+    public ArrayList<String> getPeeps() {
+        return peeps;
+    }
+
+    public ArrayList<String> getSubs() {
+        return subs;
+    }
+
     public GridPane getGrid() {
         return grid;
     }
@@ -190,8 +198,6 @@ public class Gui2 extends Application {
         for (String s : allFiles) {
             pop.setFileName(s);
             pop.populate();
-            for (String r : pop.getPeople()) {
-            }
         }
             peeps = pop.getPeople();
             subs = pop.getTopics();
