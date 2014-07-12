@@ -27,11 +27,12 @@ public class WriteFileTest {
         String content = "This is the content";
         //HashMap<String, List<Session>> topicMap = new HashMap<>();
         
-        PartialQuebecScraper scraper = new PartialQuebecScraper();
+      PartialQuebecScraper scraper = new PartialQuebecScraper();
         
         
-        ArrayList<Speaker> listOfSpeakers = scraper.getSession("&Session=rd11l4se");
+       ArrayList<Speaker> listOfSpeakers = scraper.getSession("&Session=rd11l4se");
         
+    //    ArrayList<Speaker> listOfSpeakers = new ArrayList();
     /*
         // Loop to add new speakers to hasmap
         for (int i = 0; i < 10; i++) {
@@ -57,11 +58,11 @@ public class WriteFileTest {
           
          theSpeaker = "Cameron Thomas" + i;   
         }
-        
         */
         
+        
         new WriteFile().PersonXmlWriter(listOfSpeakers);
-        new WriteFile().writeDataFile("This is the content", "Cameron Thomas", "War");
+      //  new WriteFile().writeDataFile("This is the content", "Cameron Thomas", "War");
     }
      
     @Test

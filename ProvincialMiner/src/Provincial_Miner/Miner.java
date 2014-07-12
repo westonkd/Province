@@ -8,11 +8,22 @@ package Provincial_Miner;
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Librarian;
 import Provincial_Miner.system.Populator;
+import Provincial_Miner.system.WriteFile;
 import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -33,8 +44,9 @@ public class Miner extends Application {
     LocalDate startDate;
     LocalDate endDate;
     Populator pop = new Populator();
-    public Miner(){
-        
+
+    public Miner() {
+
     }
 
     public String getPerson() {
@@ -80,6 +92,40 @@ public class Miner extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         gui.start(primaryStage);
+
+        gui.getPeople().valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue ov, String t, String t1) {
+                String name = gui.getPeople().getValue();
+                //  if (listName.equals(name))
+                //{
+                try {
+                    Populator pop = new Populator();
+                    FileFinder files = new FileFinder();
+                    LocalDate begin = null;
+                    begin = begin.of(1800, 1, 1);
+                    LocalDate end = now();
+                    ArrayList<String> allFiles = files.findFiles(begin, end);
+                    ArrayList<String> allTopics = new ArrayList();
+                    for (String s : allFiles) {
+                        pop.setFileName(s);
+                        allTopics.addAll(pop.personToTopicPopulate(name));
+                    }
+                    gui.getTopicalList().clear();
+                    LinkedHashSet noDupes = new LinkedHashSet();
+                    noDupes.addAll(allTopics);
+                    gui.getTopicalList().addAll(noDupes);
+                    if (gui.getTopicalList().isEmpty()) {
+                        noDupes.addAll(gui.getSubs());
+                        gui.getTopicalList().addAll(noDupes);
+                    }
+                    gui.getTopical().setItems(gui.getTopicalList());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                //}
+            }
+        });
         /**
          * Button even will search the parameters given. User must enter a
          * person or topic or both. If dates start date is left blank it will
@@ -122,31 +168,30 @@ public class Miner extends Application {
                         librarian.setFileName(s);
                         if ((person == null || person.equals("")) && !topic.equals("")) {
                             total = total + librarian.searchTopic(topic, startDate, endDate);
-                            head = "<topic>" + topic + "</topic>" + "\n" 
-                            + "<date>" + startDate + " to " + endDate + "</date>" + "\n";
+                            head = "<topic>" + topic + "</topic>" + "\n"
+                                    + "<date>" + startDate + " to " + endDate + "</date>" + "\n";
                         } // person search
                         else if (!person.equals("") && (topic == null || topic.equals(""))) {
                             total = total + librarian.searchPerson(person, startDate, endDate);
                             head = "<name>" + person + "</name>" + "\n"
-                                + "<date>" + startDate + " to " + endDate + "</date>" + "\n";
+                                    + "<date>" + startDate + " to " + endDate + "</date>" + "\n";
                         } // both search
                         else if (!person.equals("") && !topic.equals("")) {
                             total = total + librarian.searchBoth(person, topic, startDate, endDate);
-                            head =  "<name>" + person + " </name> " + "\n" +
-                                    "<topic>" +topic + "</topic>" + "\n" + 
-                                    "<date>" +startDate + " to " + endDate + "</date>"+ "\n";
+                            head = "<name>" + person + " </name> " + "\n"
+                                    + "<topic>" + topic + "</topic>" + "\n"
+                                    + "<date>" + startDate + " to " + endDate + "</date>" + "\n";
                         }
 
                     }
-                    if (total.equals(""))
-                    {
+                    if (total.equals("")) {
                         gui.error("No content for search parameters");
-                    }
-                    else{
-                    total = (head+total);
-                    //write to the file
-                    //FileWriter.writeDataFile(total,person,topic);
-                    System.out.println(total);
+                    } else {
+                        total = (head + total);
+
+                        //write to the file
+                        new WriteFile().writeDataFile(total, person, topic);
+                        System.out.println(total);
                     }
                     gui.getProgress().setVisible(false);
                 }
@@ -164,9 +209,7 @@ public class Miner extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-        
+
     }
-    
-   
 
 }

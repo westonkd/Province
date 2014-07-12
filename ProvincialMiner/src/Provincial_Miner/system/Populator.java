@@ -27,7 +27,7 @@ public class Populator {
     public void setFileName(String fileName) {
         this.fileName = System.getProperty("user.home") + "/Desktop/SpeakerFile_files/" + fileName;
     }
-// list of people
+    // list of people
     ArrayList<String> people = new ArrayList();
     //list of topics
     ArrayList<String> topics = new ArrayList();
@@ -44,7 +44,6 @@ public class Populator {
      * Gathers the data from the directory
      */
     public void populate() {
-
         try {
             // open the file
             File xmlPerson = new File(fileName);
@@ -78,6 +77,54 @@ public class Populator {
             e.printStackTrace();
         }
 
+    }
+    
+    /**
+     * 
+     * @param name
+     * @return 
+     */
+    public ArrayList<String> personToTopicPopulate(String name) {
+        ArrayList<String> personToTopic = new ArrayList();
+        try {
+            // open the file
+            File xmlPerson = new File(fileName);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            // uses DOM to parse the xml
+            Document doc = dBuilder.parse(xmlPerson);
+
+            doc.getDocumentElement().normalize();
+
+            NodeList nList = doc.getElementsByTagName("Person");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                NodeList sublist = nNode.getChildNodes();
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    // the person element
+                    Element eElement = (Element) nNode;
+                  //  System.out.println(eElement);
+                    if (name.equals(eElement.getAttribute("name"))){
+                        
+                    
+                        // people.add(eElement.getAttribute("name"));
+                        for (int j = 0; j < sublist.getLength(); j++) {
+                             Node cNode = (Node) sublist.item(j);
+                             if (cNode.getNodeType() == Node.ELEMENT_NODE) {
+                                 // the topic element
+                                 Element cElement = (Element) cNode;
+                                 personToTopic.add(cElement.getAttribute("subject"));
+                             }
+                         }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return personToTopic;
     }
 
 }

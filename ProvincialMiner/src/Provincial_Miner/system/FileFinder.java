@@ -40,18 +40,18 @@ public class FileFinder {
                 String[] parts = filename.split("\\.");
 
                 if (parts[0].equals("Session")) {
-                    System.out.println(parts[0]);
-                    String[] date = parts[1].split("-");
-                    int year = Integer.parseInt(date[0]);
-                    int month = Integer.parseInt(date[1]);
-                    int day = Integer.parseInt(date[2]);
+                    
+                   // String[] date = parts[1].split("-");
+                    //int year = Integer.parseInt(date[0]);
+                    //int month = Integer.parseInt(date[1]);
+                    //int day = Integer.parseInt(date[2]);
 
-                    LocalDate dateCheck = null;
+                   // LocalDate dateCheck = null;
                     // sets local date 
-                    dateCheck = dateCheck.of(year, month, day);
-                    if ((dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
+                    //dateCheck = dateCheck.of(year, month, day);
+                    //if ((dateCheck.isBefore(endDate) || dateCheck.isEqual(endDate))) {
                         validFiles.add(filename);
-                    }
+                    //}
                 }
             }
         }
