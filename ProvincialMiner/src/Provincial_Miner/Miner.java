@@ -16,6 +16,12 @@ import javafx.application.Application;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -83,6 +89,23 @@ public class Miner extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         gui.start(primaryStage);
+        
+        
+         gui.getPeople().valueProperty().addListener(new ChangeListener<String>() {
+         @Override 
+            public void changed(ObservableValue ov, String t, String t1) { 
+                String name = gui.getPeople().getValue();
+                
+              //  if (listName.equals(name))
+                //{
+                    try {
+                      //  gui.getTopical().setItems(FXCollections.observableArrayList(Member.getTopicList(match)));
+                    } catch (Exception ex) {
+                       ex.printStackTrace();
+                    }
+                //}
+            }
+    });
         /**
          * Button even will search the parameters given. User must enter a
          * person or topic or both. If dates start date is left blank it will
@@ -173,21 +196,7 @@ public class Miner extends Application {
     
     
     
-    GUI.this.mComboBox.valueProperty().addListener(new ChangeListener<String>() {
-         @Override 
-            public void changed(ObservableValue ov, String t, String t1) { 
-                String name = search;
-                
-                if (listName.equals(name))
-                {
-                    try {
-                        GUI.this.mComboBox2.setItems(FXCollections.observableArrayList(Member.getTopicList(match)));
-                    } catch (JSONException ex) {
-                        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-    });
+   
     
    
 
