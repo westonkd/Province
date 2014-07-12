@@ -171,6 +171,24 @@ public class Miner extends Application {
         
     }
     
+    
+    
+    GUI.this.mComboBox.valueProperty().addListener(new ChangeListener<String>() {
+         @Override 
+            public void changed(ObservableValue ov, String t, String t1) { 
+                String name = search;
+                
+                if (listName.equals(name))
+                {
+                    try {
+                        GUI.this.mComboBox2.setItems(FXCollections.observableArrayList(Member.getTopicList(match)));
+                    } catch (JSONException ex) {
+                        Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+    });
+    
    
 
 }
