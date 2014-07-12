@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Provincial_Miner.system;
 
 import Provincial_Miner.application.Content;
@@ -41,8 +35,7 @@ public class WriteFile {
      * used to write XML file.
      * @param speakerList 
      */
-    public void PersonXmlWriter(ArrayList<Speaker> speakerList) {
-        
+    public void PersonXmlWriter(ArrayList<Speaker> speakerList) {       
         // String to hold date
         String tempDate = "";
         
@@ -179,38 +172,47 @@ public class WriteFile {
      * @param content 
      */
     public void writeDataFile(String contentToWrite, String personName, String topic) {
-        String fileName = personName + "_" + topic;
-        String tempContentToWrite = "";
+        // Checks if personName is null of empty
+        if (personName == null || personName.isEmpty()) {
+            personName = "All Speakers";
+        }        
+
+        // Checks if topic is null or empty
+        if (topic == null || topic.isEmpty()) {
+            topic = "All Topics";
+        }
             
+        String fileName = personName + "_" + topic;
+
         // Create folder to store .PRO, .html, .txt, and .docx files in
         final File homeDir = new File(System.getProperty("user.home"),"Desktop");
         File dir1 = new File(homeDir, "Quebec");
         dir1.mkdir();
         
-        //creates a folder in "Quebec" named the person's name and topic
+        //Creates a folder in previously created directoy named the person's
+        //name followed by the topic
         File dir2 = new File(dir1, fileName);
         dir2.mkdir();
-              
-        // Replace generic tags with tags needed for .PRO and .txt files.
-        // Add \n to start new line in file
-        tempContentToWrite = contentToWrite.replace("<name>", "<ignore>");
-        tempContentToWrite = tempContentToWrite.replace("</name>", "</ignore> \n");
-        tempContentToWrite = tempContentToWrite.replace("<date>", "<ignore>");
-        tempContentToWrite = tempContentToWrite.replace("</date>", "</ignore> \n");
+        
+        // Replace generic tags with <ignore> tags needed for .PRO and .txt files
+        contentToWrite = contentToWrite.replace("<name>", "<ignore>");
+        contentToWrite = contentToWrite.replace("</name>", "</ignore>");
+        contentToWrite = contentToWrite.replace("<topic>", "<ignore>");   
+        contentToWrite = contentToWrite.replace("</topic>", "</ignore>");
+        contentToWrite = contentToWrite.replace("<date>", "<ignore>");
+        contentToWrite = contentToWrite.replace("</date>", "</ignore>");
         // Write .PRO file  
-        writeToFile(dir2, fileName + ".PRO", tempContentToWrite );
+        writeToFile(dir2, fileName + ".PRO", contentToWrite );
         
         // Write .txt file
-        writeToFile(dir2, fileName + ".txt", tempContentToWrite);
+        writeToFile(dir2, fileName + ".txt", contentToWrite);
         
-        // Replace generic tags with html tags
-        // Add \n to start new line in file
-        tempContentToWrite = contentToWrite.replace("<name>", "<p>");
-        tempContentToWrite = tempContentToWrite.replace("</name>", "</p>\n");
-        tempContentToWrite = tempContentToWrite.replace("<date>", "<p>");
-        tempContentToWrite = tempContentToWrite.replace("</date>", "</p>\n");      
+        // Replaces <ignore> tags with <p> html tags
+        contentToWrite = contentToWrite.replace("<ignore>", "<p>");
+        contentToWrite = contentToWrite.replace("</ignore>", "</p>");
+             
         // Write .html file
-        writeToFile(dir2, fileName + ".html", tempContentToWrite);     
+        writeToFile(dir2, fileName + ".html", contentToWrite);     
     }
     
     /**
