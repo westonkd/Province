@@ -7,9 +7,11 @@ package Provincial_Miner.system;
 
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
+import com.gtranslate.Audio;
 import com.gtranslate.Language;
 import com.gtranslate.Translator;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,7 +101,7 @@ public class PartialQuebecScraper {
      */
     public ArrayList<String> getTopics(String name, String session, boolean indexContent) {
         System.out.println("working on " + name);
-        
+
         //string for the url
         String url = new String();
 
@@ -108,6 +110,7 @@ public class PartialQuebecScraper {
 
         //if the URL has not been found already
         if (!searchedSpeakers.containsKey(name)) {
+            //TODO: Make this work if the person has not been indexed
             //go get all the topics :/
             System.out.println("speaker not in hashmap");
         } else {
@@ -141,25 +144,56 @@ public class PartialQuebecScraper {
                         newContent.setDate(getDate(contentPage.select("h4").text()));
 
                         //TODO: add the content to content and then add the Content to the person we are on
-                        Elements bolded = contentPage.select("b");
+                        Elements paragraphs = contentPage.select(".indexJD").select("p");
 
                         //loop through bolded names and find content from given speaker
-                        for (Element bold : bolded) {
-                            if (bold.text().contains(searchedSpeakers.get(name).getLastName())) {
-                                //then this bold's parent's own text is content we want!
-                                String content = bold.parent().ownText();
+//                        for (Element bold : bolded) {
+//                            if (bold.text().contains(searchedSpeakers.get(name).getLastName())) {
+//                                //then this bold's parent's own text is content we want!
+//                                String content = bold.parent().ownText();
+//
+//                                //translate the content to English
+//                                Translator translate = Translator.getInstance();
+//                                content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+//
+//                                //add it to the new Content object
+//                                System.out.println(content);
+//                                newContent.setContent(content);
+//
+//                                //add the content to the current person
+//                                searchedSpeakers.get(name).addContent(topicName, newContent);
+//                            }
+//                        }
+                        String content = new String();
+                        boolean collectContent = false;
+                        for (int i = 0; i < paragraphs.size(); i++) {
+                            //get the bolded text (if any)
+                            String bold = paragraphs.get(i).select("b").text();
 
-                                //translate the content to English
-                                Translator translate = Translator.getInstance();
-                                content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+                            if (bold.contains(searchedSpeakers.get(name).getLastName())) {
+                                collectContent = true;
+                            } else if (!bold.equals("")) {
+                                collectContent = false;
+                            }
 
-                                //add it to the new Content object
-                                newContent.setContent(content);
-
-                                //add the content to the current person
-                                searchedSpeakers.get(name).addContent(topicName, newContent);
+                            //if the p tag contains the info we want
+                            if (collectContent) {
+                                content += " " + paragraphs.get(i).ownText();
                             }
                         }
+                        
+//                        //remove punctuation
+//                        content = content.replace(".", "").replace(",","");
+//                        
+//                        //translate
+//                        Translator translate = Translator.getInstance();
+//                        content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+
+                        //add it to the new Content object
+                        newContent.setContent(content);
+
+                        //add the content to the current person
+                        searchedSpeakers.get(name).addContent(topicName, newContent);
                     }
                 }
             }
@@ -169,33 +203,33 @@ public class PartialQuebecScraper {
 
         return topics;
     }
-    
+
     /**
      * This method generates a list of Speakers for a given session
-     * 
-     * @param session 
+     *
+     * @param session
      * @return speakers - a list of speakers
      */
     public ArrayList<Speaker> getSession(String session) {
         //creat a new list for speakers
         ArrayList<Speaker> speakers = new ArrayList<>();
-        
+
         //clear out any old speakers
         searchedSpeakers = new HashMap<>();
-        
+
         //get all the names in the session
         ArrayList<String> names = getNames('a', session);
-        
+
         //fill in the content of each person
-        for(String name : names) {
+        for (String name : names) {
             getTopics(name, session, true);
         }
-        
+
         //get all the speakers
-        for(Speaker speaker : searchedSpeakers.values()) {
+        for (Speaker speaker : searchedSpeakers.values()) {
             speakers.add(speaker);
         }
-        
+
         return speakers;
     }
 
