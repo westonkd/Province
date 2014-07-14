@@ -96,10 +96,7 @@ public class Miner extends Application {
                     try {
                         Populator pop = new Populator();
                         FileFinder files = new FileFinder();
-                        LocalDate begin = null;
-                        begin = begin.of(1800, 1, 1);
-                        LocalDate end = now();
-                        ArrayList<String> allFiles = files.findFiles(begin, end);
+                        ArrayList<String> allFiles = files.findFiles();
                         ArrayList<String> allTopics = new ArrayList();
                         for (String s : allFiles) {
                             pop.setFileName(s);
@@ -156,7 +153,7 @@ public class Miner extends Application {
                 } else {
                     //progress bar to know its in process
                     gui.getProgress().setVisible(true);
-                    ArrayList<String> validFiles = files.findFiles(startDate, endDate);
+                    ArrayList<String> validFiles = files.findFiles();
                     String total = "";
                     String head = "";
                     // topic search

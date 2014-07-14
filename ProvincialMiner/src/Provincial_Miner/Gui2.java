@@ -191,10 +191,7 @@ public class Gui2 extends Application {
     public void getData() {
         Populator pop = new Populator();
         FileFinder files = new FileFinder();
-        LocalDate begin = null;
-        begin = begin.of(1800, 1, 1);
-        LocalDate end = now();
-        ArrayList<String> allFiles = files.findFiles(begin, end);
+        ArrayList<String> allFiles = files.findFiles();
         for (String s : allFiles) {
             pop.setFileName(s);
             pop.populate();
@@ -215,11 +212,12 @@ public class Gui2 extends Application {
         primaryStage.setTitle("Provincial Mining");
         peopleList = FXCollections.observableArrayList();
         topicalList = FXCollections.observableArrayList();
-
+        // gets the data to populate the combo boxes
         this.getData();
+        // sorts the lists alphabetically
         Collections.sort(peeps);
         Collections.sort(subs);
-        
+        // gets rid of duplicates in the lists
         LinkedHashSet noDuplicates = new LinkedHashSet(peeps);
         LinkedHashSet noDuplicates2 = new LinkedHashSet(subs);
         peopleList.addAll(noDuplicates);
@@ -301,7 +299,6 @@ public class Gui2 extends Application {
         stack.setVgap(30);
         stack.setPadding(new Insets(50, 50, 50, 50));
         Label errorMessage = new Label(error_message);
-        //errorMessage.setMinWidth(200);
         stack.add(errorMessage, 0, 0,2,1);
 
         Button ok = new Button("ok");
@@ -311,7 +308,6 @@ public class Gui2 extends Application {
         Stage message = new Stage();
         message.setTitle("Error");
         Scene check = new Scene(stack, 280, 120);
-        // check.getStylesheets().add("fxml.css");
         message.setScene(check);
         message.show();
         message.toFront();

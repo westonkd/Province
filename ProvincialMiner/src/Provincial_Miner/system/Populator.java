@@ -51,23 +51,25 @@ public class Populator {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             // uses DOM to parse the xml
             Document doc = dBuilder.parse(xmlPerson);
-
             doc.getDocumentElement().normalize();
-
             NodeList nList = doc.getElementsByTagName("Person");
-
+            // loop through all nodes named Person
             for (int i = 0; i < nList.getLength(); i++) {
                 Node nNode = nList.item(i);
+                // get child nodes of Person
                 NodeList sublist = nNode.getChildNodes();
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     // the person element
                     Element eElement = (Element) nNode;
+                    // add the persons attribute (name)
                     people.add(eElement.getAttribute("name"));
+                    // loop through child nodes (topics)
                     for (int j = 0; j < sublist.getLength(); j++) {
                         Node cNode = (Node) sublist.item(j);
                         if (cNode.getNodeType() == Node.ELEMENT_NODE) {
                             // the topic element
                             Element cElement = (Element) cNode;
+                            // add the topic element (subject)
                             topics.add(cElement.getAttribute("subject"));
                         }
                     }
@@ -80,11 +82,14 @@ public class Populator {
     }
 
     /**
+     * Will populate the topic combobox based on the selection of the person
+     * combo box
      *
-     * @param name
+     * @param name person to search for
      * @return
      */
     public ArrayList<String> personToTopicPopulate(String name) {
+        // arraylist that will populate the topic list based on person selected
         ArrayList<String> personToTopic = new ArrayList();
         try {
             // open the file
@@ -93,25 +98,22 @@ public class Populator {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             // uses DOM to parse the xml
             Document doc = dBuilder.parse(xmlPerson);
-
             doc.getDocumentElement().normalize();
-
             NodeList nList = doc.getElementsByTagName("Person");
-
+            //loop through person nodes
             for (int i = 0; i < nList.getLength(); i++) {
                 Node nNode = nList.item(i);
+                // get persons children
                 NodeList sublist = nNode.getChildNodes();
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     // the person element
                     Element eElement = (Element) nNode;
-                    //  System.out.println(eElement);
+                    // if the name attribute matches the parameter
                     if (name.equals(eElement.getAttribute("name"))) {
-
-                        // people.add(eElement.getAttribute("name"));
                         for (int j = 0; j < sublist.getLength(); j++) {
                             Node cNode = (Node) sublist.item(j);
                             if (cNode.getNodeType() == Node.ELEMENT_NODE) {
-                                // the topic element
+                                //add the topic element
                                 Element cElement = (Element) cNode;
                                 personToTopic.add(cElement.getAttribute("subject"));
                             }
@@ -126,45 +128,4 @@ public class Populator {
         return personToTopic;
     }
 
-    public ArrayList<String> topicToPersonPopulate(String subject) {
-        ArrayList<String> topicToPerson = new ArrayList();
-        try {
-            // open the file
-            File xmlPerson = new File(fileName);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            // uses DOM to parse the xml
-            Document doc = dBuilder.parse(xmlPerson);
-
-            doc.getDocumentElement().normalize();
-
-            NodeList nList = doc.getElementsByTagName("Person");
-
-            for (int i = 0; i < nList.getLength(); i++) {
-                Node nNode = nList.item(i);
-                NodeList sublist = nNode.getChildNodes();
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    // the person element
-                    Element eElement = (Element) nNode;
-
-                    // people.add(eElement.getAttribute("name"));
-                    for (int j = 0; j < sublist.getLength(); j++) {
-                        Node cNode = (Node) sublist.item(j);
-                        if (cNode.getNodeType() == Node.ELEMENT_NODE) {
-                            // the topic element
-                            Element cElement = (Element) cNode;
-                            if (cElement.getAttribute("subject").equals(subject)) {
-                                topicToPerson.add(eElement.getAttribute("name"));
-                            }
-                        }
-
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return topicToPerson;
-    }
 }

@@ -22,16 +22,18 @@ import java.io.File;
 public class Librarian {
 
     String result;
-    String fileName = System.getProperty("user.home") + ("/Desktop/speakerFile.xml");
+    String fileName = "";
 
     public String getFileName() {
         return fileName;
     }
-
+    //sets the file path to look through
     public void setFileName(String fileName) {
         this.fileName = System.getProperty("user.home") + "/Desktop/SpeakerFile_files/" + fileName;
     }
-
+    /**
+     * default constructor
+     */
     public Librarian() {
 
     }
@@ -58,7 +60,7 @@ public class Librarian {
 
             doc.getDocumentElement().normalize();
 
-// searches for the topic tags
+            // searches for the topic tags
             NodeList nList = doc.getElementsByTagName("Person");
 
             for (int i = 0; i < nList.getLength(); i++) {
@@ -69,7 +71,7 @@ public class Librarian {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     // display the topic subject
-// loop through the topics sessions for dates
+                    // loop through the topics sessions for dates
                     for (int j = 0; j < sublist.getLength(); j++) {
                         Node cNode = (Node) sublist.item(j);
                         NodeList dateNode = cNode.getChildNodes();
@@ -139,7 +141,7 @@ public class Librarian {
 
             doc.getDocumentElement().normalize();
 
-// searches for the topic tags
+            // searches for the person tags
             NodeList nList = doc.getElementsByTagName("Person");
 
             for (int i = 0; i < nList.getLength(); i++) {
@@ -152,7 +154,7 @@ public class Librarian {
                     // if the elements attribute equals the search parameter
                     if (eElement.getAttribute("name").equals(person)) {
                         // display the topic subject
-// loop through the topics sessions for dates
+                        // loop through the topics sessions for dates
                         for (int j = 0; j < sublist.getLength(); j++) {
                             Node cNode = (Node) sublist.item(j);
                             NodeList dateNode = cNode.getChildNodes();
@@ -219,11 +221,8 @@ public class Librarian {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             // uses DOM to parse the xml
             Document doc = dBuilder.parse(xmlPerson);
-
             doc.getDocumentElement().normalize();
-
-            //  System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-// searches for the topic tags
+            // searches for the topic tags
             NodeList nList = doc.getElementsByTagName("Person");
 
             for (int i = 0; i < nList.getLength(); i++) {
@@ -231,13 +230,11 @@ public class Librarian {
                 Node nNode = nList.item(i);
                 // sublist of topic (sessions)
                 NodeList sublist = nNode.getChildNodes();
-                //    System.out.println("\n Current Element :" + nNode.getNodeName());
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     // if the elements attribute equals the search parameter
                     if (eElement.getAttribute("name").equals(person)) {
-                        // display the topic subject
-// loop through the topics sessions for dates
+                        // loop through the topics sessions for dates
                         for (int j = 0; j < sublist.getLength(); j++) {
                             Node cNode = (Node) sublist.item(j);
                             NodeList dateNode = cNode.getChildNodes();
