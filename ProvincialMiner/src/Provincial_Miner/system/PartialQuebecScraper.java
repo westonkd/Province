@@ -144,7 +144,7 @@ public class PartialQuebecScraper {
                         //set the content date
                         newContent.setDate(getDate(contentPage.select("h4").text()));
 
-                        //TODO: add the content to content and then add the Content to the person we are on
+                        //add the content to content and then add the Content to the person we are on
                         Elements paragraphs = contentPage.select(".indexJD").select("p");
 
                         //loop through bolded names and find content from given speaker
@@ -183,18 +183,18 @@ public class PartialQuebecScraper {
                             }
                         }
 
-                        //translate the content to French
-                        Translate.setClientId("xid7777");
-                        Translate.setClientSecret("kzbpT0A+Ogrd2exnN0aJh3wiGF4eJNRTcKPjg264EJA=");
-
-                        // From French -> English 
-                        try {
-                            content = Translate.execute(content, com.memetix.mst.language.Language.FRENCH, com.memetix.mst.language.Language.ENGLISH);
-                        } catch (Exception ex) {
-                            System.out.println("Error translating content");
-                        }
-                        
-                        System.out.println(content);
+//                        //translate the content to French
+//                        Translate.setClientId("xid7777");
+//                        Translate.setClientSecret("kzbpT0A+Ogrd2exnN0aJh3wiGF4eJNRTcKPjg264EJA=");
+//
+//                        // From French -> English 
+//                        try {
+//                            content = Translate.execute(content, com.memetix.mst.language.Language.FRENCH, com.memetix.mst.language.Language.ENGLISH);
+//                        } catch (Exception ex) {
+//                            System.out.println("Error translating content");
+//                        }
+//                        
+//                        System.out.println(content);
                         
                         newContent.setContent(content);
 
