@@ -84,6 +84,11 @@ public class Gui2 extends Application {
      * Button will start the search and open the file
      */
     Button find;
+    
+    /**
+     * Button that will update the most recent session
+     */
+    Button update;
 
     /**
      * Progress bar will show it is working.
@@ -268,7 +273,12 @@ public class Gui2 extends Application {
                 + "for current date"));
         grid.add(endDate, 1, 7);
         Font font = new Font(14);
-
+        
+        update = new Button("Update");
+        update.setTooltip(new Tooltip("Updates the most recent session"));
+        update.setMinSize(60,30);
+        grid.add(update, 3,7);
+        
         find = new Button("Search");
         find.setTooltip(new Tooltip("Must have a Person\nor topic\nor both"));
         find.setFont(font);
@@ -281,7 +291,7 @@ public class Gui2 extends Application {
         progress.setVisible(false);
 
         // set the scene and display it
-        scene = new Scene(grid, 600, 300);
+        scene = new Scene(grid, 680, 330);
         scene.getStylesheets().add("fxml.css");
         primaryStage.setScene(scene);
 
