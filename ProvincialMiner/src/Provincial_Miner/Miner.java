@@ -118,9 +118,24 @@ public class Miner extends Application {
             
         });
 
+        /**
+         * update will get the most recent session and replace it with a new version
+         */
+        gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                System.out.println("update in progress");
+                gui.update();
+                
+
+                // when finished call this to close window
+                gui.setOn(false);
+            }
+        });
+
         
         /**
-         * Button even will search the parameters given. User must enter a
+         * Button event will search the parameters given. User must enter a
          * person or topic or both. If dates start date is left blank it will
          * get everything back to 1900 if end date left blank it will be set to
          * current date.

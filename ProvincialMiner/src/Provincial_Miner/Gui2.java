@@ -34,6 +34,16 @@ import javafx.stage.Stage;
 public class Gui2 extends Application {
 
     private static Gui2 instance = null;
+    
+    boolean on;
+
+    public boolean isOn() {
+        return on;
+    }
+
+    public void setOn(boolean on) {
+        this.on = on;
+    }
 
     /**
      * This is a grid style layout that will be centered at the bottom
@@ -84,11 +94,15 @@ public class Gui2 extends Application {
      * Button will start the search and open the file
      */
     Button find;
-    
+
     /**
      * Button that will update the most recent session
      */
     Button update;
+
+    public Button getUpdate() {
+        return update;
+    }
 
     /**
      * Progress bar will show it is working.
@@ -114,7 +128,7 @@ public class Gui2 extends Application {
      * title for the GUI
      */
     Label title;
-    
+
     ArrayList<String> peeps = new ArrayList<String>();
     ArrayList<String> subs = new ArrayList<String>();
 
@@ -201,13 +215,9 @@ public class Gui2 extends Application {
             pop.setFileName(s);
             pop.populate();
         }
-            peeps = pop.getPeople();
-            subs = pop.getTopics();
-        }
-
-      
-
-    
+        peeps = pop.getPeople();
+        subs = pop.getTopics();
+    }
 
     /**
      * Start method is where it builds the GUI
@@ -273,12 +283,12 @@ public class Gui2 extends Application {
                 + "for current date"));
         grid.add(endDate, 1, 7);
         Font font = new Font(14);
-        
+
         update = new Button("Update");
         update.setTooltip(new Tooltip("Updates the most recent session"));
-        update.setMinSize(60,30);
-        grid.add(update, 3,7);
-        
+        update.setMinSize(60, 30);
+        grid.add(update, 3, 7);
+
         find = new Button("Search");
         find.setTooltip(new Tooltip("Must have a Person\nor topic\nor both"));
         find.setFont(font);
@@ -309,7 +319,7 @@ public class Gui2 extends Application {
         stack.setVgap(30);
         stack.setPadding(new Insets(50, 50, 50, 50));
         Label errorMessage = new Label(error_message);
-        stack.add(errorMessage, 0, 0,2,1);
+        stack.add(errorMessage, 0, 0, 2, 1);
 
         Button ok = new Button("ok");
         ok.setMinWidth(80);
@@ -328,5 +338,35 @@ public class Gui2 extends Application {
                 message.close();
             }
         });
+    }
+
+    /**
+     * will show a popup that shows it is in the process of updating
+     */
+    public void update() {
+
+        GridPane stack = new GridPane();
+        stack.setAlignment(Pos.CENTER);
+        stack.setHgap(0);
+        stack.setVgap(30);
+        stack.setPadding(new Insets(50, 50, 50, 50));
+        Label errorMessage = new Label("Update in Progress");
+        stack.add(errorMessage, 0, 0, 2, 1);
+
+        ProgressBar pb = new ProgressBar();
+        pb.setMinWidth(150);
+        stack.add(pb, 0, 1, 2, 1);
+
+        Stage message = new Stage();
+        message.setTitle("Update");
+        Scene check = new Scene(stack, 240, 120);
+        check.getStylesheets().add("fxml.css");
+        message.setScene(check);
+        message.show();
+        message.toFront();
+        if (!on) {
+            message.close();
+        }
+
     }
 }
