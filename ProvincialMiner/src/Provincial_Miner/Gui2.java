@@ -364,6 +364,7 @@ public class Gui2 extends Application {
         message.setScene(check);
         message.show();
         message.toFront();
+        //
         if (!on) {
             message.close();
         }

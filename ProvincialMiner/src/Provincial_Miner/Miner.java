@@ -127,7 +127,7 @@ public class Miner extends Application {
                 System.out.println("update in progress");
                 gui.update();
                 
-
+//
                 // when finished call this to close window
                 gui.setOn(false);
             }
