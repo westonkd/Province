@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 /**
  *
- * @author user
+ * @author Weston Dransfield
  */
 public class PartialScraperTest {
 
