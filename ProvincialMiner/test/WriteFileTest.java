@@ -8,7 +8,6 @@
 
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
-import Provincial_Miner.system.PartialQuebecScraper;
 import Provincial_Miner.system.WriteFile;
 import java.io.File;
 import java.util.ArrayList;
@@ -27,13 +26,10 @@ public class WriteFileTest {
         String content = "This is the content";
         //HashMap<String, List<Session>> topicMap = new HashMap<>();
         
-      PartialQuebecScraper scraper = new PartialQuebecScraper();
+
         
-        
-       ArrayList<Speaker> listOfSpeakers = scraper.getSession("&Session=rd11l4se");
-        
-    //    ArrayList<Speaker> listOfSpeakers = new ArrayList();
-    /*
+        ArrayList<Speaker> listOfSpeakers = new ArrayList();
+    
         // Loop to add new speakers to hasmap
         for (int i = 0; i < 10; i++) {
           listOfSpeakers.add(new Speaker(theSpeaker));
@@ -58,11 +54,11 @@ public class WriteFileTest {
           
          theSpeaker = "Cameron Thomas" + i;   
         }
-        */
+        
         
         
         new WriteFile().PersonXmlWriter(listOfSpeakers);
-      //  new WriteFile().writeDataFile("This is the content", "Cameron Thomas", "War");
+        new WriteFile().writeDataFile("This is the content", "Cameron Thomas", "War");
     }
      
     @Test
