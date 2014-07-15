@@ -9,14 +9,11 @@ import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
 import com.gtranslate.Language;
 import com.gtranslate.Translator;
-import com.memetix.mst.translate.Translate;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -130,11 +127,11 @@ public class PartialQuebecScraper {
                     String topicName = getName(anchor.attr("href"));
 
                     //add the topic to the list
-                    if (!topics.contains(topicName)) {
+                    if (!topics.contains(topicName) && !topicName.equals("Petition Filing ")) {
                         topics.add(topicName);
                     }
 
-                    if (indexContent) {
+                    if (indexContent && !topicName.equals("Petition Filing ")) {
                         //visit each topic page and scrape the content
                         Document contentPage = Jsoup.connect(domain + anchor.attr("href")).get();
 
@@ -147,24 +144,6 @@ public class PartialQuebecScraper {
                         //add the content to content and then add the Content to the person we are on
                         Elements paragraphs = contentPage.select(".indexJD").select("p");
 
-                        //loop through bolded names and find content from given speaker
-//                        for (Element bold : bolded) {
-//                            if (bold.text().contains(searchedSpeakers.get(name).getLastName())) {
-//                                //then this bold's parent's own text is content we want!
-//                                String content = bold.parent().ownText();
-//
-//                                //translate the content to English
-//                                Translator translate = Translator.getInstance();
-//                                content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
-//
-//                                //add it to the new Content object
-//                                System.out.println(content);
-//                                newContent.setContent(content);
-//
-//                                //add the content to the current person
-//                                searchedSpeakers.get(name).addContent(topicName, newContent);
-//                            }
-//                        }
                         String content = new String();
                         boolean collectContent = false;
                         for (int i = 0; i < paragraphs.size(); i++) {
@@ -183,19 +162,10 @@ public class PartialQuebecScraper {
                             }
                         }
 
-//                        //translate the content to French
-//                        Translate.setClientId("xid7777");
-//                        Translate.setClientSecret("kzbpT0A+Ogrd2exnN0aJh3wiGF4eJNRTcKPjg264EJA=");
-//
-//                        // From French -> English 
-//                        try {
-//                            content = Translate.execute(content, com.memetix.mst.language.Language.FRENCH, com.memetix.mst.language.Language.ENGLISH);
-//                        } catch (Exception ex) {
-//                            System.out.println("Error translating content");
-//                        }
-//                        
-//                        System.out.println(content);
-                        
+                        //translate the content
+                        content = translateContent(content);
+                        System.out.println(content);
+
                         newContent.setContent(content);
 
                         //add the content to the current person
@@ -286,6 +256,22 @@ public class PartialQuebecScraper {
         newDate = LocalDate.of(year, monthInt, day);
 
         return newDate;
+    }
+
+    private String translateContent(String content) {
+        //replace all commas and periods with symbols
+        content = content.replace('.', '*');
+        content = content.replace(',', '^');
+
+        //translte the content
+        Translator translate = Translator.getInstance();
+        content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+
+        //replace symbols with proper punctuation
+        content = content.replace('*', '.');
+        content = content.replace('^', ',');
+        
+        return content;
     }
 
 }
