@@ -2,6 +2,7 @@ package Provincial_Miner.system;
 
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -214,7 +215,9 @@ public class WriteFile {
         contentToWrite = contentToWrite.replace("</ignore>", "</p>");
              
         // Write .html file
-        writeToFile(dir3, fileName + ".html", contentToWrite);     
+        writeToFile(dir3, fileName + ".html", contentToWrite); 
+        
+        openSavedFiles(dir3);
     }
     
     /**
@@ -237,6 +240,24 @@ public class WriteFile {
         catch (IOException ex) {
             Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
         }      
+    }
+    
+    /**
+     * 
+     * @param dir 
+     */
+    private void openSavedFiles(File dir) {
+        File[] listOfFiles = dir.listFiles();
+        
+        // Loop throw all files in folder passed in and open all files.
+        for (File file:listOfFiles) {
+            try {
+                
+                Desktop.getDesktop().edit(file);
+            } catch (IOException ex) {
+                Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }    
     }
       
     /**
