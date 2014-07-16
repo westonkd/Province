@@ -92,52 +92,58 @@ public class Miner extends Application {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
                 String name = gui.getPeople().getValue();
-               
-                    try {
-                        Populator pop = new Populator();
-                        FileFinder files = new FileFinder();
-                        ArrayList<String> allFiles = files.findFiles();
-                        ArrayList<String> allTopics = new ArrayList();
-                        for (String s : allFiles) {
-                            pop.setFileName(s);
-                            allTopics.addAll(pop.personToTopicPopulate(name));
-                        }
-                        gui.getTopicalList().clear();
-                        LinkedHashSet noDupes = new LinkedHashSet();
-                        noDupes.addAll(allTopics);
-                        gui.getTopicalList().addAll(noDupes);
-                        if (gui.getTopicalList().isEmpty()) {
-                            noDupes.addAll(gui.getSubs());
-                            gui.getTopicalList().addAll(noDupes);
-                        }
-                        gui.getTopical().setItems(gui.getTopicalList());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+
+                try {
+                    Populator pop = new Populator();
+                    FileFinder files = new FileFinder();
+                    ArrayList<String> allFiles = files.findFiles();
+                    ArrayList<String> allTopics = new ArrayList();
+                    for (String s : allFiles) {
+                        pop.setFileName(s);
+                        allTopics.addAll(pop.personToTopicPopulate(name));
                     }
+                    gui.getTopicalList().clear();
+                    LinkedHashSet noDupes = new LinkedHashSet();
+                    noDupes.addAll(allTopics);
+                    gui.getTopicalList().addAll(noDupes);
+                    if (gui.getTopicalList().isEmpty()) {
+                        noDupes.addAll(gui.getSubs());
+                        gui.getTopicalList().addAll(noDupes);
+                    }
+                    gui.getTopical().setItems(gui.getTopicalList());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-            
+            }
+
         });
 
         /**
-         * update will get the most recent session and replace it with a new version
+         * update will get the most recent session and replace it with a new
+         * version
          */
         gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                System.out.println("update in progress");
+                String downloadFile = "url/webpage/speaker/topic.com";
                 gui.update();
-                
-//
-                // when finished call this to close window
-                gui.setOn(false);
+                // loops through online files and gets data to update
+               // for (){
+                // displays what file is being downloaded.
+                 //   downloadFile = "";
+                gui.getNotification().set(downloadFile);
+               // }
+                // closes the window
+                //gui.getWindow().close();
+            
+
             }
         });
 
-        
         /**
          * Button event will search the parameters given. User must enter a
          * person or topic or both. If dates start date is left blank it will
-         * get everything back to 1900 if end date left blank it will be set to
+         * get everything back to 1800 if end date left blank it will be set to
          * current date.
          */
         gui.getFind().setOnAction(new EventHandler<ActionEvent>() {
@@ -148,7 +154,7 @@ public class Miner extends Application {
                 topic = gui.getTopical().getValue();
                 // if nothing entered in for start date set it to 1900
                 if (gui.getStartDate().getValue() == null) {
-                    startDate = startDate.of(1900, 1, 1);
+                    startDate = startDate.of(1800, 1, 1);
                 } else {
                     startDate = gui.getStartDate().getValue();
                 }
