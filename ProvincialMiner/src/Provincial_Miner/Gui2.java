@@ -372,24 +372,25 @@ public class Gui2 extends Application {
         GridPane stack = new GridPane();
         stack.setAlignment(Pos.CENTER);
         stack.setHgap(0);
-        stack.setVgap(20);
-        stack.setPadding(new Insets(50, 50, 50, 50));
+        stack.setVgap(10);
+        stack.setPadding(new Insets(25, 25, 25, 25));
         Label updateLabel = new Label("Update in Progress");
         stack.add(updateLabel, 0, 0, 2, 1);
         
 
         ProgressBar pb = new ProgressBar();
-        pb.setMinWidth(150);
+        pb.setMinWidth(240);
         stack.add(pb, 0, 2, 2, 1);
         
         window = new Stage();
         window.setTitle("Update");
         
         updateNotification = new Label("updating...");
+        updateNotification.setId("update");
         //allows the label to change based on notification string changing
         updateNotification.textProperty().bind(notification);
         stack.add(updateNotification,0,1,2,1);
-        Scene check = new Scene(stack, 240, 120);
+        Scene check = new Scene(stack, 380, 120);
         check.getStylesheets().add("fxml.css");
         window.setScene(check);
         window.show();

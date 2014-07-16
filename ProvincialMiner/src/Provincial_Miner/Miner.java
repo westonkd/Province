@@ -125,7 +125,7 @@ public class Miner extends Application {
         gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                String downloadFile = "";
+                String downloadFile = "url/webpage/speaker/topic.com";
                 gui.update();
                 // loops through online files and gets data to update
                // for (){
@@ -134,7 +134,7 @@ public class Miner extends Application {
                 gui.getNotification().set(downloadFile);
                // }
                 // closes the window
-                gui.getWindow().close();
+                //gui.getWindow().close();
 //
             
 
