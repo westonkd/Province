@@ -55,8 +55,6 @@ public class WriteFileTest {
          theSpeaker = "Cameron Thomas" + i;   
         }
         
-        
-        
         new WriteFile().PersonXmlWriter(listOfSpeakers);
         new WriteFile().writeDataFile("This is the content", "Cameron Thomas", "War");
     }

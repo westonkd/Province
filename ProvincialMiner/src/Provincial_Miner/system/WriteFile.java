@@ -228,7 +228,7 @@ public class WriteFile {
         // Write .html file
         writeToFile(dir3, fileName + ".html", contentToWrite); 
         
-        // Open folder contain files just written
+        // Open folder containing files just written
         try {
             Desktop.getDesktop().open(dir3);
         } catch (IOException ex) {
