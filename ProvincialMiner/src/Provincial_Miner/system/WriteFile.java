@@ -198,12 +198,23 @@ public class WriteFile {
         dir3.mkdir();
         
         // Replace generic tags with <ignore> tags needed for .PRO and .txt files
+       
         contentToWrite = contentToWrite.replace("<name>", "<ignore>");
         contentToWrite = contentToWrite.replace("</name>", "</ignore>");
         contentToWrite = contentToWrite.replace("<topic>", "<ignore>");   
         contentToWrite = contentToWrite.replace("</topic>", "</ignore>");
         contentToWrite = contentToWrite.replace("<date>", "<ignore>");
         contentToWrite = contentToWrite.replace("</date>", "</ignore>");
+        
+        /*
+        contentToWrite = contentToWrite.replace("<name>", "<ignore>")
+                .replace("</name>", "</ignore>")
+                .replace("<topic>", "<ignore>")
+                .replace("</topic>", "</ignore>")
+                .replace("<date>", "<ignore>")
+                .replace("</date>", "</ignore>");
+        */
+        
         // Write .PRO file  
         writeToFile(dir3, fileName + ".PRO", contentToWrite );
         
@@ -217,7 +228,13 @@ public class WriteFile {
         // Write .html file
         writeToFile(dir3, fileName + ".html", contentToWrite); 
         
-        openSavedFiles(dir3);
+        // Open folder contain files just written
+        try {
+            Desktop.getDesktop().open(dir3);
+        } catch (IOException ex) {
+            Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     /**
@@ -249,15 +266,23 @@ public class WriteFile {
     private void openSavedFiles(File dir) {
         File[] listOfFiles = dir.listFiles();
         
-        // Loop throw all files in folder passed in and open all files.
-        for (File file:listOfFiles) {
+        try {
+            Desktop.getDesktop().open(dir);
+            
+            // Loop throw all files in folder passed in and open all files.
+            /*
+            for (File file:listOfFiles) {
             try {
-                
-                Desktop.getDesktop().edit(file);
+            
+            Desktop.getDesktop().open(file);
             } catch (IOException ex) {
-                Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }    
+            }
+            */
+        } catch (IOException ex) {
+            Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
       
     /**
