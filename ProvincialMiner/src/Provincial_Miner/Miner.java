@@ -92,49 +92,55 @@ public class Miner extends Application {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
                 String name = gui.getPeople().getValue();
-               
-                    try {
-                        Populator pop = new Populator();
-                        FileFinder files = new FileFinder();
-                        ArrayList<String> allFiles = files.findFiles();
-                        ArrayList<String> allTopics = new ArrayList();
-                        for (String s : allFiles) {
-                            pop.setFileName(s);
-                            allTopics.addAll(pop.personToTopicPopulate(name));
-                        }
-                        gui.getTopicalList().clear();
-                        LinkedHashSet noDupes = new LinkedHashSet();
-                        noDupes.addAll(allTopics);
-                        gui.getTopicalList().addAll(noDupes);
-                        if (gui.getTopicalList().isEmpty()) {
-                            noDupes.addAll(gui.getSubs());
-                            gui.getTopicalList().addAll(noDupes);
-                        }
-                        gui.getTopical().setItems(gui.getTopicalList());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+
+                try {
+                    Populator pop = new Populator();
+                    FileFinder files = new FileFinder();
+                    ArrayList<String> allFiles = files.findFiles();
+                    ArrayList<String> allTopics = new ArrayList();
+                    for (String s : allFiles) {
+                        pop.setFileName(s);
+                        allTopics.addAll(pop.personToTopicPopulate(name));
                     }
+                    gui.getTopicalList().clear();
+                    LinkedHashSet noDupes = new LinkedHashSet();
+                    noDupes.addAll(allTopics);
+                    gui.getTopicalList().addAll(noDupes);
+                    if (gui.getTopicalList().isEmpty()) {
+                        noDupes.addAll(gui.getSubs());
+                        gui.getTopicalList().addAll(noDupes);
+                    }
+                    gui.getTopical().setItems(gui.getTopicalList());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-            
+            }
+
         });
 
         /**
-         * update will get the most recent session and replace it with a new version
+         * update will get the most recent session and replace it with a new
+         * version
          */
         gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                System.out.println("update in progress");
-                gui.setOn(true);
+                String downloadFile = "";
                 gui.update();
-                
+                // loops through online files and gets data to update
+               // for (){
+                // displays what file is being downloaded.
+                 //   downloadFile = "";
+                gui.getNotification().set(downloadFile);
+               // }
+                // closes the window
+                gui.getWindow().close();
 //
-                // when finished call this to close window
-                gui.setOn(false);
+            
+
             }
         });
 
-        
         /**
          * Button event will search the parameters given. User must enter a
          * person or topic or both. If dates start date is left blank it will
