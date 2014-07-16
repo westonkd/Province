@@ -125,6 +125,7 @@ public class Miner extends Application {
             @Override
             public void handle(ActionEvent e) {
                 System.out.println("update in progress");
+                gui.setOn(true);
                 gui.update();
                 
 //
