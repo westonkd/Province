@@ -33,7 +33,6 @@ public class Miner extends Application {
     Librarian librarian = new Librarian();
     FileFinder files = new FileFinder();
     //Scrapper scrapper = Scrapper.getInstance();
-    //FileWriter writer = FileWriter.getInstance();
     String person = "";
     String topic = "";
     LocalDate startDate;

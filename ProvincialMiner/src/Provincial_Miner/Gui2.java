@@ -315,8 +315,8 @@ public class Gui2 extends Application {
         grid.add(find, 2, 7);
 
         progress = new ProgressBar();
-        progress.setMaxWidth(65);
-        grid.add(progress, 2, 8);
+        progress.setMinWidth(140);
+        grid.add(progress, 2, 8,2,1);
         progress.setVisible(false);
 
         // set the scene and display it
