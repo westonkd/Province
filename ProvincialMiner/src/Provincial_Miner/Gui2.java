@@ -2,15 +2,12 @@ package Provincial_Miner;
 
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Populator;
-import java.time.LocalDate;
-import static java.time.LocalDate.now;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -140,7 +137,6 @@ public class Gui2 extends Application {
         return window;
     }
 
-   
     StringProperty notification = new SimpleStringProperty();
 
     public StringProperty getNotification() {
@@ -150,8 +146,9 @@ public class Gui2 extends Application {
     public void setNotification(StringProperty notification) {
         this.notification = notification;
     }
-
+    // arraylist holds all the people
     ArrayList<String> peeps = new ArrayList<String>();
+    // arraylist holds all the subjects
     ArrayList<String> subs = new ArrayList<String>();
 
     public ArrayList<String> getPeeps() {
@@ -209,8 +206,6 @@ public class Gui2 extends Application {
     public Scene getScene() {
         return scene;
     }
-
-    
 
     /**
      * empty constructor to make sure it doesn't get instantiation.
@@ -376,27 +371,27 @@ public class Gui2 extends Application {
         stack.setPadding(new Insets(25, 25, 25, 25));
         Label updateLabel = new Label("Update in Progress");
         stack.add(updateLabel, 0, 0, 2, 1);
-        
 
+        // new progress bar
         ProgressBar pb = new ProgressBar();
         pb.setMinWidth(240);
         stack.add(pb, 0, 2, 2, 1);
-        
+
         window = new Stage();
         window.setTitle("Update");
-        
+
         updateNotification = new Label("updating...");
         updateNotification.setId("update");
         //allows the label to change based on notification string changing
         updateNotification.textProperty().bind(notification);
-        stack.add(updateNotification,0,1,2,1);
+        stack.add(updateNotification, 0, 1, 2, 1);
         Scene check = new Scene(stack, 380, 120);
+        // add the stylesheet
         check.getStylesheets().add("fxml.css");
         window.setScene(check);
         window.show();
         window.toFront();
         //
-     
 
     }
 }
