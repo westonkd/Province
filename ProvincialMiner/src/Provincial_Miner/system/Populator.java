@@ -25,7 +25,7 @@ public class Populator {
     String fileName;
 
     public void setFileName(String fileName) {
-        this.fileName = System.getProperty("user.home") + "/Desktop/SpeakerFile_files/" + fileName;
+        this.fileName = System.getProperty("user.home") + "/Documents/SpeakerFile_files/" + fileName;
     }
     // list of people
     ArrayList<String> people = new ArrayList();

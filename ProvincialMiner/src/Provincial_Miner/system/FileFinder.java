@@ -22,7 +22,7 @@ public class FileFinder {
      */
     public ArrayList<String> findFiles() {
         ArrayList<String> validFiles = new ArrayList<String>();
-        File dir = new File((System.getProperty("user.home") + ("/Desktop/SpeakerFile_files/")));
+        File dir = new File((System.getProperty("user.home") + ("/Documents/SpeakerFile_files/")));
         // array of strings for file names
         String[] children = dir.list();
         //if there is no files in directory
