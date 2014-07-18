@@ -2,6 +2,7 @@ package Provincial_Miner.system;
 
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
+import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,9 +40,8 @@ public class WriteFile {
         // String to hold date
         String tempDate = "";
         
-        //Creates a folder on the desktop named "XML Database"
-        final File homeDir = new File(System.getProperty("user.home"),"Desktop");
-        File dir1 = new File(homeDir, "SpeakerFile_files");
+        // Creates a folder in the documents folder to store xml file
+        File dir1 = new File(System.getProperty("user.home") + "/Documents", "SpeakerFile_files");
         dir1.mkdir();
               
         try { 
@@ -184,35 +184,57 @@ public class WriteFile {
             
         String fileName = personName + "_" + topic;
 
-        // Create folder to store .PRO, .html, .txt, and .docx files in
-        final File homeDir = new File(System.getProperty("user.home"),"Desktop");
-        File dir1 = new File(homeDir, "Quebec");
+        // Create folder to store folers for each search
+        File dir1 = new File(System.getProperty("user.home") + "/Documents","Provincial Mining");
         dir1.mkdir();
-        
-        //Creates a folder in previously created directoy named the person's
-        //name followed by the topic
-        File dir2 = new File(dir1, fileName);
+        // Create folder to store .PRO, .html, .txt, and .docx files
+        // for each search
+        File dir2 = new File(dir1, "Quebec");
         dir2.mkdir();
         
+        // Creates a folder in previously created directoy named the person's
+        // name followed by the topic
+        File dir3 = new File(dir2, fileName);
+        dir3.mkdir();
+        
         // Replace generic tags with <ignore> tags needed for .PRO and .txt files
+       
         contentToWrite = contentToWrite.replace("<name>", "<ignore>");
         contentToWrite = contentToWrite.replace("</name>", "</ignore>");
         contentToWrite = contentToWrite.replace("<topic>", "<ignore>");   
         contentToWrite = contentToWrite.replace("</topic>", "</ignore>");
         contentToWrite = contentToWrite.replace("<date>", "<ignore>");
         contentToWrite = contentToWrite.replace("</date>", "</ignore>");
+        
+        /*
+        contentToWrite = contentToWrite.replace("<name>", "<ignore>")
+                .replace("</name>", "</ignore>")
+                .replace("<topic>", "<ignore>")
+                .replace("</topic>", "</ignore>")
+                .replace("<date>", "<ignore>")
+                .replace("</date>", "</ignore>");
+        */
+        
         // Write .PRO file  
-        writeToFile(dir2, fileName + ".PRO", contentToWrite );
+        writeToFile(dir3, fileName + ".PRO", contentToWrite );
         
         // Write .txt file
-        writeToFile(dir2, fileName + ".txt", contentToWrite);
+        writeToFile(dir3, fileName + ".txt", contentToWrite);
         
         // Replaces <ignore> tags with <p> html tags
         contentToWrite = contentToWrite.replace("<ignore>", "<p>");
         contentToWrite = contentToWrite.replace("</ignore>", "</p>");
              
         // Write .html file
-        writeToFile(dir2, fileName + ".html", contentToWrite);     
+        writeToFile(dir3, fileName + ".html", contentToWrite); 
+        
+        // Open folder containing files just written
+        try {
+            Desktop.getDesktop().open(dir3);
+        } catch (IOException ex) {
+            Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
     
     /**
@@ -235,6 +257,32 @@ public class WriteFile {
         catch (IOException ex) {
             Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
         }      
+    }
+    
+    /**
+     * 
+     * @param dir 
+     */
+    private void openSavedFiles(File dir) {
+        File[] listOfFiles = dir.listFiles();
+        
+        try {
+            Desktop.getDesktop().open(dir);
+            
+            // Loop throw all files in folder passed in and open all files.
+            /*
+            for (File file:listOfFiles) {
+            try {
+            
+            Desktop.getDesktop().open(file);
+            } catch (IOException ex) {
+            Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
+            */
+        } catch (IOException ex) {
+            Logger.getLogger(WriteFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
       
     /**

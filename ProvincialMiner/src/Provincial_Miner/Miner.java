@@ -129,9 +129,14 @@ public class Miner extends Application {
         gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+
                 String sessionStart = "&Session=";
                 System.out.println("update in progress");
+
+                String downloadFile = "url/webpage/speaker/topic.com";
+
                 gui.update();
+
 
                 //loop through all sessions until we find four in a row that do not exist
                 boolean sessionExists = true;
@@ -144,13 +149,25 @@ public class Miner extends Application {
 //
                 // when finished call this to close window
                 gui.setOn(false);
+
+                // loops through online files and gets data to update
+               // for (){
+                // displays what file is being downloaded.
+                 //   downloadFile = "";
+                gui.getNotification().set(downloadFile);
+               // }
+                // closes the window
+                //gui.getWindow().close();
+            
+
+
             }
         });
 
         /**
          * Button event will search the parameters given. User must enter a
          * person or topic or both. If dates start date is left blank it will
-         * get everything back to 1900 if end date left blank it will be set to
+         * get everything back to 1800 if end date left blank it will be set to
          * current date.
          */
         gui.getFind().setOnAction(new EventHandler<ActionEvent>() {
@@ -161,7 +178,7 @@ public class Miner extends Application {
                 topic = gui.getTopical().getValue();
                 // if nothing entered in for start date set it to 1900
                 if (gui.getStartDate().getValue() == null) {
-                    startDate = startDate.of(1900, 1, 1);
+                    startDate = startDate.of(1800, 1, 1);
                 } else {
                     startDate = gui.getStartDate().getValue();
                 }

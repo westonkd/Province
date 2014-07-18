@@ -29,7 +29,7 @@ public class Librarian {
     }
     //sets the file path to look through
     public void setFileName(String fileName) {
-        this.fileName = System.getProperty("user.home") + "/Desktop/SpeakerFile_files/" + fileName;
+        this.fileName = System.getProperty("user.home") + "/Documents/SpeakerFile_files/" + fileName;
     }
     /**
      * default constructor
