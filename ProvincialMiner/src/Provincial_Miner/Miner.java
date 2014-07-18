@@ -36,6 +36,7 @@ public class Miner extends Application {
     FileFinder files = new FileFinder();
     PartialQuebecScraper scraper = new PartialQuebecScraper();
     //FileWriter writer = FileWriter.getInstance();
+
     String person = "";
     String topic = "";
     LocalDate startDate;
@@ -129,14 +130,12 @@ public class Miner extends Application {
         gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-
                 String sessionStart = "&Session=";
                 System.out.println("update in progress");
 
                 String downloadFile = "url/webpage/speaker/topic.com";
 
                 gui.update();
-
 
                 //loop through all sessions until we find four in a row that do not exist
                 boolean sessionExists = true;
@@ -149,6 +148,17 @@ public class Miner extends Application {
 //
                 // when finished call this to close window
                 gui.setOn(false);
+
+                // loops through online files and gets data to update
+               // for (){
+                // displays what file is being downloaded.
+                 //   downloadFile = "";
+                gui.getNotification().set(downloadFile);
+               // }
+                // closes the window
+                //gui.getWindow().close();
+            
+
 
                 // loops through online files and gets data to update
                // for (){
