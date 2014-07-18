@@ -33,6 +33,7 @@ public class QuebecScraper implements Scraper {
         "&Session=rd16l4se", "&Session=rd17l1se",
         "&Session=rd17l2se", "&Session=rd18l1se",
         "&Session=rd18l2se", "&Session=rd20l1se",
+            
         "&Session=rd34l2se", "&Session=rd34l3se",
         "&Session=rd35l1se", "&Session=rd35l2se",
         "&Session=rd36l1se", "&Session=rd36l2se",

@@ -7,6 +7,7 @@ package Provincial_Miner;
 
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Librarian;
+import Provincial_Miner.system.PartialQuebecScraper;
 import Provincial_Miner.system.Populator;
 import Provincial_Miner.system.WriteFile;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import static java.time.LocalDate.now;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
@@ -32,13 +34,15 @@ public class Miner extends Application {
     Gui2 gui = Gui2.getInstance();
     Librarian librarian = new Librarian();
     FileFinder files = new FileFinder();
-    //Scrapper scrapper = Scrapper.getInstance();
+    PartialQuebecScraper scraper = new PartialQuebecScraper();
     //FileWriter writer = FileWriter.getInstance();
     String person = "";
     String topic = "";
     LocalDate startDate;
     LocalDate endDate;
     Populator pop = new Populator();
+    
+
 
     public Miner() {
 
@@ -92,48 +96,57 @@ public class Miner extends Application {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
                 String name = gui.getPeople().getValue();
-               
-                    try {
-                        Populator pop = new Populator();
-                        FileFinder files = new FileFinder();
-                        ArrayList<String> allFiles = files.findFiles();
-                        ArrayList<String> allTopics = new ArrayList();
-                        for (String s : allFiles) {
-                            pop.setFileName(s);
-                            allTopics.addAll(pop.personToTopicPopulate(name));
-                        }
-                        gui.getTopicalList().clear();
-                        LinkedHashSet noDupes = new LinkedHashSet();
-                        noDupes.addAll(allTopics);
-                        gui.getTopicalList().addAll(noDupes);
-                        if (gui.getTopicalList().isEmpty()) {
-                            noDupes.addAll(gui.getSubs());
-                            gui.getTopicalList().addAll(noDupes);
-                        }
-                        gui.getTopical().setItems(gui.getTopicalList());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+
+                try {
+                    Populator pop = new Populator();
+                    FileFinder files = new FileFinder();
+                    ArrayList<String> allFiles = files.findFiles();
+                    ArrayList<String> allTopics = new ArrayList();
+                    for (String s : allFiles) {
+                        pop.setFileName(s);
+                        allTopics.addAll(pop.personToTopicPopulate(name));
                     }
+                    gui.getTopicalList().clear();
+                    LinkedHashSet noDupes = new LinkedHashSet();
+                    noDupes.addAll(allTopics);
+                    gui.getTopicalList().addAll(noDupes);
+                    if (gui.getTopicalList().isEmpty()) {
+                        noDupes.addAll(gui.getSubs());
+                        gui.getTopicalList().addAll(noDupes);
+                    }
+                    gui.getTopical().setItems(gui.getTopicalList());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-            
+            }
+
         });
 
         /**
-         * update will get the most recent session and replace it with a new version
+         * update will get the most recent session and replace it with a new
+         * version
          */
         gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                String sessionStart = "&Session=";
                 System.out.println("update in progress");
                 gui.update();
-                
+
+                //loop through all sessions until we find four in a row that do not exist
+                boolean sessionExists = true;
+                for (int i = 11; sessionExists; i++) {
+                    //subsession loop
+                    for (int j = 1; j < 4; j++) {
+                        
+                    }
+                }
 //
                 // when finished call this to close window
                 gui.setOn(false);
             }
         });
 
-        
         /**
          * Button event will search the parameters given. User must enter a
          * person or topic or both. If dates start date is left blank it will

@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 public class PartialScraperTest {
 
     PartialQuebecScraper scraper = new PartialQuebecScraper();
-    ArrayList<String> names = scraper.getNames('a', "&Session=rd11l4se");
+    ArrayList<String> names = scraper.getNames('a', "&Session=rd11l4se", true);
 
     public PartialScraperTest() {
     }

@@ -20,7 +20,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- *
+ * PartialQuebecScraper
+ * 
  * @author Weston Dransfield
  */
 public class PartialQuebecScraper {
@@ -40,11 +41,16 @@ public class PartialQuebecScraper {
      * a speaker object for each name pulled for later use.
      *
      * @param firstLetter the letter to begin the scrape at.
+     * 
      * @param session the session formated as a query string (i.e.
      * &Session=rd39l1se).
+     * 
+     * @param indexPeople set to true if you desire the scraper to begin
+     * buildig a database of people (Makes getting a session later faster).
+     * 
      * @return a list of all names from the specified session
      */
-    public ArrayList<String> getNames(char firstLetter, String session) {
+    public ArrayList<String> getNames(char firstLetter, String session, boolean indexPeople) {
         //create list to store the names
         ArrayList<String> speakerList = new ArrayList<>();
 
@@ -69,14 +75,16 @@ public class PartialQuebecScraper {
 
                     speakerList.add(name);
 
-                    //create a new Person and add the list for later use
-                    Speaker newSpeaker = new Speaker(name);
+                    if (indexPeople) {
+                        //create a new Person and add the list for later use
+                        Speaker newSpeaker = new Speaker(name);
 
-                    //set the speaker's url
-                    newSpeaker.setURL(domain + speaker.select("a").attr("href"));
+                        //set the speaker's url
+                        newSpeaker.setURL(domain + speaker.select("a").attr("href"));
 
-                    //add to the list
-                    searchedSpeakers.put(name, newSpeaker);
+                        //add to the list
+                        searchedSpeakers.put(name, newSpeaker);
+                    }
                 }
 
             } catch (IOException ex) {
@@ -194,7 +202,7 @@ public class PartialQuebecScraper {
         searchedSpeakers = new HashMap<>();
 
         //get all the names in the session
-        ArrayList<String> names = getNames('a', session);
+        ArrayList<String> names = getNames('a', session, true);
 
         //fill in the content of each person
         for (String name : names) {
@@ -209,14 +217,25 @@ public class PartialQuebecScraper {
         return speakers;
     }
 
+    /**
+     * Returns the name of a topic after being passed the URL to the topic page.
+     * @param url
+     * @return 
+     */
     private String getName(String url) {
         url = url.substring(url.indexOf("_") + 1);
 
         //format topic name
         url = url.replace('+', ' ').replace('_', ' ');
 
-        Translator translate = Translator.getInstance();
-        url = translate.translate(url, Language.FRENCH, Language.ENGLISH);
+        try {
+            Translator translate = Translator.getInstance();
+            url = translate.translate(url, Language.FRENCH, Language.ENGLISH);
+        } catch (Exception e) {
+            //if we get an error here, return empty string
+            System.out.println("Error translating topic name");
+            return "";
+        }
 
         //remove all digits
         for (int i = 0; i < 10; i++) {
@@ -226,6 +245,12 @@ public class PartialQuebecScraper {
         return url;
     }
 
+    /**
+     * This method returns a LocalDate object with data parsed from the 
+     * string passed in. This string must be in the form on the content pages i.e.
+     * @param toParse
+     * @return 
+     */
     private LocalDate getDate(String toParse) {
         //create a new date
         LocalDate newDate = LocalDate.now();
@@ -258,18 +283,21 @@ public class PartialQuebecScraper {
         return newDate;
     }
 
+    /**
+     * This method translates content to french
+     * @param content the text to be translated.
+     * @return the translated text.
+     */
     private String translateContent(String content) {
-        //replace all commas and periods with symbols
-        content = content.replace('.', '*');
-        content = content.replace(',', '^');
-
-        //translte the content
+        
+        try {
+        //create new translator and translate the text
         Translator translate = Translator.getInstance();
         content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
-
-        //replace symbols with proper punctuation
-        content = content.replace('*', '.');
-        content = content.replace('^', ',');
+        } catch (Exception e) {
+            System.out.println("Error translatinng content");
+            return "";
+        }
         
         return content;
     }
