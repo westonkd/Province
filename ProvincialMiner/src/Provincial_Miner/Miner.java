@@ -14,10 +14,13 @@ import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -42,8 +45,6 @@ public class Miner extends Application {
     LocalDate startDate;
     LocalDate endDate;
     Populator pop = new Populator();
-    
-
 
     public Miner() {
 
@@ -131,45 +132,31 @@ public class Miner extends Application {
             @Override
             public void handle(ActionEvent e) {
                 String sessionStart = "&Session=";
-                System.out.println("update in progress");
 
                 String downloadFile = "url/webpage/speaker/topic.com";
-
                 gui.update();
-
-                //loop through all sessions until we find four in a row that do not exist
+                
+                //  loop through all sessions until we find four in a row that do not exist
+               
                 boolean sessionExists = true;
                 for (int i = 11; sessionExists; i++) {
-                    //subsession loop
+                    
+                   
+                   // subsession loop
                     for (int j = 1; j < 4; j++) {
-                        
+
                     }
                 }
 //
-               
 
                 // loops through online files and gets data to update
-               // for (){
+                // for (){
                 // displays what file is being downloaded.
-                 //   downloadFile = "";
-                gui.getNotification().set(downloadFile);
-               // }
+                //   downloadFile = "";
+                // gui.getNotification().set(downloadFile);
+                // }
                 // closes the window
                 //gui.getWindow().close();
-            
-
-
-                // loops through online files and gets data to update
-               // for (){
-                // displays what file is being downloaded.
-                 //   downloadFile = "";
-                gui.getNotification().set(downloadFile);
-               // }
-                // closes the window
-                //gui.getWindow().close();
-            
-
-
             }
         });
 
