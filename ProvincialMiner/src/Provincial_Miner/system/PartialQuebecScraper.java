@@ -218,6 +218,19 @@ public class PartialQuebecScraper {
     }
 
     /**
+     *
+     * @param session
+     * @param subsessio
+     * @return
+     */
+    public boolean sessionExists(int session, int subsessio) {
+        //build the sessoi query string
+        String queryString = new String();
+        
+        
+        return true;
+    }
+    /**
      * Returns the name of a topic after being passed the URL to the topic page.
      * @param url
      * @return 
@@ -303,3 +316,4 @@ public class PartialQuebecScraper {
     }
 
 }
+
