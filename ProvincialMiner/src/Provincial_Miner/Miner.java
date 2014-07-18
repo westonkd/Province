@@ -146,8 +146,7 @@ public class Miner extends Application {
                     }
                 }
 //
-                // when finished call this to close window
-                gui.setOn(false);
+               
 
                 // loops through online files and gets data to update
                // for (){
