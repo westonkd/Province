@@ -35,15 +35,7 @@ public class Gui2 extends Application {
 
     private static Gui2 instance = null;
 
-    boolean on;
-
-    public boolean isOn() {
-        return on;
-    }
-
-    public void setOn(boolean on) {
-        this.on = on;
-    }
+   
 
     /**
      * This is a grid style layout that will be centered at the bottom
@@ -129,23 +121,7 @@ public class Gui2 extends Application {
      */
     Label title;
     // updates the label for downloading new files
-    Label updateNotification;
-    // a new stage for update scene
-    Stage window;
-
-    public Stage getWindow() {
-        return window;
-    }
-
-    StringProperty notification = new SimpleStringProperty();
-
-    public StringProperty getNotification() {
-        return notification;
-    }
-
-    public void setNotification(StringProperty notification) {
-        this.notification = notification;
-    }
+    
     // arraylist holds all the people
     ArrayList<String> peeps = new ArrayList<String>();
     // arraylist holds all the subjects
@@ -359,39 +335,6 @@ public class Gui2 extends Application {
         });
     }
 
-    /**
-     * will show a popup that shows it is in the process of updating
-     */
-    public void update() {
-
-        GridPane stack = new GridPane();
-        stack.setAlignment(Pos.CENTER);
-        stack.setHgap(0);
-        stack.setVgap(10);
-        stack.setPadding(new Insets(25, 25, 25, 25));
-        Label updateLabel = new Label("Update in Progress");
-        stack.add(updateLabel, 0, 0, 2, 1);
-
-        // new progress bar
-        ProgressBar pb = new ProgressBar();
-        pb.setMinWidth(240);
-        stack.add(pb, 0, 2, 2, 1);
-
-        window = new Stage();
-        window.setTitle("Update");
-
-        updateNotification = new Label("updating...");
-        updateNotification.setId("update");
-        //allows the label to change based on notification string changing
-        updateNotification.textProperty().bind(notification);
-        stack.add(updateNotification, 0, 1, 2, 1);
-        Scene check = new Scene(stack, 380, 120);
-        // add the stylesheet
-        check.getStylesheets().add("fxml.css");
-        window.setScene(check);
-        window.show();
-        window.toFront();
-        //
-
-    }
+   
+   
 }
