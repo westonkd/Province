@@ -47,10 +47,9 @@ public class Miner extends Application {
     String topic = "";
     LocalDate startDate;
     LocalDate endDate;
+    Thread thread;
+    boolean isOn = false;
     Populator pop = new Populator();
-    
-    
-     
 
     public Miner() {
 
@@ -139,11 +138,17 @@ public class Miner extends Application {
             public void handle(ActionEvent e) {
                 String sessionStart = "&Session=";
                 // new runnable thread update gui
-                Runnable updater = new UpdateGui();
-                Thread thread = new Thread(updater);
-                thread.start();
-                
-                
+                if (isOn) {
+                    if (!thread.isAlive()) {
+                        isOn = false;
+                    }
+                }
+                if (!isOn) {
+                    Runnable updater = new UpdateGui();
+                    thread = new Thread(updater);
+                    thread.start();
+                    isOn = true;
+                }
             }
         });
 
