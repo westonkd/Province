@@ -34,6 +34,8 @@ public class PartialQuebecScraper {
 
     ArrayList<String> months = new ArrayList(Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
 
+    String workingOn = new String();
+    
     /**
      * This method gets all the names from the specifies session starting at the
      * given letter. Note this method takes the session number in the form of
@@ -108,7 +110,7 @@ public class PartialQuebecScraper {
      * @return List of all topics from the given speaker.
      */
     public ArrayList<String> getTopics(String name, String session, boolean indexContent) {
-        System.out.println("working on " + name);
+        workingOn = name;
 
         //string for the url
         String url = new String();
@@ -135,6 +137,7 @@ public class PartialQuebecScraper {
                 if (anchor.attr("href").contains(session)) {
                     //get the topic name
                     String topicName = getName(anchor.attr("href"));
+                    workingOn = topicName;
 
                     //add the topic to the list
                     if (!topics.contains(topicName) && !topicName.equals("Petition Filing ")) {
