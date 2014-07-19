@@ -30,19 +30,15 @@ public class UpdateGui  implements Runnable {
     Scene check;
     GridPane stack;
     ProgressBar pb;
-    StringProperty notification = new SimpleStringProperty();
+   
     boolean running = true;
     boolean sessions = true;
-
-    public StringProperty getNotification() {
-        return notification;
-    }
-
-    public void setNotification(StringProperty notification) {
-        this.notification = notification;
-    }
+ 
     Label updateLabel = new Label("Update in Progress");
-
+/**
+ * Builds the Gui that is used when the update button is pressed
+ * it has a couple labels and a progress bar
+ */
     public UpdateGui() {
 
         window = new Stage();
@@ -74,7 +70,7 @@ public class UpdateGui  implements Runnable {
     public void run() {
         for (int i = 0; i < 100; i++) {
             fileName = "You are here" + i;
-
+            //update the label
             if (running) {
                 Platform.runLater(new Runnable() {
                     @Override
@@ -84,7 +80,7 @@ public class UpdateGui  implements Runnable {
 
                 });
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(0);
                 } catch (InterruptedException e) {
                     updateNotification.setText("Done!");
                     pb.setVisible(false);
@@ -97,6 +93,7 @@ public class UpdateGui  implements Runnable {
             }
 
         }
+        // if the loop finishes 
         Platform.runLater(new Runnable() {
             @Override
             public void run() {

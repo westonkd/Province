@@ -138,6 +138,7 @@ public class Miner extends Application {
             @Override
             public void handle(ActionEvent e) {
                 String sessionStart = "&Session=";
+                // new runnable thread update gui
                 Runnable updater = new UpdateGui();
                 Thread thread = new Thread(updater);
                 thread.start();
