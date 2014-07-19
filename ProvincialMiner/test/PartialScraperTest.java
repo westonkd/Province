@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 public class PartialScraperTest {
 
     PartialQuebecScraper scraper = new PartialQuebecScraper();
-    ArrayList<String> names = scraper.getNames('a', "&Session=rd11l4se", true);
+    ArrayList<String> names = scraper.getNames('a', "&Session=jd41l1se", true);
 
     public PartialScraperTest() {
     }
@@ -27,7 +27,7 @@ public class PartialScraperTest {
         System.out.println(scraper.sessionExists(50, 4));
         System.out.println(scraper.getSessionQuery(34, 1));
         
-        ArrayList<Speaker> speakers = scraper.getSession("&Session=rd11l4se");
+        ArrayList<Speaker> speakers = scraper.getSession("&Session=jd41l1se");
         
         //display the names
         System.out.println("=====SPEAKERS & TOPICS=====");
