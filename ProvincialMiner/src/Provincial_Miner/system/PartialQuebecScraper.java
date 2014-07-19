@@ -218,18 +218,54 @@ public class PartialQuebecScraper {
     }
 
     /**
-     *
+     * This method checks to see if the session data exists
      * @param session
-     * @param subsessio
+     * @param subsession
      * @return
      */
-    public boolean sessionExists(int session, int subsessio) {
-        //build the sessoi query string
-        String queryString = new String();
+    public boolean sessionExists(int session, int subsession) {
+        //build the url
+        final String commonURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/";
+        String url = commonURL + session + "-" + subsession + ".html";
         
+        //attempt to connect
+        try {
+            Document sessionPage = Jsoup.connect(url).get();
+            String message = sessionPage.select(".imbGauche").text();
+
+            //if their is no session data
+            if (message.contains("Aucune séance")) {
+                return false;
+            }
+            
+        } catch (Exception e) {
+            //if page does not exist, return false
+            return false;
+        }
         
+        //the page exists
         return true;
     }
+    
+    /**
+     *
+     * @param session
+     * @param subsession
+     * @return
+     */
+    public String getSessionQuery(int session, int subsession) {
+        String query = new String();
+        
+        //piece together the query string
+        if (sessionExists(session, subsession)) {
+            query = "&Session=" + ((session <= 20) ? "rd" : "jd") + session + "l" + subsession + "se";
+        } else {
+            query = "Session data does not exist";
+        }
+        
+        return query;
+    }
+    
     /**
      * Returns the name of a topic after being passed the URL to the topic page.
      * @param url

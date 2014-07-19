@@ -21,8 +21,12 @@ public class PartialScraperTest {
     public PartialScraperTest() {
     }
 
+    
     @Test
     public void getSession() {
+        System.out.println(scraper.sessionExists(50, 4));
+        System.out.println(scraper.getSessionQuery(34, 1));
+        
         ArrayList<Speaker> speakers = scraper.getSession("&Session=rd11l4se");
         
         //display the names
