@@ -68,7 +68,7 @@ public class UpdateGui  implements Runnable {
      * will run through and find and update the most current session
      */
     public void run() {
-        for (int i = 0; sessions; i++) {
+        for (int i = 0; i< 10000; i++) {
             fileName = "You are here" + i;
             //update the label
             if (!window.isShowing())
@@ -101,6 +101,7 @@ public class UpdateGui  implements Runnable {
             public void run() {
                 updateNotification.setText("Done!");
                 pb.setVisible(false);
+                window.close();
             }
 
         });
