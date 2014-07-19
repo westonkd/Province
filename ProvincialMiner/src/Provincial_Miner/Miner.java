@@ -21,6 +21,8 @@ import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,6 +37,7 @@ import javafx.stage.Stage;
 public class Miner extends Application {
 
     Gui2 gui = Gui2.getInstance();
+
     Librarian librarian = new Librarian();
     FileFinder files = new FileFinder();
     PartialQuebecScraper scraper = new PartialQuebecScraper();
@@ -45,6 +48,9 @@ public class Miner extends Application {
     LocalDate startDate;
     LocalDate endDate;
     Populator pop = new Populator();
+    
+    
+     
 
     public Miner() {
 
@@ -132,31 +138,11 @@ public class Miner extends Application {
             @Override
             public void handle(ActionEvent e) {
                 String sessionStart = "&Session=";
-
-                String downloadFile = "url/webpage/speaker/topic.com";
-                gui.update();
+                Runnable updater = new UpdateGui();
+                Thread thread = new Thread(updater);
+                thread.start();
                 
-                //  loop through all sessions until we find four in a row that do not exist
-               
-                boolean sessionExists = true;
-                for (int i = 11; sessionExists; i++) {
-                    
-                   
-                   // subsession loop
-                    for (int j = 1; j < 4; j++) {
-
-                    }
-                }
-//
-
-                // loops through online files and gets data to update
-                // for (){
-                // displays what file is being downloaded.
-                //   downloadFile = "";
-                // gui.getNotification().set(downloadFile);
-                // }
-                // closes the window
-                //gui.getWindow().close();
+                
             }
         });
 
