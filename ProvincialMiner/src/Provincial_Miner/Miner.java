@@ -40,7 +40,7 @@ public class Miner extends Application {
 
     Librarian librarian = new Librarian();
     FileFinder files = new FileFinder();
-    PartialQuebecScraper scraper = new PartialQuebecScraper();
+    
     //FileWriter writer = FileWriter.getInstance();
 
     String person = "";

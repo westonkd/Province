@@ -57,8 +57,6 @@ public class PartialQuebecScraper {
         //loop through each member of specified session
         for (int i = firstLetter; i <= 'z'; i++) {
             try {
-                System.out.println((char) i);
-
                 //connect to the page of names for the given letter
                 Document letterIndex = Jsoup.connect(firstMemberURL + session + lastMemberURL + (char) i).get();
 
@@ -71,8 +69,13 @@ public class PartialQuebecScraper {
 
                     //format the name
                     name = name.toUpperCase();
-                    name = name.substring(0, name.indexOf("("));
-
+                    
+                    //if there are parens at end of name, remove them
+                    if (name.indexOf("(") > 0) {
+                        name = name.substring(0, name.indexOf("("));
+                    }
+                    
+                    
                     speakerList.add(name);
 
                     if (indexPeople) {
@@ -340,12 +343,11 @@ public class PartialQuebecScraper {
     private String translateContent(String content) {
         
         try {
-        //create new translator and translate the text
-        Translator translate = Translator.getInstance();
-        content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+            //create new translator and translate the text
+            Translator translate = Translator.getInstance();
+            content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
         } catch (Exception e) {
-            System.out.println("Error translatinng content");
-            return "";
+            return content;
         }
         
         return content;

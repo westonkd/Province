@@ -5,10 +5,11 @@
  */
 package Provincial_Miner;
 
-import javafx.application.Application;
+import Provincial_Miner.application.Speaker;
+import Provincial_Miner.system.PartialQuebecScraper;
+import Provincial_Miner.system.WriteFile;
+import java.util.ArrayList;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,7 +22,7 @@ import javafx.stage.Stage;
  *
  * @author Stephen
  */
-public class UpdateGui  implements Runnable {
+public class UpdateGui implements Runnable {
 
     String fileName;
     Label updateNotification;
@@ -30,15 +31,21 @@ public class UpdateGui  implements Runnable {
     Scene check;
     GridPane stack;
     ProgressBar pb;
-   
+
     boolean running = true;
     boolean sessions = true;
- 
+
     Label updateLabel = new Label("Update in Progress");
-/**
- * Builds the Gui that is used when the update button is pressed
- * it has a couple labels and a progress bar
- */
+    PartialQuebecScraper scraper = new PartialQuebecScraper();
+
+    //variables used to find the most recent session.
+    int session;
+    int subsession;
+
+    /**
+     * Builds the Gui that is used when the update button is pressed it has a
+     * couple labels and a progress bar
+     */
     public UpdateGui() {
 
         window = new Stage();
@@ -68,16 +75,45 @@ public class UpdateGui  implements Runnable {
      * will run through and find and update the most current session
      */
     public void run() {
-        for (int i = 0; i< 10000; i++) {
-            fileName = "You are here" + i;
+
+        //variables for finding the newest session
+        String newestSession = new String();
+
+        //number of times a subsession does not exist
+        int noDataCount = 0;
+        int sessionCounter = 34;
+
+        //while we there is still a new session
+        while (noDataCount < 4) {
+            noDataCount = 0;
+
+            //loop through the sub sessions
+            for (int i = 1; i <= 4; i++) {
+                if (scraper.sessionExists(sessionCounter, i)) {
+                    //set varaibles to new session
+                    session = sessionCounter;
+                    subsession = i;
+
+                    //update the displayed message
+                    newestSession = sessionCounter + "-" + i;
+                    fileName = "Checking " + newestSession;
+                } else {
+                    noDataCount++;
+                }
+            }
+
+            //check the next session
+            sessionCounter++;
+
             //update the label
-            if (!window.isShowing())
+            if (!window.isShowing()) {
                 this.kill();
+            }
             if (running) {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        updateNotification.setText("updating " + fileName);
+                        updateNotification.setText(fileName);
                     }
 
                 });
@@ -95,6 +131,13 @@ public class UpdateGui  implements Runnable {
             }
 
         }
+
+        //download the newest session
+        ArrayList<Speaker> speakers = scraper.getSession(scraper.getSessionQuery(session, subsession));
+        
+        //write the session to an XML file
+        new WriteFile().PersonXmlWriter(speakers);
+
         // if the loop finishes 
         Platform.runLater(new Runnable() {
             @Override
