@@ -84,7 +84,7 @@ public class UpdateGui  implements Runnable {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
-                    updateNotification.setText("Done!");
+                    updateNotification.setText("Interrupted!");
                     pb.setVisible(false);
                     this.kill();
 
