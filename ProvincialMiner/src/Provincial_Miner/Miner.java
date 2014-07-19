@@ -161,7 +161,7 @@ public class Miner extends Application {
                         LinkedHashSet noDupesPeeps = new LinkedHashSet();
                         noDupes.addAll(allTopics);
                         noDupesPeeps.addAll(allPeople);
-                        // update the combo boxes
+                        // update the combo boxes with new data
                         gui.getTopicalList().addAll(noDupes);
                         gui.getPeopleList().addAll(noDupesPeeps);
                         gui.getPeople().setItems(gui.getPeopleList());
