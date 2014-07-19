@@ -16,7 +16,9 @@ public class ParseTextTranslate implements Parse {
 	@Override
 	public void parse() {
 		appendURL();
-		String result = WebUtils.source(url.toString());		
+		String result = WebUtils.source(url.toString());
+                
+                
 		result = result.substring(0, result.indexOf("]]"));
 			
 		String split[] = result.split("],\\[");

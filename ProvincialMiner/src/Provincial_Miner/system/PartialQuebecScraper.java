@@ -21,7 +21,7 @@ import org.jsoup.select.Elements;
 
 /**
  * PartialQuebecScraper
- * 
+ *
  * @author Weston Dransfield
  */
 public class PartialQuebecScraper {
@@ -41,13 +41,13 @@ public class PartialQuebecScraper {
      * a speaker object for each name pulled for later use.
      *
      * @param firstLetter the letter to begin the scrape at.
-     * 
+     *
      * @param session the session formated as a query string (i.e.
      * &Session=rd39l1se).
-     * 
-     * @param indexPeople set to true if you desire the scraper to begin
-     * buildig a database of people (Makes getting a session later faster).
-     * 
+     *
+     * @param indexPeople set to true if you desire the scraper to begin buildig
+     * a database of people (Makes getting a session later faster).
+     *
      * @return a list of all names from the specified session
      */
     public ArrayList<String> getNames(char firstLetter, String session, boolean indexPeople) {
@@ -69,13 +69,12 @@ public class PartialQuebecScraper {
 
                     //format the name
                     name = name.toUpperCase();
-                    
+
                     //if there are parens at end of name, remove them
                     if (name.indexOf("(") > 0) {
                         name = name.substring(0, name.indexOf("("));
                     }
-                    
-                    
+
                     speakerList.add(name);
 
                     if (indexPeople) {
@@ -222,6 +221,7 @@ public class PartialQuebecScraper {
 
     /**
      * This method checks to see if the session data exists
+     *
      * @param session
      * @param subsession
      * @return
@@ -230,7 +230,7 @@ public class PartialQuebecScraper {
         //build the url
         final String commonURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/";
         String url = commonURL + session + "-" + subsession + ".html";
-        
+
         //attempt to connect
         try {
             Document sessionPage = Jsoup.connect(url).get();
@@ -240,16 +240,16 @@ public class PartialQuebecScraper {
             if (message.contains("Aucune séance")) {
                 return false;
             }
-            
+
         } catch (Exception e) {
             //if page does not exist, return false
             return false;
         }
-        
+
         //the page exists
         return true;
     }
-    
+
     /**
      *
      * @param session
@@ -258,21 +258,22 @@ public class PartialQuebecScraper {
      */
     public String getSessionQuery(int session, int subsession) {
         String query = new String();
-        
+
         //piece together the query string
         if (sessionExists(session, subsession)) {
             query = "&Session=" + ((session <= 20) ? "rd" : "jd") + session + "l" + subsession + "se";
         } else {
             query = "Session data does not exist";
         }
-        
+
         return query;
     }
-    
+
     /**
      * Returns the name of a topic after being passed the URL to the topic page.
+     *
      * @param url
-     * @return 
+     * @return
      */
     private String getName(String url) {
         url = url.substring(url.indexOf("_") + 1);
@@ -298,10 +299,11 @@ public class PartialQuebecScraper {
     }
 
     /**
-     * This method returns a LocalDate object with data parsed from the 
-     * string passed in. This string must be in the form on the content pages i.e.
+     * This method returns a LocalDate object with data parsed from the string
+     * passed in. This string must be in the form on the content pages i.e.
+     *
      * @param toParse
-     * @return 
+     * @return
      */
     private LocalDate getDate(String toParse) {
         //create a new date
@@ -336,12 +338,12 @@ public class PartialQuebecScraper {
     }
 
     /**
-     * This method translates content to french
+     * This method translates content to French
+     *
      * @param content the text to be translated.
      * @return the translated text.
      */
     private String translateContent(String content) {
-        
         try {
             //create new translator and translate the text
             Translator translate = Translator.getInstance();
@@ -349,9 +351,6 @@ public class PartialQuebecScraper {
         } catch (Exception e) {
             return content;
         }
-        
         return content;
     }
-
 }
-

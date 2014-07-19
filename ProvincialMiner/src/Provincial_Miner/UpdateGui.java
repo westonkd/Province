@@ -81,7 +81,7 @@ public class UpdateGui implements Runnable {
 
         //number of times a subsession does not exist
         int noDataCount = 0;
-        int sessionCounter = 34;
+        int sessionCounter = 40;
 
         //while we there is still a new session
         while (noDataCount < 4) {
