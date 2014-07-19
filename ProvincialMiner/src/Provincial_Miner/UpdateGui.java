@@ -71,6 +71,8 @@ public class UpdateGui  implements Runnable {
         for (int i = 0; sessions; i++) {
             fileName = "You are here" + i;
             //update the label
+            if (!window.isShowing())
+                this.kill();
             if (running) {
                 Platform.runLater(new Runnable() {
                     @Override
