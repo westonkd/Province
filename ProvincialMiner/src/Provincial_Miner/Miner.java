@@ -141,6 +141,32 @@ public class Miner extends Application {
                 if (isOn) {
                     if (!thread.isAlive()) {
                         isOn = false;
+                        // repopulate the lists with new data
+                        Populator pop = new Populator();
+                        FileFinder files = new FileFinder();
+                        ArrayList<String> allFiles = files.findFiles();
+                        ArrayList<String> allTopics = new ArrayList();
+                        ArrayList<String> allPeople = new ArrayList();
+                        for (String s : allFiles) {
+                            pop.setFileName(s);
+                            pop.populate();
+                            allTopics.addAll(pop.getTopics());
+                            allPeople.addAll(pop.getPeople());
+                        }
+                        //clear old lists
+                        gui.getTopicalList().clear();
+                        gui.getPeopleList().clear();
+                        //get rid of duplcates
+                        LinkedHashSet noDupes = new LinkedHashSet();
+                        LinkedHashSet noDupesPeeps = new LinkedHashSet();
+                        noDupes.addAll(allTopics);
+                        noDupesPeeps.addAll(allPeople);
+                        // update the combo boxes with new data
+                        gui.getTopicalList().addAll(noDupes);
+                        gui.getPeopleList().addAll(noDupesPeeps);
+                        gui.getPeople().setItems(gui.getPeopleList());
+                        gui.getTopical().setItems(gui.getTopicalList());
+
                     }
                 }
                 if (!isOn) {
