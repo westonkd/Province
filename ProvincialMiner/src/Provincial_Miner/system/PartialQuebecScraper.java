@@ -115,7 +115,7 @@ public class PartialQuebecScraper {
          Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        updateNotification.setText("On " + name);
+                        updateNotification.setText("RETRIEVING: " + name);
                     }
 
                 });
