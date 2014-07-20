@@ -34,8 +34,6 @@ public class PartialQuebecScraper {
 
     ArrayList<String> months = new ArrayList(Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
 
-    String workingOn = new String();
-    
     /**
      * This method gets all the names from the specifies session starting at the
      * given letter. Note this method takes the session number in the form of
@@ -110,7 +108,7 @@ public class PartialQuebecScraper {
      * @return List of all topics from the given speaker.
      */
     public ArrayList<String> getTopics(String name, String session, boolean indexContent) {
-        workingOn = name;
+        System.out.print("=");
 
         //string for the url
         String url = new String();
@@ -137,7 +135,6 @@ public class PartialQuebecScraper {
                 if (anchor.attr("href").contains(session)) {
                     //get the topic name
                     String topicName = getName(anchor.attr("href"));
-                    workingOn = topicName;
 
                     //add the topic to the list
                     if (!topics.contains(topicName) && !topicName.equals("Petition Filing ")) {
@@ -177,8 +174,7 @@ public class PartialQuebecScraper {
 
                         //translate the content
                         content = translateContent(content);
-                        System.out.println(content);
-
+                        
                         newContent.setContent(content);
 
                         //add the content to the current person
@@ -347,13 +343,22 @@ public class PartialQuebecScraper {
      * @return the translated text.
      */
     private String translateContent(String content) {
-        try {
-            //create new translator and translate the text
-            Translator translate = Translator.getInstance();
-            content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
-        } catch (Exception e) {
-            return content;
+        Translator translate = Translator.getInstance();
+        
+        String totalContent = new String();
+        content = content.replace("...","");
+        
+        for(String sentance : content.split(".")) {
+            totalContent += translate.translate(content, Language.FRENCH, Language.ENGLISH) + ".";
         }
-        return content;
+        
+//        try {
+//            //create new translator and translate the text
+//            Translator translate = Translator.getInstance();
+//            content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+//        } catch (Exception e) {
+//            return content;
+//        }
+        return totalContent;
     }
 }
