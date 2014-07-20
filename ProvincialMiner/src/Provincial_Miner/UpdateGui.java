@@ -26,6 +26,7 @@ public class UpdateGui implements Runnable {
 
     String fileName;
     Label updateNotification;
+
     // a new stage for update scene
     Stage window;
     Scene check;
@@ -60,6 +61,7 @@ public class UpdateGui implements Runnable {
         // new progress bar
         pb.setMinWidth(240);
         stack.add(pb, 0, 2, 2, 1);
+        pb.setVisible(false);
         window.setTitle("Update");
         updateNotification = new Label("updating");
         updateNotification.setId("update");
@@ -131,10 +133,18 @@ public class UpdateGui implements Runnable {
             }
 
         }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                updateNotification.setText("Grabbing Data");
+                pb.setVisible(true);
+            }
 
+        });
         //download the newest session
+
         ArrayList<Speaker> speakers = scraper.getSession(scraper.getSessionQuery(session, subsession));
-        
+
         //write the session to an XML file
         new WriteFile().PersonXmlWriter(speakers);
 
