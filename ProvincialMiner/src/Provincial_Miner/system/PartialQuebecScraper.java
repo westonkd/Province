@@ -34,6 +34,7 @@ public class PartialQuebecScraper {
     private final String firstMemberURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/recherche.html?cat=v";
     private final String lastMemberURL = "&Section=particip&Requete=";
     private final String domain = "http://www.assnat.qc.ca/";
+    // used for progress indication
     double num = 0.0;
     double size;
     private HashMap<String, Speaker> searchedSpeakers = new HashMap<>();
