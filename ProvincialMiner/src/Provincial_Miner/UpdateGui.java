@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 public class UpdateGui implements Runnable {
 
     String fileName;
-    Label updateNotification;
+    public static Label updateNotification;
 
     // a new stage for update scene
     Stage window;

@@ -5,6 +5,7 @@
  */
 package Provincial_Miner.system;
 
+import static Provincial_Miner.UpdateGui.updateNotification;
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
 import com.gtranslate.Language;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import javafx.application.Platform;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -110,6 +112,13 @@ public class PartialQuebecScraper {
     public ArrayList<String> getTopics(String name, String session, boolean indexContent) {
         System.out.print("=");
 
+         Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateNotification.setText("Retrieving" + name);
+                    }
+
+                });
         //string for the url
         String url = new String();
 
