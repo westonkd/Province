@@ -174,7 +174,7 @@ public class PartialQuebecScraper {
 
                         //translate the content
                         content = translateContent(content);
-                        
+
                         newContent.setContent(content);
 
                         //add the content to the current person
@@ -343,22 +343,13 @@ public class PartialQuebecScraper {
      * @return the translated text.
      */
     private String translateContent(String content) {
-        Translator translate = Translator.getInstance();
-        
-        String totalContent = new String();
-        content = content.replace("...","");
-        
-        for(String sentance : content.split(".")) {
-            totalContent += translate.translate(content, Language.FRENCH, Language.ENGLISH) + ".";
+        try {
+            //create new translator and translate the text
+            Translator translate = Translator.getInstance();
+            content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+        } catch (Exception e) {
+            return content;
         }
-        
-//        try {
-//            //create new translator and translate the text
-//            Translator translate = Translator.getInstance();
-//            content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
-//        } catch (Exception e) {
-//            return content;
-//        }
-        return totalContent;
+        return content;
     }
 }
