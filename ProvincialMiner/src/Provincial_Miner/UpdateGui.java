@@ -31,7 +31,7 @@ public class UpdateGui implements Runnable {
     Stage window;
     Scene check;
     GridPane stack;
-    ProgressBar pb;
+    public static ProgressBar pb;
 
     boolean running = true;
     boolean sessions = true;
