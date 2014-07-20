@@ -14,18 +14,10 @@ import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -98,25 +90,32 @@ public class Miner extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         gui.start(primaryStage);
-
+/**
+ * This will update the topics depending on what speaker is chosen
+ */
         gui.getPeople().valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
                 String name = gui.getPeople().getValue();
 
                 try {
+                    // create a new populator
                     Populator pop = new Populator();
                     FileFinder files = new FileFinder();
+                    // find the files to populate from
                     ArrayList<String> allFiles = files.findFiles();
                     ArrayList<String> allTopics = new ArrayList();
+                    // find all topics related to the person speaking
                     for (String s : allFiles) {
                         pop.setFileName(s);
                         allTopics.addAll(pop.personToTopicPopulate(name));
                     }
+                    //clear the old list
                     gui.getTopicalList().clear();
                     LinkedHashSet noDupes = new LinkedHashSet();
                     noDupes.addAll(allTopics);
                     gui.getTopicalList().addAll(noDupes);
+                    //repopulate if empty
                     if (gui.getTopicalList().isEmpty()) {
                         noDupes.addAll(gui.getSubs());
                         gui.getTopicalList().addAll(noDupes);
