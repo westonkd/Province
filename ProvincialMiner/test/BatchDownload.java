@@ -23,7 +23,11 @@ public class BatchDownload {
 
     @Test
     public void batchDownload() {
-        for (int i = 11; i < 41; i++) {
+        for (int i = 40; i < 41; i++) {
+            if (i == 21) {
+                i = 36;
+            }
+            
             for (int j = 1; j <= 4; j++) {
                 if (scraper.sessionExists(i, j)) {
                     System.out.println("Downloading: " + i + "-" + j);

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Provincial_Miner.system;
 
 import static Provincial_Miner.UpdateGui.pb;
@@ -26,19 +22,25 @@ import org.jsoup.select.Elements;
 
 /**
  * PartialQuebecScraper
- *
+ * Used to scrape the Quebec Hasnard.
+ * 
  * @author Weston Dransfield
  */
-public class PartialQuebecScraper {
+public class PartialQuebecScraper implements Scraper {
 
+    //variables to construct proper URLs
     private final String firstMemberURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/recherche.html?cat=v";
     private final String lastMemberURL = "&Section=particip&Requete=";
     private final String domain = "http://www.assnat.qc.ca/";
+   
     // used for progress indication
     double num = 0.0;
     double size;
+    
+    //stores the searched speakers for later use
     private HashMap<String, Speaker> searchedSpeakers = new HashMap<>();
 
+    //used for generating a session date
     ArrayList<String> months = new ArrayList(Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
 
     /**
@@ -57,6 +59,7 @@ public class PartialQuebecScraper {
      *
      * @return a list of all names from the specified session
      */
+    @Override
     public ArrayList<String> getNames(char firstLetter, String session, boolean indexPeople) {
         //create list to store the names
         ArrayList<String> speakerList = new ArrayList<>();
@@ -114,27 +117,10 @@ public class PartialQuebecScraper {
      * @param indexContent
      * @return List of all topics from the given speaker.
      */
+    @Override
     public ArrayList<String> getTopics(String name, String session, boolean indexContent) {
-        System.out.print("=");
+        System.out.print("Working on: " + name);
 
-        // updates the label displaying what name its retrieving
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                num++;
-                updateNotification.setText("RETRIEVING: " + name);
-                double progress = num/size;
-                pb.setProgress(progress);
-
-            }
-           
-
-        });
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(PartialQuebecScraper.class.getName()).log(Level.SEVERE, null, ex);
-        }
         //string for the url
         String url = new String();
 
@@ -153,14 +139,15 @@ public class PartialQuebecScraper {
         //get all links on the member page, then extract the topic names
         try {
             Document speakerPage = Jsoup.connect(url).get();
-            Elements anchors = speakerPage.select("a");
+            Elements anchors = speakerPage.select(".indexJD").select("a");
 
             for (Element anchor : anchors) {
+
                 //if the anchor tag is a link to topic content
                 if (anchor.attr("href").contains(session)) {
                     //get the topic name
                     String topicName = getName(anchor.attr("href"));
-
+                    System.out.println("\t" + topicName);
                     //add the topic to the list
                     if (!topics.contains(topicName) && !topicName.equals("Petition Filing ")) {
                         topics.add(topicName);
@@ -198,8 +185,7 @@ public class PartialQuebecScraper {
                         }
 
                         //translate the content
-                        content = translateContent(content);
-
+                        //content = translateContent(content);
                         newContent.setContent(content);
 
                         //add the content to the current person
@@ -220,6 +206,7 @@ public class PartialQuebecScraper {
      * @param session
      * @return speakers - a list of speakers
      */
+    @Override
     public ArrayList<Speaker> getSession(String session) {
         //creat a new list for speakers
         ArrayList<Speaker> speakers = new ArrayList<>();
@@ -229,7 +216,7 @@ public class PartialQuebecScraper {
 
         //get all the names in the session
         ArrayList<String> names = getNames('a', session, true);
-size = names.size();
+        size = names.size();
         //fill in the content of each person
         for (String name : names) {
             getTopics(name, session, true);
@@ -246,10 +233,11 @@ size = names.size();
     /**
      * This method checks to see if the session data exists
      *
-     * @param session
-     * @param subsession
+     * @param session - main session number
+     * @param subsession - subsession number
      * @return
      */
+    @Override
     public boolean sessionExists(int session, int subsession) {
         //build the url
         final String commonURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/";
@@ -334,6 +322,7 @@ size = names.size();
         LocalDate newDate = LocalDate.now();
 
         //get the line with the date
+        toParse = toParse.substring(toParse.indexOf("°"));
         toParse = toParse.substring(toParse.indexOf(",") + 2);
 
         //get the day
@@ -362,7 +351,8 @@ size = names.size();
     }
 
     /**
-     * This method translates content to French
+     * This method translates content to French if translation fails it
+     * returns the text in the original French.
      *
      * @param content the text to be translated.
      * @return the translated text.
@@ -373,6 +363,7 @@ size = names.size();
             Translator translate = Translator.getInstance();
             content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
         } catch (Exception e) {
+            System.out.println("Error translating content");
             return content;
         }
         return content;
