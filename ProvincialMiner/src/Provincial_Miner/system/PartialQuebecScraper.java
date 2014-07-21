@@ -1,4 +1,3 @@
-
 package Provincial_Miner.system;
 
 import static Provincial_Miner.UpdateGui.pb;
@@ -21,9 +20,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- * PartialQuebecScraper
- * Used to scrape the Quebec Hasnard.
- * 
+ * PartialQuebecScraper Used to scrape the Quebec Hasnard.
+ *
  * @author Weston Dransfield
  */
 public class PartialQuebecScraper implements Scraper {
@@ -32,11 +30,11 @@ public class PartialQuebecScraper implements Scraper {
     private final String firstMemberURL = "http://www.assnat.qc.ca/fr/travaux-parlementaires/journaux-debats/index-jd/recherche.html?cat=v";
     private final String lastMemberURL = "&Section=particip&Requete=";
     private final String domain = "http://www.assnat.qc.ca/";
-   
+
     // used for progress indication
     double num = 0.0;
     double size;
-    
+
     //stores the searched speakers for later use
     private HashMap<String, Speaker> searchedSpeakers = new HashMap<>();
 
@@ -155,41 +153,53 @@ public class PartialQuebecScraper implements Scraper {
 
                     if (indexContent && !topicName.equals("Petition Filing ")) {
                         //visit each topic page and scrape the content
-                        Document contentPage = Jsoup.connect(domain + anchor.attr("href")).get();
+                        System.out.println("attempting: " + domain + anchor.attr("href"));
+                        try {
+                            Document contentPage = Jsoup.connect(domain + anchor.attr("href")).get();
+                            
+                            //if the page does not exist
+                            if(contentPage.select("imbGauche").text().contains("Le terme recherché n'a pas été"))
+                            {
+                                //continue to next itteration
+                                continue;
+                            }
+                            
+                            //create a new Content for the Speaker
+                            Content newContent = new Content();
 
-                        //create a new Content for the Speaker
-                        Content newContent = new Content();
+                            //set the content date
+                            newContent.setDate(getDate(contentPage.select("h4").text()));
 
-                        //set the content date
-                        newContent.setDate(getDate(contentPage.select("h4").text()));
+                            //add the content to content and then add the Content to the person we are on
+                            Elements paragraphs = contentPage.select(".indexJD").select("p");
 
-                        //add the content to content and then add the Content to the person we are on
-                        Elements paragraphs = contentPage.select(".indexJD").select("p");
+                            String content = new String();
+                            boolean collectContent = false;
+                            for (int i = 0; i < paragraphs.size(); i++) {
+                                //get the bolded text (if any)
+                                String bold = paragraphs.get(i).select("b").text();
 
-                        String content = new String();
-                        boolean collectContent = false;
-                        for (int i = 0; i < paragraphs.size(); i++) {
-                            //get the bolded text (if any)
-                            String bold = paragraphs.get(i).select("b").text();
+                                if (bold.contains(searchedSpeakers.get(name).getLastName())) {
+                                    collectContent = true;
+                                } else if (!bold.equals("")) {
+                                    collectContent = false;
+                                }
 
-                            if (bold.contains(searchedSpeakers.get(name).getLastName())) {
-                                collectContent = true;
-                            } else if (!bold.equals("")) {
-                                collectContent = false;
+                                //if the p tag contains the info we want
+                                if (collectContent) {
+                                    content += " " + paragraphs.get(i).ownText();
+                                }
                             }
 
-                            //if the p tag contains the info we want
-                            if (collectContent) {
-                                content += " " + paragraphs.get(i).ownText();
-                            }
+                            //translate the content
+                            //content = translateContent(content);
+                            newContent.setContent(content);
+
+                            //add the content to the current person
+                            searchedSpeakers.get(name).addContent(topicName, newContent);
+                        } catch (IOException e) {
+                            System.out.println("Error connecting to content page");
                         }
-
-                        //translate the content
-                        //content = translateContent(content);
-                        newContent.setContent(content);
-
-                        //add the content to the current person
-                        searchedSpeakers.get(name).addContent(topicName, newContent);
                     }
                 }
             }
@@ -307,7 +317,7 @@ public class PartialQuebecScraper implements Scraper {
             url = url.replace(Integer.toString(i), "");
         }
 
-        return url;
+        return url.replace(";", "");
     }
 
     /**
@@ -322,7 +332,10 @@ public class PartialQuebecScraper implements Scraper {
         LocalDate newDate = LocalDate.now();
 
         //get the line with the date
-        toParse = toParse.substring(toParse.indexOf("°"));
+        if (toParse.indexOf("°") > 0) {
+            toParse = toParse.substring(toParse.indexOf("°"));
+        }
+
         toParse = toParse.substring(toParse.indexOf(",") + 2);
 
         //get the day
@@ -351,8 +364,8 @@ public class PartialQuebecScraper implements Scraper {
     }
 
     /**
-     * This method translates content to French if translation fails it
-     * returns the text in the original French.
+     * This method translates content to French if translation fails it returns
+     * the text in the original French.
      *
      * @param content the text to be translated.
      * @return the translated text.
