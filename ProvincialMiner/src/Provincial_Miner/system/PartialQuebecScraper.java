@@ -208,7 +208,7 @@ public class PartialQuebecScraper {
                                 content = translateContent(s);
                                 System.out.println(content);
                                 System.out.println(s.length());
-                                total += content + ".";
+                                total += content + ". ";
 
                             }
                             // add the total to new Content
