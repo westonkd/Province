@@ -20,6 +20,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -35,8 +36,11 @@ public class Gui2 extends Application {
 
     private static Gui2 instance = null;
 
-   
+    boolean translate;
 
+    public boolean isTranslate() {
+        return translate;
+    }
     /**
      * This is a grid style layout that will be centered at the bottom
      */
@@ -120,8 +124,14 @@ public class Gui2 extends Application {
      * title for the GUI
      */
     Label title;
-    // updates the label for downloading new files
-    
+   
+    //decides if translates to english or not
+    RadioButton language;
+
+    public RadioButton getLanguage() {
+        return language;
+    }
+
     // arraylist holds all the people
     ArrayList<String> peeps = new ArrayList<String>();
     // arraylist holds all the subjects
@@ -289,10 +299,14 @@ public class Gui2 extends Application {
         find.setFont(font);
         find.setMinSize(60, 30);
         grid.add(find, 2, 7);
+        
+        language = new RadioButton("Translate");
+        language.setTooltip(new Tooltip ("Translates to english"));
+        grid.add(language,2,6,2,1);
 
         progress = new ProgressBar();
         progress.setMinWidth(140);
-        grid.add(progress, 2, 8,2,1);
+        grid.add(progress, 2, 8, 2, 1);
         progress.setVisible(false);
 
         // set the scene and display it
@@ -336,5 +350,5 @@ public class Gui2 extends Application {
     }
 
    
-   
+
 }

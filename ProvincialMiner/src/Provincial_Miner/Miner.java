@@ -32,9 +32,8 @@ public class Miner extends Application {
 
     Librarian librarian = new Librarian();
     FileFinder files = new FileFinder();
-    
+    PartialQuebecScraper scraper = new PartialQuebecScraper();
     //FileWriter writer = FileWriter.getInstance();
-
     String person = "";
     String topic = "";
     LocalDate startDate;
@@ -90,9 +89,9 @@ public class Miner extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         gui.start(primaryStage);
-/**
- * This will update the topics depending on what speaker is chosen
- */
+        /**
+         * This will update the topics depending on what speaker is chosen
+         */
         gui.getPeople().valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
@@ -135,7 +134,6 @@ public class Miner extends Application {
         gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                String sessionStart = "&Session=";
                 // new runnable thread update gui
                 if (isOn) {
                     if (!thread.isAlive()) {
@@ -209,11 +207,34 @@ public class Miner extends Application {
                         }
 
                     }
+                    String complete = null;
                     if (total.equals("")) {
                         gui.error("No content for search parameters");
                     } else {
-                        total = (head + total);
+                        if (gui.getLanguage().isSelected()) {
+                               //translate the content
+                        String parts[];
+                       
+                        if (total.length() > 1500) {
+                            //split by periods if greater than 1500
+                            parts = total.split("\\.");
+                            for (String s : parts) {
+                                total = translateContent(s);
+                                System.out.println(total);
+                                System.out.println(s.length());
+                                complete += total + ". ";
 
+                            }
+                          
+                        } else {
+                            complete = total;
+                        }
+                        }
+                        else {
+                        complete = total;
+                        }
+                        total = (head + complete);
+                        
                         //write to the file
                         new WriteFile().writeDataFile(total, person, topic);
                         System.out.println(total);
@@ -235,6 +256,17 @@ public class Miner extends Application {
     public static void main(String[] args) {
         launch(args);
 
+    }
+    
+      private String translateContent(String content) {
+        try {
+            //create new translator and translate the text
+            com.gtranslate.Translator translate = com.gtranslate.Translator.getInstance();
+            content = translate.translate(content, com.gtranslate.Language.FRENCH, com.gtranslate.Language.ENGLISH);
+        } catch (Exception e) {
+            return content;
+        }
+        return content;
     }
 
 }
