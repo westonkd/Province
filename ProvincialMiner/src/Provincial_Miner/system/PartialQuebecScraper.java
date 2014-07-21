@@ -202,18 +202,18 @@ public class PartialQuebecScraper {
                         String parts[];
                         String total = null;
                         if (content.length() > 1500) {
-                            
+                            //split by periods if greater than 1500
                             parts = content.split("\\.");
                             for (String s : parts) {
                                 content = translateContent(s);
-System.out.println(s);
-System.out.println(s.length());
-                               total += content; 
+                                System.out.println(content);
+                                System.out.println(s.length());
+                                total += content = ".";
 
                             }
+                            // add the total to new Content
                             newContent.setContent(total);
                         } else {
-                            
 
                             content = translateContent(content);
 
