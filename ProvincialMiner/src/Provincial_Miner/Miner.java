@@ -5,6 +5,8 @@
  */
 package Provincial_Miner;
 
+import static Provincial_Miner.UpdateGui.pb;
+import static Provincial_Miner.UpdateGui.updateNotification;
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Librarian;
 import Provincial_Miner.system.PartialQuebecScraper;
@@ -14,8 +16,11 @@ import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -159,6 +164,7 @@ public class Miner extends Application {
             @Override
             public void handle(ActionEvent e) {
 
+                gui.getProgress().setVisible(true);
                 person = gui.getPeople().getValue();
                 topic = gui.getTopical().getValue();
                 // if nothing entered in for start date set it to 1900
@@ -182,7 +188,7 @@ public class Miner extends Application {
                     gui.error("Invalid Parameters");
                 } else {
                     //progress bar to know its in process
-                    gui.getProgress().setVisible(true);
+
                     ArrayList<String> validFiles = files.findFiles();
                     String total = "";
                     String head = "";
@@ -212,29 +218,26 @@ public class Miner extends Application {
                         gui.error("No content for search parameters");
                     } else {
                         if (gui.getLanguage().isSelected()) {
-                               //translate the content
-                        String parts[];
-                       
-                        if (total.length() > 1500) {
-                            //split by periods if greater than 1500
-                            parts = total.split("\\.");
-                            for (String s : parts) {
-                                total = translateContent(s);
-                                System.out.println(total);
-                                System.out.println(s.length());
-                                complete += total + ". ";
 
+                            //translate the content
+                            String parts[];
+                            if (total.length() > 1500) {
+                                //split by periods if greater than 1500
+                                parts = total.split("\\.");
+                                for (String s : parts) {
+                                    total = translateContent(s);
+                                    complete += total + ". ";
+
+                                }
+
+                            } else {
+                                complete = total;
                             }
-                          
                         } else {
                             complete = total;
                         }
-                        }
-                        else {
-                        complete = total;
-                        }
                         total = (head + complete);
-                        
+
                         //write to the file
                         new WriteFile().writeDataFile(total, person, topic);
                         System.out.println(total);
@@ -257,8 +260,8 @@ public class Miner extends Application {
         launch(args);
 
     }
-    
-      private String translateContent(String content) {
+
+    private String translateContent(String content) {
         try {
             //create new translator and translate the text
             com.gtranslate.Translator translate = com.gtranslate.Translator.getInstance();
