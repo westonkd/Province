@@ -1,11 +1,15 @@
 package Provincial_Miner;
 
+import static Provincial_Miner.UpdateGui.updateNotification;
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Populator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -124,9 +128,10 @@ public class Gui2 extends Application {
      * title for the GUI
      */
     Label title;
-   
+
     //decides if translates to english or not
     RadioButton language;
+   
 
     public RadioButton getLanguage() {
         return language;
@@ -211,6 +216,8 @@ public class Gui2 extends Application {
         }
         return instance;
     }
+
+    
 
     public void getData() {
         Populator pop = new Populator();
@@ -299,10 +306,10 @@ public class Gui2 extends Application {
         find.setFont(font);
         find.setMinSize(60, 30);
         grid.add(find, 2, 7);
-        
+
         language = new RadioButton("Translate");
-        language.setTooltip(new Tooltip ("Translates to english"));
-        grid.add(language,2,6,2,1);
+        language.setTooltip(new Tooltip("Translates to english"));
+        grid.add(language, 2, 6, 2, 1);
 
         progress = new ProgressBar();
         progress.setMinWidth(140);
@@ -348,7 +355,5 @@ public class Gui2 extends Application {
             }
         });
     }
-
-   
 
 }

@@ -5,8 +5,9 @@
  */
 package Provincial_Miner;
 
-import static Provincial_Miner.UpdateGui.pb;
-import static Provincial_Miner.UpdateGui.updateNotification;
+import com.gtranslate.Language;
+import com.gtranslate.Translator;
+
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Librarian;
 import Provincial_Miner.system.PartialQuebecScraper;
@@ -165,6 +166,7 @@ public class Miner extends Application {
             public void handle(ActionEvent e) {
 
                 gui.getProgress().setVisible(true);
+
                 person = gui.getPeople().getValue();
                 topic = gui.getTopical().getValue();
                 // if nothing entered in for start date set it to 1900
@@ -221,18 +223,15 @@ public class Miner extends Application {
 
                             //translate the content
                             String parts[];
-                            if (total.length() > 1500) {
-                                //split by periods if greater than 1500
-                                parts = total.split("\\.");
-                                for (String s : parts) {
-                                    total = translateContent(s);
-                                    complete += total + ". ";
 
-                                }
+                            //split by periods if greater than 1500
+                            parts = total.split("\\.");
+                            for (String s : parts) {
+                                total = translateContent(s);
+                                complete += total + ". ";
 
-                            } else {
-                                complete = total;
                             }
+
                         } else {
                             complete = total;
                         }
@@ -242,6 +241,7 @@ public class Miner extends Application {
                         new WriteFile().writeDataFile(total, person, topic);
                         System.out.println(total);
                     }
+
                     gui.getProgress().setVisible(false);
                 }
             }
@@ -264,8 +264,8 @@ public class Miner extends Application {
     private String translateContent(String content) {
         try {
             //create new translator and translate the text
-            com.gtranslate.Translator translate = com.gtranslate.Translator.getInstance();
-            content = translate.translate(content, com.gtranslate.Language.FRENCH, com.gtranslate.Language.ENGLISH);
+            Translator translate = Translator.getInstance();
+            content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
         } catch (Exception e) {
             return content;
         }
