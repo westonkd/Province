@@ -118,22 +118,23 @@ public class PartialQuebecScraper {
         System.out.print("=");
 
         // updates the label displaying what name its retrieving
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                num++;
-                updateNotification.setText("RETRIEVING: " + name);
-                double progress = num/size;
-                pb.setProgress(progress);
+        if (updateNotification != null) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    num++;
+                    updateNotification.setText("RETRIEVING: " + name);
+                    double progress = num / size;
+                    pb.setProgress(progress);
 
+                }
+
+            });
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PartialQuebecScraper.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
-
-        });
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(PartialQuebecScraper.class.getName()).log(Level.SEVERE, null, ex);
         }
         //string for the url
         String url = new String();
@@ -229,7 +230,7 @@ public class PartialQuebecScraper {
 
         //get all the names in the session
         ArrayList<String> names = getNames('a', session, true);
-size = names.size();
+        size = names.size();
         //fill in the content of each person
         for (String name : names) {
             getTopics(name, session, true);
