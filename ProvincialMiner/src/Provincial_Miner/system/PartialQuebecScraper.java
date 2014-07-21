@@ -199,12 +199,29 @@ public class PartialQuebecScraper {
                         }
 
                         //translate the content
-                        content = translateContent(content);
+                        String parts[];
+                        String total = null;
+                        if (content.length() > 1500) {
+                            
+                            parts = content.split("\\.");
+                            for (String s : parts) {
+                                content = translateContent(s);
+System.out.println(s);
+System.out.println(s.length());
+                               total += content; 
 
-                        newContent.setContent(content);
+                            }
+                            newContent.setContent(total);
+                        } else {
+                            
 
+                            content = translateContent(content);
+
+                            newContent.setContent(content);
+                        }
                         //add the content to the current person
                         searchedSpeakers.get(name).addContent(topicName, newContent);
+
                     }
                 }
             }
