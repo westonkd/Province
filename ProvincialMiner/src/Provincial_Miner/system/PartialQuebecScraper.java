@@ -163,11 +163,11 @@ public class PartialQuebecScraper implements Scraper {
 
                 //if the anchor tag is a link to topic content
                 if (anchor.attr("href").contains(session)) {
-                    
+
                     //get the topic name
                     String topicName = getName(anchor.attr("href"));
                     System.out.println("\t" + topicName);
-                    
+
                     //add the topic to the list
                     if (!topics.contains(topicName) && !topicName.equals("Petition Filing ")) {
                         topics.add(topicName);
@@ -217,35 +217,6 @@ public class PartialQuebecScraper implements Scraper {
                             System.out.println("Error connecting to content page");
                             continue;
                         }
-
-                        //translate the content
-//                        String parts[];
-//                        String total = null;
-//                        if (content.length() > 1500) {
-//                            //split by periods if greater than 1500
-//                            parts = content.split("\\.");
-//                            for (String s : parts) {
-//                                content = translateContent(s);
-//                                System.out.println(content);
-//                                System.out.println(s.length());
-//                                total += content + ". ";
-//
-//                            }
-//                            // add the total to new Content
-//                            newContent.setContent(total);
-                        // } else {
-                        // content = translateContent(content);
-                        //newContent.setContent(content);
-                        //   }
-                        //add the content to the current person
-                        //searchedSpeakers.get(name).addContent(topicName, newContent);
-
-                      
-                          //  newContent.setContent(content);
-                    
-                        //searchedSpeakers.get(name).addContent(topicName, newContent);
-
-
                     }
                 }
             }
@@ -272,7 +243,7 @@ public class PartialQuebecScraper implements Scraper {
 
         //get all the names in the session
 
-        ArrayList<String> names = getNames('b', session, true);
+        ArrayList<String> names = getNames('a', session, true);
 
         size = names.size();
         //fill in the content of each person
@@ -346,7 +317,9 @@ public class PartialQuebecScraper implements Scraper {
      * @return
      */
     private String getName(String url) {
-        url = url.substring(url.indexOf("_") + 1);
+        if (url.indexOf("_") > 0)  {
+            url = url.substring(url.indexOf("_") + 1);
+        }
 
         //format topic name
         url = url.replace('+', ' ').replace('_', ' ');
@@ -378,10 +351,9 @@ public class PartialQuebecScraper implements Scraper {
     private LocalDate getDate(String toParse) {
         //create a new date
         LocalDate newDate = LocalDate.now();
-        
+
         //if the string to parse is not valid
-        if (toParse.length() < 5) 
-        {
+        if (toParse.length() < 5) {
             return newDate;
         }
 
