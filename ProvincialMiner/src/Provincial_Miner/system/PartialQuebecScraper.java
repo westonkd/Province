@@ -242,7 +242,8 @@ public class PartialQuebecScraper implements Scraper {
         searchedSpeakers = new HashMap<>();
 
         //get all the names in the session
-        ArrayList<String> names = getNames('b', session, true);
+
+        ArrayList<String> names = getNames('a', session, true);
 
         size = names.size();
         //fill in the content of each person
@@ -316,7 +317,9 @@ public class PartialQuebecScraper implements Scraper {
      * @return
      */
     private String getName(String url) {
-        url = url.substring(url.indexOf("_") + 1);
+        if (url.indexOf("_") > 0)  {
+            url = url.substring(url.indexOf("_") + 1);
+        }
 
         //format topic name
         url = url.replace('+', ' ').replace('_', ' ');

@@ -41,11 +41,12 @@ public class WriteFile {
      */
     public void PersonXmlWriter(ArrayList<Speaker> speakerList) {
         // String to hold date
-        String tempDate = "";
-
+        String tempDate = null;
+        
         // Creates a folder in the documents folder to store xml file
         File dir1 = new File(System.getProperty("user.home") + "/Documents", "SpeakerFile_files");
         dir1.mkdir();
+
 
         try {
             // Creates objects needed to create DOM structure
@@ -79,7 +80,10 @@ public class WriteFile {
                         sessionToAdd.setAttribute("date", session.getDate().toString());
                         sessionToAdd.setTextContent(session.getContent());
                         topicToadd.appendChild(sessionToAdd);
-                        tempDate = session.getDate().toString();
+
+                        if (tempDate == null) {
+                                tempDate = session.getDate().toString();
+                            }
                     }
                 }
             }
@@ -125,7 +129,9 @@ public class WriteFile {
         String fileName = personName + "_" + topic;
 
         // Create folder to store folers for each search
-        File dir1 = new File(System.getProperty("user.home") + "/Documents", "Provincial Mining");
+
+        File dir1 = new File(System.getProperty("user.home") + "/Desktop","Provincial Mining");
+
         dir1.mkdir();
         // Create folder to store .PRO, .html, .txt, and .docx files
         // for each search
