@@ -242,6 +242,7 @@ public class PartialQuebecScraper implements Scraper {
         searchedSpeakers = new HashMap<>();
 
         //get all the names in the session
+
         ArrayList<String> names = getNames('a', session, true);
 
         size = names.size();
