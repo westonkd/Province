@@ -5,6 +5,7 @@
  */
 package Provincial_Miner.system;
 
+import static Provincial_Miner.Miner.database;
 import java.io.File;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -25,7 +26,7 @@ public class Populator {
     String fileName;
 
     public void setFileName(String fileName) {
-        this.fileName = System.getProperty("user.home") + "/Documents/SpeakerFile_files/" + fileName;
+        this.fileName = database + "SpeakerFile_files/" + fileName;
     }
     // list of people
     ArrayList<String> people = new ArrayList();

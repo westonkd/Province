@@ -5,14 +5,15 @@
  */
 package Provincial_Miner.system;
 
-import java.time.LocalDate;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
+import static Provincial_Miner.Miner.database;
 import java.io.File;
+import java.time.LocalDate;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Librarian Class
@@ -29,7 +30,7 @@ public class Librarian {
     }
     //sets the file path to look through
     public void setFileName(String fileName) {
-        this.fileName = System.getProperty("user.home") + "/Documents/SpeakerFile_files/" + fileName;
+        this.fileName = (database + "SpeakerFile_files/" + fileName);
     }
     /**
      * default constructor

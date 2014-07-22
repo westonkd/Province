@@ -5,6 +5,7 @@
  */
 package Provincial_Miner.system;
 
+import static Provincial_Miner.Miner.database;
 import static com.sun.org.apache.xerces.internal.util.PropertyState.is;
 import java.io.File;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class FileFinder {
      */
     public ArrayList<String> findFiles() {
         ArrayList<String> validFiles = new ArrayList<String>();
-        File dir = new File((System.getProperty("user.home") + ("/Documents/SpeakerFile_files/")));
+        File dir = new File(database + "SpeakerFile_files/");
         // array of strings for file names
         String[] children = dir.list();
         //if there is no files in directory

@@ -34,6 +34,7 @@ import javafx.stage.Stage;
  */
 public class Miner extends Application {
 
+    public static final String database = System.getProperty("user.home") + "/Documents/";
     Gui2 gui = Gui2.getInstance();
     Translator translate = Translator.getInstance();
     Librarian librarian = new Librarian();
@@ -215,21 +216,21 @@ public class Miner extends Application {
                         }
 
                     }
-                    String complete = null;
-                    total += "VNV." + total;
+                    String complete = "Start the reading here .";
+                    //total += "VNV." + total;
                     if (total.equals("")) {
                         gui.error("No content for search parameters");
                     } else {
                         if (gui.getLanguage().isSelected()) {
-
+                            total += (complete + total);
                             //translate the content
                             String parts[];
 
                             //split by periods if greater than 1500
                             parts = total.split("\\.");
                             for (String s : parts) {
-                                total = translateContent(s);
-                                complete += total + ". ";
+                                String trans = translateContent(s);
+                                complete += trans + ". ";
 
                             }
 

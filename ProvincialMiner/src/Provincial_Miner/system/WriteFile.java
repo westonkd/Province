@@ -1,5 +1,6 @@
 package Provincial_Miner.system;
 
+import static Provincial_Miner.Miner.database;
 import Provincial_Miner.application.Content;
 import Provincial_Miner.application.Speaker;
 import java.awt.Desktop;
@@ -44,7 +45,7 @@ public class WriteFile {
         String tempDate = null;
         
         // Creates a folder in the documents folder to store xml file
-        File dir1 = new File(System.getProperty("user.home") + "/Documents", "SpeakerFile_files");
+        File dir1 = new File(database + "SpeakerFile_files");
         dir1.mkdir();
 
 
