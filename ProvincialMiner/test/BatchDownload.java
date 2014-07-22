@@ -23,7 +23,7 @@ public class BatchDownload {
 
     @Test
     public void batchDownload() {
-        for (int i = 40; i < 42; i++) {
+        for (int i = 11; i < 42; i++) {
             if (i == 21) {
                 i = 36;
             }

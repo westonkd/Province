@@ -156,14 +156,7 @@ public class PartialQuebecScraper implements Scraper {
                         System.out.println("attempting: " + domain + anchor.attr("href"));
                         try {
                             Document contentPage = Jsoup.connect(domain + anchor.attr("href")).get();
-                            
-                            //if the page does not exist
-                            if(contentPage.select("imbGauche").text().contains("Le terme recherché n'a pas été"))
-                            {
-                                //continue to next itteration
-                                continue;
-                            }
-                            
+  
                             //create a new Content for the Speaker
                             Content newContent = new Content();
 
@@ -196,9 +189,11 @@ public class PartialQuebecScraper implements Scraper {
                             newContent.setContent(content);
 
                             //add the content to the current person
+                            if (!content.equals(""))
                             searchedSpeakers.get(name).addContent(topicName, newContent);
                         } catch (IOException e) {
                             System.out.println("Error connecting to content page");
+                            continue;
                         }
                     }
                 }
