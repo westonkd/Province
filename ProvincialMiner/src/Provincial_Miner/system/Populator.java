@@ -62,17 +62,27 @@ public class Populator {
                     // the person element
                     Element eElement = (Element) nNode;
                     // add the persons attribute (name)
+                     if (sublist.getLength() < 1) {
+
+                    } else {
                     people.add(eElement.getAttribute("name"));
+                     }
                     // loop through child nodes (topics)
-                    for (int j = 0; j < sublist.getLength(); j++) {
-                        Node cNode = (Node) sublist.item(j);
-                        if (cNode.getNodeType() == Node.ELEMENT_NODE) {
-                            // the topic element
-                            Element cElement = (Element) cNode;
-                            // add the topic element (subject)
-                            topics.add(cElement.getAttribute("subject"));
+                   
+                        for (int j = 0; j < sublist.getLength(); j++) {
+                            Node cNode = (Node) sublist.item(j);
+                            if (cNode.getNodeType() == Node.ELEMENT_NODE) {
+                                // the topic element
+                                Element cElement = (Element) cNode;
+                                // add the topic element (subject)
+                                if (sublist.getLength() < 1) {
+
+                    } else {
+                                topics.add(cElement.getAttribute("subject"));
+                                }
+                            }
                         }
-                    }
+                    
                 }
             }
         } catch (Exception e) {
