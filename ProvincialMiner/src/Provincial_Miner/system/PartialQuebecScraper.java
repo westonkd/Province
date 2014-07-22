@@ -198,28 +198,9 @@ public class PartialQuebecScraper {
                             }
                         }
 
-                        //translate the content
-//                        String parts[];
-//                        String total = null;
-//                        if (content.length() > 1500) {
-//                            //split by periods if greater than 1500
-//                            parts = content.split("\\.");
-//                            for (String s : parts) {
-//                                content = translateContent(s);
-//                                System.out.println(content);
-//                                System.out.println(s.length());
-//                                total += content + ". ";
-//
-//                            }
-//                            // add the total to new Content
-//                            newContent.setContent(total);
-                       // } else {
-
-                           // content = translateContent(content);
-
+                      
                             newContent.setContent(content);
-                     //   }
-                        //add the content to the current person
+                    
                         searchedSpeakers.get(name).addContent(topicName, newContent);
 
                     }
