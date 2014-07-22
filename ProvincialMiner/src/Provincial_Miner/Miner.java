@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 public class Miner extends Application {
 
     Gui2 gui = Gui2.getInstance();
-
+    Translator translate = Translator.getInstance();
     Librarian librarian = new Librarian();
     FileFinder files = new FileFinder();
     PartialQuebecScraper scraper = new PartialQuebecScraper();
@@ -235,11 +235,11 @@ public class Miner extends Application {
                         } else {
                             complete = total;
                         }
-                        total = (head + complete);
+                        String done = (head + complete);
 
                         //write to the file
-                        new WriteFile().writeDataFile(total, person, topic);
-                        System.out.println(total);
+                        new WriteFile().writeDataFile(done, person, topic);
+                        System.out.println(done);
                     }
 
                     gui.getProgress().setVisible(false);
@@ -264,7 +264,7 @@ public class Miner extends Application {
     private String translateContent(String content) {
         try {
             //create new translator and translate the text
-            Translator translate = Translator.getInstance();
+
             content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
         } catch (Exception e) {
             return content;
