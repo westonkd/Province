@@ -127,6 +127,9 @@ public class WriteFile {
         }
 
         String fileName = personName + "_" + topic;
+        if (fileName.endsWith(" ")){
+               fileName = fileName.substring(0, fileName.length()-1);
+            }
 
         // Create folder to store folers for each search
 
@@ -184,6 +187,9 @@ public class WriteFile {
 
         // Write file to topic folder
         try {
+            
+            
+                
             File file = new File(folderToWrite, fileName);
             FileOutputStream output = new FileOutputStream(file);
             OutputStreamWriter osw = new OutputStreamWriter(output);

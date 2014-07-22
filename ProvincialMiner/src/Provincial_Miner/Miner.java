@@ -216,6 +216,7 @@ public class Miner extends Application {
 
                     }
                     String complete = null;
+                    total += "VNV." + total;
                     if (total.equals("")) {
                         gui.error("No content for search parameters");
                     } else {
