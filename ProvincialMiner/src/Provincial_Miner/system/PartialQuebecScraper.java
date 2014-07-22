@@ -239,6 +239,13 @@ public class PartialQuebecScraper implements Scraper {
                         //   }
                         //add the content to the current person
                         //searchedSpeakers.get(name).addContent(topicName, newContent);
+
+                      
+                          //  newContent.setContent(content);
+                    
+                        //searchedSpeakers.get(name).addContent(topicName, newContent);
+
+
                     }
                 }
             }
@@ -264,7 +271,9 @@ public class PartialQuebecScraper implements Scraper {
         searchedSpeakers = new HashMap<>();
 
         //get all the names in the session
+
         ArrayList<String> names = getNames('b', session, true);
+
         size = names.size();
         //fill in the content of each person
         for (String name : names) {
