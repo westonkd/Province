@@ -38,7 +38,7 @@ public class WriteFile {
      */
     public void PersonXmlWriter(ArrayList<Speaker> speakerList) {       
         // String to hold date
-        String tempDate = "";
+        String tempDate = null;
         
         // Creates a folder in the documents folder to store xml file
         File dir1 = new File(System.getProperty("user.home") + "/Documents", "SpeakerFile_files");
@@ -76,7 +76,9 @@ public class WriteFile {
                             sessionToAdd.setAttribute("date", session.getDate().toString());
                             sessionToAdd.setTextContent(session.getContent());
                             topicToadd.appendChild(sessionToAdd);  
-                            tempDate = session.getDate().toString();
+                            if (tempDate == null) {
+                                tempDate = session.getDate().toString();
+                            }
                         }                   
                     }                         
                 }
@@ -185,7 +187,7 @@ public class WriteFile {
         String fileName = personName + "_" + topic;
 
         // Create folder to store folers for each search
-        File dir1 = new File(System.getProperty("user.home") + "/Documents","Provincial Mining");
+        File dir1 = new File(System.getProperty("user.home") + "/Desktop","Provincial Mining");
         dir1.mkdir();
         // Create folder to store .PRO, .html, .txt, and .docx files
         // for each search
@@ -205,16 +207,7 @@ public class WriteFile {
         contentToWrite = contentToWrite.replace("</topic>", "</ignore>");
         contentToWrite = contentToWrite.replace("<date>", "<ignore>");
         contentToWrite = contentToWrite.replace("</date>", "</ignore>");
-        
-        /*
-        contentToWrite = contentToWrite.replace("<name>", "<ignore>")
-                .replace("</name>", "</ignore>")
-                .replace("<topic>", "<ignore>")
-                .replace("</topic>", "</ignore>")
-                .replace("<date>", "<ignore>")
-                .replace("</date>", "</ignore>");
-        */
-        
+   
         // Write .PRO file  
         writeToFile(dir3, fileName + ".PRO", contentToWrite );
         
