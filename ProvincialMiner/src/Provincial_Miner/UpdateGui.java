@@ -154,6 +154,9 @@ public class UpdateGui implements Runnable {
             public void run() {
                 updateNotification.setText("Done!");
                 pb.setVisible(false);
+                updateNotification = null;
+                pb = null;
+
                 window.close();
             }
 

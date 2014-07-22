@@ -1,11 +1,15 @@
 package Provincial_Miner;
 
+import static Provincial_Miner.UpdateGui.updateNotification;
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Populator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -20,6 +24,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -35,8 +40,11 @@ public class Gui2 extends Application {
 
     private static Gui2 instance = null;
 
-   
+    boolean translate;
 
+    public boolean isTranslate() {
+        return translate;
+    }
     /**
      * This is a grid style layout that will be centered at the bottom
      */
@@ -120,8 +128,15 @@ public class Gui2 extends Application {
      * title for the GUI
      */
     Label title;
-    // updates the label for downloading new files
-    
+
+    //decides if translates to english or not
+    RadioButton language;
+   
+
+    public RadioButton getLanguage() {
+        return language;
+    }
+
     // arraylist holds all the people
     ArrayList<String> peeps = new ArrayList<String>();
     // arraylist holds all the subjects
@@ -201,6 +216,8 @@ public class Gui2 extends Application {
         }
         return instance;
     }
+
+    
 
     public void getData() {
         Populator pop = new Populator();
@@ -290,9 +307,13 @@ public class Gui2 extends Application {
         find.setMinSize(60, 30);
         grid.add(find, 2, 7);
 
+        language = new RadioButton("Translate");
+        language.setTooltip(new Tooltip("Translates to english"));
+        grid.add(language, 2, 6, 2, 1);
+
         progress = new ProgressBar();
         progress.setMinWidth(140);
-        grid.add(progress, 2, 8,2,1);
+        grid.add(progress, 2, 8, 2, 1);
         progress.setVisible(false);
 
         // set the scene and display it
@@ -335,6 +356,4 @@ public class Gui2 extends Application {
         });
     }
 
-   
-   
 }

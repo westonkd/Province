@@ -5,6 +5,9 @@
  */
 package Provincial_Miner;
 
+import com.gtranslate.Language;
+import com.gtranslate.Translator;
+
 import Provincial_Miner.system.FileFinder;
 import Provincial_Miner.system.Librarian;
 import Provincial_Miner.system.PartialQuebecScraper;
@@ -14,8 +17,11 @@ import java.time.LocalDate;
 import static java.time.LocalDate.now;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -32,9 +38,8 @@ public class Miner extends Application {
 
     Librarian librarian = new Librarian();
     FileFinder files = new FileFinder();
-    
+    PartialQuebecScraper scraper = new PartialQuebecScraper();
     //FileWriter writer = FileWriter.getInstance();
-
     String person = "";
     String topic = "";
     LocalDate startDate;
@@ -90,9 +95,9 @@ public class Miner extends Application {
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
         gui.start(primaryStage);
-/**
- * This will update the topics depending on what speaker is chosen
- */
+        /**
+         * This will update the topics depending on what speaker is chosen
+         */
         gui.getPeople().valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
@@ -135,7 +140,6 @@ public class Miner extends Application {
         gui.getUpdate().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                String sessionStart = "&Session=";
                 // new runnable thread update gui
                 if (isOn) {
                     if (!thread.isAlive()) {
@@ -161,6 +165,8 @@ public class Miner extends Application {
             @Override
             public void handle(ActionEvent e) {
 
+                gui.getProgress().setVisible(true);
+
                 person = gui.getPeople().getValue();
                 topic = gui.getTopical().getValue();
                 // if nothing entered in for start date set it to 1900
@@ -184,7 +190,7 @@ public class Miner extends Application {
                     gui.error("Invalid Parameters");
                 } else {
                     //progress bar to know its in process
-                    gui.getProgress().setVisible(true);
+
                     ArrayList<String> validFiles = files.findFiles();
                     String total = "";
                     String head = "";
@@ -209,15 +215,33 @@ public class Miner extends Application {
                         }
 
                     }
+                    String complete = null;
                     if (total.equals("")) {
                         gui.error("No content for search parameters");
                     } else {
-                        total = (head + total);
+                        if (gui.getLanguage().isSelected()) {
+
+                            //translate the content
+                            String parts[];
+
+                            //split by periods if greater than 1500
+                            parts = total.split("\\.");
+                            for (String s : parts) {
+                                total = translateContent(s);
+                                complete += total + ". ";
+
+                            }
+
+                        } else {
+                            complete = total;
+                        }
+                        total = (head + complete);
 
                         //write to the file
                         new WriteFile().writeDataFile(total, person, topic);
                         System.out.println(total);
                     }
+
                     gui.getProgress().setVisible(false);
                 }
             }
@@ -235,6 +259,17 @@ public class Miner extends Application {
     public static void main(String[] args) {
         launch(args);
 
+    }
+
+    private String translateContent(String content) {
+        try {
+            //create new translator and translate the text
+            Translator translate = Translator.getInstance();
+            content = translate.translate(content, Language.FRENCH, Language.ENGLISH);
+        } catch (Exception e) {
+            return content;
+        }
+        return content;
     }
 
 }
